@@ -1,5 +1,7 @@
 import "@/styles/globals.css"
-import { Inter } from "next/font/google"
+import { cn } from "@/lib/utils"
+import Navbar from "@/components/Navbar"
+import Providers from "@/components/Providers"
 
 export const metadata = {
   title: 'Create Next App',
@@ -12,14 +14,19 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className=''>
+    <html lang="en" className={cn(
+        "bg-slate-300 dark:bg-gray-800 antialiased"
+      )}>
       <head>
         <link rel="manifest" href="./manifest.json" />
         <link rel="apple-touch-icon" href="/icon.png"></link>
         <meta name="theme-color" content="#fff" />
       </head>
       <body>
-        {children}
+        <Providers>
+          <Navbar/>
+          {children}
+        </Providers>
       </body>
     </html>
   )
