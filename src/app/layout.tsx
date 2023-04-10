@@ -2,6 +2,9 @@ import "@/styles/globals.css"
 import { cn } from "@/lib/utils"
 import Navbar from "@/components/Navbar"
 import Providers from "@/components/Providers"
+import { Inter } from 'next/font/google'
+
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'Create Next App',
@@ -15,14 +18,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={cn(
-        "bg-slate-300 dark:bg-gray-800 antialiased"
+        "bg-slate-300 antialiased", inter.className
       )}>
       <head>
         <link rel="manifest" href="./manifest.json" />
         <link rel="apple-touch-icon" href="/icon.png"></link>
         <meta name="theme-color" content="#fff" />
       </head>
-      <body>
+      <body className="min-h-screen bg-slate-300 dark:bg-slate-900 antialiased">
         <Providers>
           <Navbar/>
           {children}

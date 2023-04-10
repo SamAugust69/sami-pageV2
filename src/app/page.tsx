@@ -1,7 +1,4 @@
 import { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-
-const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: "Sami Scouting",
@@ -10,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className=''>
+    <main className='p-32'>
       <p>test</p>
     </main>
   )
