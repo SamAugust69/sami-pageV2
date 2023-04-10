@@ -1,9 +1,4 @@
 {
-    "theme_color": "",
-    "background_color": "#f8f5f2",
-    "display": "standalone",
-    "scope": "/",
-    "start_url": ".",
     "name": "Sami Page",
     "short_name": "Sami Page",
     "icons": [
@@ -27,5 +22,9 @@
             "sizes": "512x512",
             "type": "image/png"
         }
-    ]
+    ],
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "#000000",
+    "background_color": "#ffffff"
 }
