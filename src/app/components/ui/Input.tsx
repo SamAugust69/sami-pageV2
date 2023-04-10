@@ -17,7 +17,7 @@ const inputVariants = cva(
 )
 
 interface InputProps extends HTMLAttributes<HTMLInputElement>, VariantProps<typeof inputVariants> {
-    disabled: boolean
+    disabled?: boolean
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(({
