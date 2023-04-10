@@ -9,7 +9,6 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <main className='pt-32 flex justify-center'>
-      <p>test</p>
       <NewLog/>
     </main>
   )
