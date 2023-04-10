@@ -38,4 +38,5 @@ const NewLog: FC<NewLogProps> = ({}) => {
     )
 }
 
+NewLog.displayName = "NewLog"
 export default NewLog
