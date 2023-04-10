@@ -3,6 +3,8 @@ import { cn } from "@/lib/utils"
 import Navbar from "@/components/Navbar"
 import Providers from "@/components/Providers"
 import { Inter } from 'next/font/google'
+import Link from 'next/link'
+import { buttonVariants } from '@/ui/Button'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -30,6 +32,11 @@ export default function RootLayout({
           <Navbar/>
           {children}
         </Providers>
+
+        <div className="fixed bottom-0 mb-20 md:hidden min-w-full flex justify-center ">
+          <Link className={buttonVariants({variant: "link"})} href="/"> Documentation</Link>
+          <Link className={buttonVariants({variant: "default"})} href="/"> Logs</Link>
+        </div>
       </body>
     </html>
   )

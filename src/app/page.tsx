@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import NewLog from '@/components/NewLog'
 
 export const metadata: Metadata = {
   title: "Sami Scouting",
@@ -7,8 +8,9 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className='p-32'>
+    <main className='pt-32 flex justify-center'>
       <p>test</p>
+      <NewLog/>
     </main>
   )
 }
