@@ -5,6 +5,7 @@ import Providers from "@/components/Providers"
 import { Inter } from 'next/font/google'
 import Link from 'next/link'
 import { buttonVariants } from '@/ui/Button'
+import Pwa from "@/components/Pwa"
 
 const inter = Inter({ subsets: ['latin'] })
 
