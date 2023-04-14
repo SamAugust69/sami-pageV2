@@ -33,8 +33,8 @@ export default function RootLayout({
           {children}
         </Providers>
 
-        <div className="fixed bottom-0 mb-20 md:hidden min-w-full flex justify-center ">
-          <Link className={buttonVariants({variant: "link"})} href="/"> Documentation</Link>
+        <div className="fixed bottom-0 mb-16 md:hidden min-w-full flex justify-center ">
+          <Link className={buttonVariants({variant: "link"})} href="/documentation"> Documentation</Link>
           <Link className={buttonVariants({variant: "default"})} href="/"> Logs</Link>
         </div>
       </body>

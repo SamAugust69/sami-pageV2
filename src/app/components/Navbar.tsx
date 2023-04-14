@@ -17,8 +17,8 @@ const Navbar: FC<NavbarProps> = ({}) => {
                         <ThemeToggle/>
                     </div>
                     <div className='hidden md:flex gap-2'>
-                        <Link className={buttonVariants({variant: "link"})} href="/"> Documentation</Link>
-                        <Link className={buttonVariants({variant: "default"})} href="/"> Logs</Link>
+                        <Link className={buttonVariants({variant: "link"})} href="/documentation"> Documentation</Link>
+                        <Link className={buttonVariants({variant: "default"})} href="/logs"> Logs</Link>
                     </div>
                 </div>
             </div>

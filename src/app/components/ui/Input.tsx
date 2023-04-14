@@ -7,7 +7,7 @@ const inputVariants = cva(
     {
         variants: {
             size: {
-                default: "m-2 h-8 px-2"
+                default: "m-2 h-8 mx-2"
             }
         },
         defaultVariants: {
@@ -24,9 +24,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
     className, size, children, disabled, ...props
 }, ref) => {
     return (
-        <div className="relative" ref={ref}>
+        <div className="relative inline" ref={ref}>
             <input required disabled={disabled} className={cn(inputVariants({size, className}))} {...props} type="text" />
-            <span className="absolute top-0">{children}</span>
+            <span className="absolute top-4 left-0">{children}</span>
         </div>
     )
 })

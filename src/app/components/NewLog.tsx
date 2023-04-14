@@ -14,7 +14,7 @@ const NewLog: FC<NewLogProps> = ({}) => {
     const [ open, setOpen ] = useState(false)
 
     return (
-        <div className='rounded border border-slate-700 dark:border-slate-600 shadow-md dark:bg-slate-800 w-96'>
+        <div className='rounded border border-slate-700 dark:border-slate-600 shadow-md dark:bg-slate-800 w-96 m-2'>
             <div className='border-b border-slate-700 dark:border-slate-600 flex justify-between p-2'>
                 <Button size="sm" onClick={() => setOpen(!open)}>Close</Button>
                 <div className='flex flex-col'>
@@ -30,6 +30,9 @@ const NewLog: FC<NewLogProps> = ({}) => {
                 animate={{ y: 0, opacity: 1}}
                 exit={{ y: -10, opacity: 0 }}
                 >
+                    <Input>Fart</Input>
+                    <Input>Fart</Input>
+                    <Input>Fart</Input>
                     <Input>Fart</Input>
                 </motion.div>
                 }
