@@ -9,272 +9,77 @@ export const metadata: Metadata = {
 
 const matchInfo = [
     {
-        "match": 1,
+        "match": "1",
         "first_name": "Fart",
         "teams": [
-            {team: 155},
-            {team: 69},
-            {team: 420},
-            {team: 5421},
-            {team: 876},
-            {team: 5234},
+            {"team": "345"},
+            {"team": "2345"},
+            {"team": "1234"},
+            {"team": "654"},
+            {"team": "123"},
+            {"team": "234"},
         ]
     },
     {
-        "match": 2,
+        "match": "2",
         "first_name": "Fart",
         "teams": [
-            {team: 345},
-            {team: 2345},
-            {team: 1234},
-            {team: 654},
-            {team: 123},
-            {team: 234},
+            {"team": "345"},
+            {"team": "2345"},
+            {"team": "1234"},
+            {"team": "654"},
+            {"team": "123"},
+            {"team": "234"},
         ]
     },
     {
-        "match": 1,
+        "match": "1",
+        "first_name": "Fart",
         "teams": [
-            {team: 155},
-            {team: 69},
-            {team: 420},
-            {team: 5421},
-            {team: 876},
-            {team: 5234},
+            {"team": "345"},
+            {"team": "2345"},
+            {"team": "1234"},
+            {"team": "654"},
+            {"team": "123"},
+            {"team": "234"},
         ]
     },
     {
-        "match": 2,
+        "match": "2",
+        "first_name": "Fart",
         "teams": [
-            {team: 345},
-            {team: 2345},
-            {team: 1234},
-            {team: 654},
-            {team: 123},
-            {team: 234},
+            {"team": "345"},
+            {"team": "2345"},
+            {"team": "1234"},
+            {"team": "654"},
+            {"team": "123"},
+            {"team": "234"},
         ]
     },
     {
-        match: 1,
-        teams: [
-            {team: 155},
-            {team: 69},
-            {team: 420},
-            {team: 5421},
-            {team: 876},
-            {team: 5234},
+        "match": "1",
+        "first_name": "Fart",
+        "teams": [
+            {"team": "345"},
+            {"team": "2345"},
+            {"team": "1234"},
+            {"team": "654"},
+            {"team": "123"},
+            {"team": "234"},
         ]
     },
     {
-        match: 2,
-        teams: [
-            {team: 345},
-            {team: 2345},
-            {team: 1234},
-            {team: 654},
-            {team: 123},
-            {team: 234},
+        "match": "2",
+        "first_name": "Fart",
+        "teams": [
+            {"team": "345"},
+            {"team": "2345"},
+            {"team": "1234"},
+            {"team": "654"},
+            {"team": "123"},
+            {"team": "234"},
         ]
     },
-    {
-        match: 1,
-        teams: [
-            {team: 155},
-            {team: 69},
-            {team: 420},
-            {team: 5421},
-            {team: 876},
-            {team: 5234},
-        ]
-    },
-    {
-        match: 2,
-        teams: [
-            {team: 345},
-            {team: 2345},
-            {team: 1234},
-            {team: 654},
-            {team: 123},
-            {team: 234},
-        ]
-    },
-    {
-        match: 1,
-        teams: [
-            {team: 155},
-            {team: 69},
-            {team: 420},
-            {team: 5421},
-            {team: 876},
-            {team: 5234},
-        ]
-    },
-    {
-        match: 2,
-        teams: [
-            {team: 345},
-            {team: 2345},
-            {team: 1234},
-            {team: 654},
-            {team: 123},
-            {team: 234},
-        ]
-    },
-    {
-        match: 1,
-        teams: [
-            {team: 155},
-            {team: 69},
-            {team: 420},
-            {team: 5421},
-            {team: 876},
-            {team: 5234},
-        ]
-    },
-    {
-        match: 2,
-        teams: [
-            {team: 345},
-            {team: 2345},
-            {team: 1234},
-            {team: 654},
-            {team: 123},
-            {team: 234},
-        ]
-    },
-    {
-        match: 1,
-        teams: [
-            {team: 155},
-            {team: 69},
-            {team: 420},
-            {team: 5421},
-            {team: 876},
-            {team: 5234},
-        ]
-    },
-    {
-        match: 2,
-        teams: [
-            {team: 345},
-            {team: 2345},
-            {team: 1234},
-            {team: 654},
-            {team: 123},
-            {team: 234},
-        ]
-    },
-    {
-        match: 1,
-        teams: [
-            {team: 155},
-            {team: 69},
-            {team: 420},
-            {team: 5421},
-            {team: 876},
-            {team: 5234},
-        ]
-    },
-    {
-        match: 2,
-        teams: [
-            {team: 345},
-            {team: 2345},
-            {team: 1234},
-            {team: 654},
-            {team: 123},
-            {team: 234},
-        ]
-    },
-    {
-        match: 1,
-        teams: [
-            {team: 155},
-            {team: 69},
-            {team: 420},
-            {team: 5421},
-            {team: 876},
-            {team: 5234},
-        ]
-    },
-    {
-        match: 2,
-        teams: [
-            {team: 345},
-            {team: 2345},
-            {team: 1234},
-            {team: 654},
-            {team: 123},
-            {team: 234},
-        ]
-    },
-    {
-        match: 1,
-        teams: [
-            {team: 155},
-            {team: 69},
-            {team: 420},
-            {team: 5421},
-            {team: 876},
-            {team: 5234},
-        ]
-    },
-    {
-        match: 2,
-        teams: [
-            {team: 345},
-            {team: 2345},
-            {team: 1234},
-            {team: 654},
-            {team: 123},
-            {team: 234},
-        ]
-    },
-    {
-        match: 1,
-        teams: [
-            {team: 155},
-            {team: 69},
-            {team: 420},
-            {team: 5421},
-            {team: 876},
-            {team: 5234},
-        ]
-    },
-    {
-        match: 2,
-        teams: [
-            {team: 345},
-            {team: 2345},
-            {team: 1234},
-            {team: 654},
-            {team: 123},
-            {team: 234},
-        ]
-    },
-    {
-        match: "1",
-        teams: [
-            {team: 155},
-            {team: 69},
-            {team: 420},
-            {team: 5421},
-            {team: 876},
-            {team: 5234},
-        ]
-    },
-    {
-        match: 2,
-        teams: [
-            {team: 345},
-            {team: 2345},
-            {team: 1234},
-            {team: 654},
-            {team: 123},
-            {team: 234},
-        ]
-    },
-
 
 ]
 
