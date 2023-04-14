@@ -16,9 +16,9 @@ const MatchLogsTab: FC<NewLogProps> = ({matchInfo}) => {
     return (
         //map over each match, return ->
         <div className='h-128 items-center flex flex-col overflow-scroll scrollbar-2-thin'>
-            {matchInfo.map((val: any) => {
+            {matchInfo.map((val: any, key: number) => {
                 console.log(val)
-                return (<MatchInformation matchInfo={val}/>)
+                return (<MatchInformation key={key} matchInfo={val}/>)
             })}
         </div>
     )
