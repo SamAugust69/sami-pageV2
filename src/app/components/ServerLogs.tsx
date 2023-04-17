@@ -1,8 +1,10 @@
 "use client"
+
 import { FC } from 'react'
 import Button from '@/ui/Button'
 import MatchLogsTab from "@/components/MatchLogsTab"
 import SearchBar from "@/ui/SearchBar"
+import Log from "@/components/Log"
 
 interface ServerLogsProps {
     matchInfo: any
@@ -21,8 +23,12 @@ const ServerLogs: FC<ServerLogsProps> = ({matchInfo}) => {
                 <SearchBar onChange={() => {console.log("Fart")}}/>
                 <MatchLogsTab matchInfo={matchInfo}/>
             </div>
-            <div className='p-2 border-t md:border-t-0 w-full border-slate-900 dark:border-slate-200'>
-
+            <div className='p-2 border-t md:border-t-0 w-full border-slate-900 dark:border-slate-200 flex align-center justify-center flex-wrap gap-2'>
+                <Log />
+                <Log />
+                <Log />
+                <Log />
+                <Log />
             </div>
         </div>
     )

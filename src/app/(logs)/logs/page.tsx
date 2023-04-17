@@ -1,5 +1,8 @@
-import { FC } from 'react'
+"use client"
+
+import { FC, useState } from 'react'
 import { Metadata } from 'next'
+import { uuid as uuidv4 } from 'uuidv4';
 import ServerLogs from '@/components/ServerLogs'
 
 export const metadata: Metadata = {
@@ -7,87 +10,62 @@ export const metadata: Metadata = {
     description: "Purpose built scouting app for team 155"
 }
 
-const matchInfo = [
+const serverLogs = [
     {
-        "match": "1",
-        "first_name": "Fart",
-        "teams": [
-            {"team": "345"},
-            {"team": "2345"},
-            {"team": "1234"},
-            {"team": "654"},
-            {"team": "123"},
-            {"team": "234"},
-        ]
+        "id": uuidv4(),
+        "info":{
+            "match": ["7"],
+            "team": ["6346"]
+        }
     },
     {
-        "match": "2",
-        "first_name": "Fart",
-        "teams": [
-            {"team": "345"},
-            {"team": "2345"},
-            {"team": "1234"},
-            {"team": "654"},
-            {"team": "123"},
-            {"team": "234"},
-        ]
+        "id": uuidv4(),
+        "info":{
+            "match": ["7"],
+            "team": ["657"]
+        }
     },
     {
-        "match": "1",
-        "first_name": "Fart",
-        "teams": [
-            {"team": "345"},
-            {"team": "2345"},
-            {"team": "1234"},
-            {"team": "654"},
-            {"team": "123"},
-            {"team": "234"},
-        ]
+        "id": uuidv4(),
+        "info":{
+            "match": ["8"],
+            "team": ["657"]
+        }
     },
     {
-        "match": "2",
-        "first_name": "Fart",
-        "teams": [
-            {"team": "345"},
-            {"team": "2345"},
-            {"team": "1234"},
-            {"team": "654"},
-            {"team": "123"},
-            {"team": "234"},
-        ]
+        "id": uuidv4(),
+        "info":{
+            "match": ["8"],
+            "team": ["6346"]
+        }
     },
-    {
-        "match": "1",
-        "first_name": "Fart",
-        "teams": [
-            {"team": "345"},
-            {"team": "2345"},
-            {"team": "1234"},
-            {"team": "654"},
-            {"team": "123"},
-            {"team": "234"},
-        ]
-    },
-    {
-        "match": "2",
-        "first_name": "Fart",
-        "teams": [
-            {"team": "345"},
-            {"team": "2345"},
-            {"team": "1234"},
-            {"team": "654"},
-            {"team": "123"},
-            {"team": "234"},
-        ]
-    },
-
 ]
+
+const matchInfo: any = []
+// {
+//     "match": "1",
+//     "first_name": "Fart",
+//     "teams": [
+//         {"team": "345"},
+//         {"team": "2345"},
+//         {"team": "1234"},
+//         {"team": "654"},
+//         {"team": "123"},
+//         {"team": "234"},
+//     ]
+// },
 
 interface pageProps {
 
 }
 
-const page: FC<pageProps> = ({}) => {
+const page: FC<pageProps> = () => {
+    const [serverLogs, setServerLogs] = useState([])
+
+    const fetchServerLogs = async () => {
+        // add fetch functionality later
+        setServerLogs(serverLogs)
+    }
     return (
         <main className='py-32 px-2 flex justify-center flex-wrap items-start'>
             <ServerLogs matchInfo={matchInfo}/>

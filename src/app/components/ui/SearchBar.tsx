@@ -1,14 +1,15 @@
 import { cn } from '@/app/lib/utils'
 import { VariantProps, cva } from 'class-variance-authority'
-import { FC, forwardRef, HTMLAttributes } from 'react'
-import { Loader2, SearchIcon } from "lucide-react"
+import { FC, forwardRef, HTMLAttributes, useState } from 'react'
+import { ChevronDown, ChevronUp, SearchIcon } from "lucide-react"
+import Button from '@/ui/Button'
 
 
 export const searchBarVariants = cva(
-    "rounded flex focus:ring-2 disabled:pointer-events-none outline-none", {
+    "rounded flex focus:ring-2 outline-none w-80 mx-auto flex justify-center items-center", {
     variants: {
         variant: {
-            default: "bg-slate-400 dark:bg-slate-300",
+            default: "bg-slate-400 dark:text-slate-700",
         },
         size: {
             default: "my-2 py-2 px-4",
@@ -28,11 +29,13 @@ interface InputProps extends HTMLAttributes<HTMLInputElement>, VariantProps<type
 const SearchBar: FC<InputProps> = forwardRef<HTMLInputElement, InputProps>(({
     className, onChange, children, variant, size, ...props
 }, ref) => {
+    const [open, setOpen] = useState(false)
+
     return (
-        <div className='relative flex justify-center mx-24'>
-            <input className={cn(searchBarVariants({size, variant}), className)}ref={ref} type="text" onChange={onChange} {...props}/>
-            <p className='absolute left-0'>test</p>
-            <SearchIcon className='absolute left-1 top-1/2'/>
+        <div className={cn(searchBarVariants({size, variant}), className)}>
+            <SearchIcon className='w-5'/>
+            <input className="bg-transparent outline-none px-2" ref={ref} type="text" onChange={onChange} {...props}/>
+            <Button onClick={() => setOpen(!open)} variant="link" size="sm"><ChevronDown className='w-5'/></Button>
         </div>
     )
 })

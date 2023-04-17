@@ -11,7 +11,7 @@ interface TeamLogTabProps {
 
 const TeamLogTab: FC<TeamLogTabProps> = ({teamData, className}) => {
     return (
-        <div className={cn('group px-2 m-1 bg-slate-310 dark:bg-slate-800 flex justify-between', className)}>
+        <div className={cn('group relative px-2 m-1 bg-slate-310 dark:bg-slate-800 flex justify-between', className)}>
             <Paragraph size="xs">{teamData.team}</Paragraph>
             <Button className='flex' variant="hidden" size="xs">
                 <ChevronRight className='group-hover:scale-0 transition-all'/>

@@ -13,7 +13,7 @@ const MatchInformation: FC<MatchInformationProps> = ({matchInfo}) => {
     const [ open, setOpen ] = useState(false)
 
     return (
-        <div className='rounded border border-slate-700 dark:border-slate-600 shadow-md dark:bg-slate-800 w-96 m-2'>
+        <div className='rounded border border-slate-700 dark:border-slate-600 shadow-md dark:bg-slate-800 w-80 md:w-96 m-2'>
             <div className='border-b border-slate-700 dark:border-slate-600 flex justify-between items-center p-2 '>
                 <Button size="sm" onClick={() => setOpen(!open)}>Close</Button>
                 <div className='flex flex-col h-9'>
