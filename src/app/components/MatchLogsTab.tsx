@@ -20,7 +20,7 @@ const MatchLogsTab: FC<NewLogProps> = ({matchInfo}) => {
         <div className='h-128 items-center flex flex-col overflow-scroll'>
             {matchInfo[0] == undefined && <Paragraph size="sm" className='w-80 md:w-96 m-2'>no server logs present {" "} <Link className="underline hover:text-slate-900 hover:dark:text-slate-300 transition-colors" href="/documentation">add some</Link></Paragraph>}
             {matchInfo.map((val: any, key: number) => {
-                return (<MatchInformation key={key} matchInfo={val}/>)
+                return (<MatchInformation key={key} index={key }matchInfo={val}/>)
             })}
         </div>
     )

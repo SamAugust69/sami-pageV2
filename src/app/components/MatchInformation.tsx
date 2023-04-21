@@ -6,9 +6,10 @@ import { motion, AnimatePresence } from "framer-motion"
 
 interface MatchInformationProps {
     matchInfo: any
+    index: number
 }
 
-const MatchInformation: FC<MatchInformationProps> = ({matchInfo}) => {
+const MatchInformation: FC<MatchInformationProps> = ({matchInfo, index}) => {
     // put this into a comp. later
     const [ open, setOpen ] = useState(false)
 
@@ -16,7 +17,7 @@ const MatchInformation: FC<MatchInformationProps> = ({matchInfo}) => {
         <AnimatePresence>
             <motion.div 
             className='rounded border border-slate-700 dark:border-slate-600 shadow-md dark:bg-slate-800 w-80 md:w-96 m-2'
-            transition={{ duration: .1 }}
+            transition={{ duration: .1, delay: index * 0.02 }}
             initial={{ y: -10, opacity: 0 }}
             animate={{ y: 0, opacity: 1}}
 
