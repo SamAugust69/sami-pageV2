@@ -1,17 +1,71 @@
 "use client"
 
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import Button from '@/ui/Button'
 import MatchLogsTab from "@/components/MatchLogsTab"
 import SearchBar from "@/ui/SearchBar"
 import Log from "@/components/Log"
 
 interface ServerLogsProps {
-    matchInfo: any
+    serverLogs: any
 }
 
+// {
+//     "match": "1",
+//     "teams": [
+//         {"team": "345"},
+//     ]
+// },
 
-const ServerLogs: FC<ServerLogsProps> = ({matchInfo}) => {
+
+const ServerLogs: FC<ServerLogsProps> = ({serverLogs}) => {
+    const [serverLogsData, setServerLogsData] = useState(serverLogs)
+    const [matchInfo, setMatchInfo] = useState<any>([]);
+    // const [matchInfo, setMatchInfo] = useState([
+    //     {match: "", teams: []}
+    // ])
+
+    const matchSort = (a: any, b: any) => {
+        return parseInt(a.match) - parseInt(b.match)
+    } 
+
+    const generateMatchs = () => {
+        console.log(`Generating Match Info... w/ ${serverLogsData.length} Logs`)
+        console.log(serverLogsData)
+
+        var newMatches = matchInfo
+        serverLogsData.map((val: any) => {
+            // iterate through current match info, if val.info.match[0]( logs match number ) does not exist in matchinfo, 
+
+            //  NEVER TRY AND SET A STATE IN A LOOP!!!!!
+            if (newMatches.some((ele: any) => ele.match === val.info.match[0]) === false && val.info.match[0] != 0) {
+                //add match
+                newMatches = [...newMatches, {
+                    "match": `${val.info.match[0]}`,
+                    "teams": []
+                }]
+            }
+        })
+
+        newMatches.map((match: any) => {
+            serverLogsData.map((val: any) => {
+                if (val.info.match[0] === match.match) {
+                    // match.teams.some((ele: any) => ele.)
+                    match.teams = [...match.teams, {team: val.info.team[0]}]
+                }
+            })
+            
+        })
+
+        setMatchInfo(newMatches.sort(matchSort))
+        console.log(newMatches.sort(matchSort))
+    }
+
+
+    useEffect(() => {
+        generateMatchs()
+    }, [])
+    
     return (
         <div className='container border flex rounded flex-col md:flex-row border-slate-900 dark:border-slate-200 dark:bg-slate-910 bg-slate-310 shadow-md'>
             <div className='md:border-r border-slate-900 dark:border-slate-200'>
