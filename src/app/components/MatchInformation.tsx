@@ -14,7 +14,6 @@ const MatchInformation: FC<MatchInformationProps> = ({matchInfo, index}) => {
     const [ open, setOpen ] = useState(false)
 
     return (
-        <AnimatePresence>
             <motion.div 
             className='rounded border border-slate-700 dark:border-slate-600 shadow-md dark:bg-slate-800 w-80 md:w-96 m-2'
             transition={{ duration: .1, delay: index * 0.02 }}
@@ -43,7 +42,6 @@ const MatchInformation: FC<MatchInformationProps> = ({matchInfo, index}) => {
                     </motion.div>
                     }
             </motion.div>
-        </AnimatePresence>
     )
 }
 

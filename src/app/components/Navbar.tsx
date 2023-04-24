@@ -9,7 +9,7 @@ interface NavbarProps {
 
 const Navbar: FC<NavbarProps> = ({}) => {
     return (
-        <nav className='fixed left-0 top-0 backdrop-blur-sm border-b border-slate-700 dark:border-slate-600 shadow-md w-screen'>
+        <nav className='fixed z-20 left-0 top-0 backdrop-blur-sm border-b border-slate-700 dark:border-slate-600 shadow-md w-screen'>
             <div className='container max-w-7xl py-2 mx-auto flex justify-between items-center px-6'>
             <Link className={buttonVariants({variant: "link"})} href="/">Sami Scouting</Link>
                 <div className='flex gap-2 items-center '>

@@ -14,3 +14,4 @@ const Log: FC<LogProps> = ({}) => {
 }
 
 export default Log
+

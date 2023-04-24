@@ -1,6 +1,6 @@
 "use client"
 
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useState, createRef } from 'react'
 import Button from '@/ui/Button'
 import MatchLogsTab from "@/components/MatchLogsTab"
 import SearchBar from "@/ui/SearchBar"
@@ -21,6 +21,8 @@ interface ServerLogsProps {
 const ServerLogs: FC<ServerLogsProps> = ({serverLogs}) => {
     const [serverLogsData, setServerLogsData] = useState(serverLogs)
     const [matchInfo, setMatchInfo] = useState<any>([]);
+    const [query, setQuery] = useState<string>("")
+
     // const [matchInfo, setMatchInfo] = useState([
     //     {match: "", teams: []}
     // ])
@@ -74,10 +76,12 @@ const ServerLogs: FC<ServerLogsProps> = ({serverLogs}) => {
                     <Button>Save Logs</Button>
                     <Button>Import Logs</Button>
                 </div>
-                <SearchBar onChange={() => {console.log("Fart")}}/>
-                <MatchLogsTab matchInfo={matchInfo}/>
+                <SearchBar filters={[ {"filter": "matchFilter", "label": "Match"}, {"filter": "teamFilter", "label": "Team"} ]} onChange={(e) => {setQuery(e.target.value)}}/>
+                <MatchLogsTab matchInfo={matchInfo.filter((item: any) => {
+                    return query.toLowerCase() === "" ? item : item.teams.filter((item: any) => {console.log(item.team); return item.team.includes(query) } )
+                })}/>
             </div>
-            <div className='p-2 border-t md:border-t-0 w-full border-slate-900 dark:border-slate-200 flex align-center justify-center flex-wrap gap-2'>
+            <div className='h-[calc(16rem*2.5)]  p-2 overflow-scroll border-t md:border-t-0 w-full border-slate-900 dark:border-slate-200 flex align-center justify-center flex-wrap gap-2'>
                 <Log />
                 <Log />
                 <Log />
@@ -89,3 +93,5 @@ const ServerLogs: FC<ServerLogsProps> = ({serverLogs}) => {
 }
 
 export default ServerLogs
+
+

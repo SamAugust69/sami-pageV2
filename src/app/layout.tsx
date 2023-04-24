@@ -20,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={cn(
-        "bg-slate-300 antialiased", inter.className
+        "bg-slate-300 antialiased ", inter.className
       )}>
       <head>
         <link rel="manifest" href="./manifest.json" />
