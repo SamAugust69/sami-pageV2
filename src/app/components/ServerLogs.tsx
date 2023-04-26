@@ -21,6 +21,7 @@ interface ServerLogsProps {
 const ServerLogs: FC<ServerLogsProps> = ({serverLogs}) => {
     const [serverLogsData, setServerLogsData] = useState(serverLogs)
     const [matchInfo, setMatchInfo] = useState<any>([]);
+    const [filter, setFilter] = useState<string>("")
     const [query, setQuery] = useState<string>("")
 
     // const [matchInfo, setMatchInfo] = useState([
@@ -59,6 +60,10 @@ const ServerLogs: FC<ServerLogsProps> = ({serverLogs}) => {
             
         })
 
+        const setFilter = (filter: string) => {
+            setFilter(filter)
+        }
+
         setMatchInfo(newMatches.sort(matchSort))
         console.log(newMatches.sort(matchSort))
     }
@@ -76,9 +81,11 @@ const ServerLogs: FC<ServerLogsProps> = ({serverLogs}) => {
                     <Button>Save Logs</Button>
                     <Button>Import Logs</Button>
                 </div>
-                <SearchBar filters={[ {"filter": "matchFilter", "label": "Match"}, {"filter": "teamFilter", "label": "Team"} ]} onChange={(e) => {setQuery(e.target.value)}}/>
+                <SearchBar currentFilter={setFilter} filters={[ {"id": "0", "label": "Match", "selected": "true"}, {"id": "1", "label": "Team", "selected": "false"} ]} onChange={(e) => {setQuery(e.target.value)}}/>
                 <MatchLogsTab matchInfo={matchInfo.filter((item: any) => {
-                    return query.toLowerCase() === "" ? item : item.teams.filter((item: any) => {console.log(item.team); return item.team.includes(query) } )
+                    // item.teams.filter((item: any) => {console.log(item.team); return item.team.includes(query)
+                    console.log(item)
+                    return query.toLowerCase() === "" ? item : item.match.includes(query)
                 })}/>
             </div>
             <div className='h-[calc(16rem*2.5)]  p-2 overflow-scroll border-t md:border-t-0 w-full border-slate-900 dark:border-slate-200 flex align-center justify-center flex-wrap gap-2'>

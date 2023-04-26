@@ -1,6 +1,5 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import { Metadata } from 'next'
-import { v4 } from 'uuid';
 import ServerLogs from '@/components/ServerLogs'
 
 export const metadata: Metadata = {
