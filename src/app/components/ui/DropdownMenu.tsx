@@ -25,6 +25,8 @@ const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(({
     )
 })
 
+DropdownMenu.displayName = "DropdownMenu"
+
 interface DropdownItemProps {
     label: string
     className?: string
@@ -34,15 +36,18 @@ interface DropdownItemProps {
 
 const DropdownItem: FC<DropdownItemProps> = ({label, className, handleSelected, selected}) => { 
     return (
-
-        <input 
-        className={cn(`dark:hover:bg-slate-400 flex items-center transition-colors cursor-pointer ${selected === "true"? "bg-slate-500" : ""}`, className)} 
-        onChange={handleSelected}
-        checked={selected === "true"}
-        type="checkbox"
-        />
+        <option>
+            <input 
+            className={cn(`dark:hover:bg-slate-400 flex items-center transition-colors cursor-pointer ${selected === "true"? "bg-slate-500" : ""}`, className)} 
+            onChange={handleSelected}
+            checked={selected === "true"}
+            type="checkbox"
+            />
+            <Paragraph></Paragraph>
+        </option>
     )
 }
+DropdownItem.displayName = "DropdownItem"
 
 
 
