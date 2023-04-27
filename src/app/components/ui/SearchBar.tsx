@@ -4,16 +4,18 @@ import { FC, HTMLAttributes, useState, useRef, useEffect } from 'react'
 import { ChevronDown, SearchIcon } from "lucide-react"
 import Button from '@/ui/Button'
 import { DropdownItem, DropdownMenu } from '@/ui/DropdownMenu'
+import { motion } from "framer-motion"
 
 
 export const searchBarVariants = cva(
-    "rounded flex focus:ring-2 outline-none w-80 mx-auto flex flex-col relative", {
+    "rounded flex focus:ring-2 outline-none mx-auto flex flex-col justify-center relative overflow-hidden transition-all", {
     variants: {
         variant: {
             default: "bg-slate-400 dark:bg-slate-300 dark:text-slate-600",
         },
         size: {
-            default: "my-2 py-2 px-4",
+            default: "py-2 px-4 h-12",
+            sm: "px-4 h-10"
         }
     },
     defaultVariants: {
@@ -31,6 +33,8 @@ interface SearchBarProps extends HTMLAttributes<HTMLInputElement>, VariantProps<
 const SearchBar: FC<SearchBarProps> = (({
     className, onChange, children, variant, size, filters, ...props
 }) => {
+    const [searchOpen, setSearchOpen] = useState(false)
+
     const [dropdownOpen, setDropdownOpen] = useState(false)
     const [dropdownFilters, setDropdownFilters] = useState(filters)
     const dropdownRef = useRef<HTMLDivElement>(null)
@@ -58,12 +62,24 @@ const SearchBar: FC<SearchBarProps> = (({
     useEffect(() => {
         document.addEventListener("mouseup", handleDropDown)
     })
+
+    const variants = {
+        open: {width: "22rem"},
+        closed: {width: "2rem"}
+    }
+
     return (
-        <div className={cn(searchBarVariants({size, variant}), className)}>
+        <motion.div 
+        className={cn(searchBarVariants({size, variant}), className)}
+        animate={searchOpen ? "open" : "closed"}
+        variants={variants}
+        transition={{duration: 0.1, type: "spring", bounce: 0.25}}
+        >
             <div className='flex justify-center items-center'>
-                <SearchIcon className="w-5"/>
+                <SearchIcon onClick={() => setSearchOpen(!searchOpen)} className={`w-5 h-5 absolute ${searchOpen ? "left-4": "left-1.5"} `}/>
+
                 <input className="bg-transparent outline-none px-2" type="text" onChange={onChange} {...props}/>
-                <Button ref={dropdownButton} onClick={() => setDropdownOpen(!dropdownOpen)} variant="link" size="sm"><ChevronDown className={`w-5 transition-transform dark:text-slate-600 ${dropdownOpen ? "rotate-180" : ""}`}/></Button>
+                <Button ref={dropdownButton} onClick={() => setDropdownOpen(!dropdownOpen)} variant="link" size="sm"><ChevronDown className={`w-5 h-5 transition-transform dark:text-slate-600 ${dropdownOpen ? "rotate-180" : ""}`}/></Button>
             </div>
             {dropdownOpen &&
                 <DropdownMenu ref={dropdownRef}>
@@ -79,7 +95,7 @@ const SearchBar: FC<SearchBarProps> = (({
                     }
                 </DropdownMenu>
             }
-        </div>
+        </motion.div>
     )
 })
 

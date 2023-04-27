@@ -43,7 +43,7 @@ const DropdownItem: FC<DropdownItemProps> = ({label, className, handleSelected, 
             checked={selected === "true"}
             type="checkbox"
             />
-            <Paragraph></Paragraph>
+            <Paragraph>{label}</Paragraph>
         </option>
     )
 }

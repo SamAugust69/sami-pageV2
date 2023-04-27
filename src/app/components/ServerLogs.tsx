@@ -80,8 +80,8 @@ const ServerLogs: FC<ServerLogsProps> = ({serverLogs}) => {
                     <Button>New Log</Button>
                     <Button>Save Logs</Button>
                     <Button>Import Logs</Button>
+                    <SearchBar size="sm" currentFilter={setFilter} filters={[ {"id": "0", "label": "Match", "selected": "true"}, {"id": "1", "label": "Team", "selected": "false"} ]} onChange={(e) => {setQuery(e.target.value)}}/>
                 </div>
-                <SearchBar currentFilter={setFilter} filters={[ {"id": "0", "label": "Match", "selected": "true"}, {"id": "1", "label": "Team", "selected": "false"} ]} onChange={(e) => {setQuery(e.target.value)}}/>
                 <MatchLogsTab matchInfo={matchInfo.filter((item: any) => {
                     // item.teams.filter((item: any) => {console.log(item.team); return item.team.includes(query)
                     console.log(item)
