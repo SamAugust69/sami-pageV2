@@ -2,7 +2,7 @@ import { cn } from '@/app/lib/utils'
 import { VariantProps, cva } from 'class-variance-authority'
 import { FC, HTMLAttributes, useState, useRef, useEffect } from 'react'
 import { ChevronDown, SearchIcon } from "lucide-react"
-import Button from '@/ui/Button'
+import {Button} from '@/ui/Button'
 import { DropdownItem, DropdownMenu } from '@/ui/DropdownMenu'
 import { motion } from "framer-motion"
 
