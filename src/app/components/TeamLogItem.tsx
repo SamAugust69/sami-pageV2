@@ -1,6 +1,6 @@
 import { FC, HTMLAttributes } from 'react'
 import Paragraph from '@/ui/Paragraph'
-import Button from '@/ui/Button'
+import {Button} from '@/ui/Button'
 import { ChevronRight, ChevronsRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 

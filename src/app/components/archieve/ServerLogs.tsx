@@ -1,7 +1,7 @@
 "use client"
 
 import { FC, useEffect, useState, createRef } from 'react'
-import Button from '@/ui/Button'
+import {Button} from '@/ui/Button'
 import MatchLogsTab from "@/components/MatchLogsTab"
 import SearchBar from "@/ui/SearchBar"
 import Log from "@/components/Log"

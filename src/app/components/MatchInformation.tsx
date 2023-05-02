@@ -1,6 +1,6 @@
 import { FC, useState } from 'react'
 import Paragraph from '@/ui/Paragraph'
-import Button from '@/ui/Button'
+import {Button} from '@/ui/Button'
 import TeamLogTab from '@/app/components/TeamLogItem'
 import { motion, AnimatePresence } from "framer-motion"
 
