@@ -20,23 +20,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={cn(
-        "bg-slate-300 antialiased ", inter.className
+        "bg-slate-400 antialiased ", inter.className
       )}>
       <head>
         <link rel="manifest" href="./manifest.json" />
         <link rel="apple-touch-icon" href="/icon.png"></link>
         <meta name="theme-color" content="#fff" />
       </head>
-      <body className="min-h-screen bg-slate-300 dark:bg-slate-900 antialiased">
+      <body className="flex min-h-screen bg-slate-300 dark:bg-slate-700 antialiased">
         <Providers>
           <Navbar/>
           {children}
         </Providers>
-
-        <div className="fixed bottom-0 mb-16 md:hidden min-w-full flex justify-center ">
-          <Link className={buttonVariants({variant: "link"})} href="/documentation"> Documentation</Link>
-          <Link className={buttonVariants({variant: "default"})} href="/"> Logs</Link>
-        </div>
       </body>
     </html>
   )

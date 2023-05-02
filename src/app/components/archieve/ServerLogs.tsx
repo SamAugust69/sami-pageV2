@@ -18,6 +18,7 @@ interface ServerLogsProps {
 // },
 
 
+
 const ServerLogs: FC<ServerLogsProps> = ({serverLogs}) => {
     const [serverLogsData, setServerLogsData] = useState(serverLogs)
     const [matchInfo, setMatchInfo] = useState<any>([]);
@@ -76,11 +77,12 @@ const ServerLogs: FC<ServerLogsProps> = ({serverLogs}) => {
     return (
         <div className='container border flex rounded flex-col md:flex-row border-slate-900 dark:border-slate-200 dark:bg-slate-910 bg-slate-310 shadow-md'>
             <div className='md:border-r border-slate-900 dark:border-slate-200'>
-                <div className='p-2 border-b gap-2 flex justify-center border-slate-900 dark:border-slate-200'>
+            <SearchBar size="sm" currentFilter={setFilter} filters={[ {"id": "0", "label": "Match", "selected": "true"}, {"id": "1", "label": "Team", "selected": "false"} ]} onChange={(e) => {setQuery(e.target.value)}}/>
+                <div className='p-2 gap-2 flex justify-center border-slate-900 dark:border-slate-200 max-w-[26rem] overflow-hidden'>
                     <Button>New Log</Button>
                     <Button>Save Logs</Button>
                     <Button>Import Logs</Button>
-                    <SearchBar size="sm" currentFilter={setFilter} filters={[ {"id": "0", "label": "Match", "selected": "true"}, {"id": "1", "label": "Team", "selected": "false"} ]} onChange={(e) => {setQuery(e.target.value)}}/>
+        
                 </div>
                 <MatchLogsTab matchInfo={matchInfo.filter((item: any) => {
                     // item.teams.filter((item: any) => {console.log(item.team); return item.team.includes(query)
@@ -88,7 +90,7 @@ const ServerLogs: FC<ServerLogsProps> = ({serverLogs}) => {
                     return query.toLowerCase() === "" ? item : item.match.includes(query)
                 })}/>
             </div>
-            <div className='h-[calc(16rem*2.5)]  p-2 overflow-scroll border-t md:border-t-0 w-full border-slate-900 dark:border-slate-200 flex align-center justify-center flex-wrap gap-2'>
+            <div className='h-[calc(16rem*2.5)]  p-2 overflow-y-scroll border-t md:border-t-0 w-full border-slate-900 dark:border-slate-200 flex align-center justify-center flex-wrap gap-2'>
                 <Log />
                 <Log />
                 <Log />

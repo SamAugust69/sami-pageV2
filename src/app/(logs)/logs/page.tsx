@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { Metadata } from 'next'
-import ServerLogs from '@/components/ServerLogs'
+import LogsDashboard from '@/components/LogsDashboard'
 
 export const metadata: Metadata = {
     title: "Sami Scouting | Logs",
@@ -18,8 +18,8 @@ interface pageProps {
 
 const page: FC<pageProps> = () => {
     return (
-        <main className='py-32 px-2 flex justify-center flex-wrap items-start'>
-            <ServerLogs serverLogs={serverLogs}/>
+        <main className='py-16 px-2 flex justify-center flex-wrap w-full'>
+            <LogsDashboard remoteLogs={serverLogs}/>
         </main>
     )
 }

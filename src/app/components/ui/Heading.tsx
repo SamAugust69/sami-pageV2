@@ -9,9 +9,10 @@ export const headingVariants = cva(
     {    
         variants: {
             size: {
-                default: "text-4xl md:text-5xl lg:text-6xl",
-                sm: "text-3xl md:text-4xl lg:text-5xl",
-                lg: "text-5xl md:text-6xl lg:text-7xl"
+                default: "text-4xl md:text-5xl",
+                xl: "text-2xl md:text-3xl",
+                sm: "text-3xl md:text-4xl",
+                lg: "text-5xl md:text-6xl"
             }
         },
         defaultVariants: {

@@ -13,7 +13,7 @@ const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(({
 }, ref) => {
     return (
         <motion.div 
-        className='flex flex-col absolute top-14 left-0 bg-inherit rounded w-80 z-10 py-2'
+        className='flex flex-col absolute top-14 left-0 bg-inherit rounded w-20 z-20 py-2'
         transition={{ duration: .1 }}
         initial={{ y: -10, opacity: 0 }}
         animate={{ y: 0, opacity: 1}}
