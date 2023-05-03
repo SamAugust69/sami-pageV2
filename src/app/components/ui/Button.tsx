@@ -50,7 +50,7 @@ export const iconButtonVariants = cva(
     {    
         variants: {
             variant: {
-                default: "bg-slate-300 hover:border-2 border-slate-400 dark:bg-slate-300 dark:text-slate-900",
+                default: "hover:border-2 border-slate-400 dark:text-slate-900",
             },
             size: {
                 default: "h-12 w-12 m-2",

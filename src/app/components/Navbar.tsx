@@ -3,8 +3,8 @@
 import { FC } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Button, buttonVariants, iconButtonVariants } from '@/ui/Button'
-import { RxBackpack, RxDashboard, RxCaretRight} from "react-icons/rx"
+import { iconButtonVariants } from '@/ui/Button'
+import { RxBackpack, RxDashboard } from "react-icons/rx"
 import ThemeToggle from './ThemeToggle'
 
 interface NavbarProps {
@@ -23,11 +23,13 @@ const Navbar: FC<NavbarProps> = ({}) => {
         },
         {
             icon: RxBackpack,
+            className: "bg-slate-300 dark:bg-slate-400",
             tooltip: "Home",
             link: "/documentation"
         },
         {
             icon: RxDashboard,
+            className: "bg-slate-300 dark:bg-slate-400",
             tooltip: "Home",
             link: "/logs"
         },

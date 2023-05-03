@@ -11,10 +11,6 @@ const matchSort = (a: any, b: any) => {
 } 
 
 const generateMatches = (data: any, matches: any, setMatches: any) => {
-    console.log(`Generating Match Info... w/ ${data.length} Logs`)
-    console.log(data)
-    console.log(matches)
-
     var newMatches = matches
     data.map((val: any) => {
         // iterate through current match info, if val.info.match[0]( logs match number ) does not exist in matchinfo, 
@@ -59,8 +55,9 @@ const LogsDashboard: FC<LogsDashboardProps> = ({remoteLogs}) => {
     if (localData === undefined || localData === null) setLocalData([])
 
     useEffect(() => {
+        if (!remoteData) return
         generateMatches(remoteData, localData, setLocalData)
-    }, [])
+    }, [remoteData])
 
     return (
         <div className='px-4 flex flex-col w-full'>
