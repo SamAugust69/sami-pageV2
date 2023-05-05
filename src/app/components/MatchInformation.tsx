@@ -15,13 +15,13 @@ const MatchInformation: FC<MatchInformationProps> = ({matchInfo, index}) => {
 
     return (
             <motion.div 
-            className='rounded border border-slate-700 dark:border-slate-600 shadow-md dark:bg-slate-800 w-80 md:w-96 m-2'
+            className='flex-shrink-0 self-start flex-grow-0 border-2 rounded border-slate-400 dark:border-slate-800 bg-slate-200 dark:bg-slate-600 shadow-md w-80 md:w-96'
             transition={{ duration: .1, delay: index * 0.02 }}
             initial={{ y: -10, opacity: 0 }}
             animate={{ y: 0, opacity: 1}}
 
             >
-                <div className='border-b border-slate-700 dark:border-slate-600 flex justify-between items-center p-2 '>
+                <div className={` ${open ? "border-b-2" : ""} border-slate-400 dark:border-slate-800 flex justify-between items-center p-2`}>
                     <Button size="sm" onClick={() => setOpen(!open)}>Close</Button>
                     <div className='flex flex-col h-9'>
                         <Paragraph size="sm" className='m-0 text-right'>Match {matchInfo.match}</Paragraph>
@@ -30,14 +30,14 @@ const MatchInformation: FC<MatchInformationProps> = ({matchInfo, index}) => {
                 </div>
                     {open &&
                     <motion.div 
-                    className='py-1 border-slate-600 last-of-type:div'
+                    className='py-1'
                     transition={{ duration: .1 }}
                     initial={{ y: -10, opacity: 0 }}
                     animate={{ y: 0, opacity: 1}}
                     exit={{ y: -10, opacity: 0 }}
                     >
                         {matchInfo.teams.map((val: any, key: number) => {
-                            return (<TeamLogTab className={key % 2 === 0 && "bg-slate-350 dark:bg-slate-850"} key={key} teamData={val}/>)
+                            return (<TeamLogTab className={key % 2 === 0 && "bg-slate-300 dark:bg-[#424f61]"} key={key} teamData={val}/>)
                         })}
                     </motion.div>
                     }
