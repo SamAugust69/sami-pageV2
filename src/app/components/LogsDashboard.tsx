@@ -54,8 +54,8 @@ const LogsDashboard: FC<LogsDashboardProps> = ({remoteLogs}) => {
     const [ localData, setLocalData ] = useLocalStorage<any>("local-data") // stores local match information from scout
 
     const logs = [
-        {id: "server", label: "Server Logs", amount: remoteData.length ? remoteData.length : 0},
-        {id: "local", label: "Local Logs", amount: localData.length ? localData.length : 0},
+        {id: "server", label: "Server Logs", amount: remoteData || []},
+        {id: "local", label: "Local Logs", amount: localData || []},
     ]
 
     const [ displayedMatches, setDisplayedMatches ] = useState<any>([])
