@@ -1,9 +1,10 @@
 "use client"
 
-import { FC, useEffect } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useLocalStorage } from '@rehooks/local-storage';
 import TopCards from '@/components/TopCards';
 import Heading from '@/ui/Heading';
+import MatchNav from './MatchNav';
 
 
 const matchSort = (a: any, b: any) => {
@@ -46,10 +47,16 @@ interface LogsDashboardProps {
     remoteLogs: Array<any>
 }
 
+const logs = [
+    {id: "server", label: "Server Logs", amount: 3},
+    {id: "local", label: "Local Logs", amount: 1},
+]
+
 // what're we tryna do, we're going to rend
 const LogsDashboard: FC<LogsDashboardProps> = ({remoteLogs}) => {
-    const [remoteData, setRemoteData] = useLocalStorage<any>("remote-data")
-    const [localData, setLocalData] = useLocalStorage<any>("local-data")
+    const [ remoteData, setRemoteData ] = useLocalStorage<any>("remote-data") // stores match information from server
+    const [ localData, setLocalData ] = useLocalStorage<any>("local-data") // stores local match information from scout
+    const [ activeLog, setActiveLog ] = useState(logs[0].id) // stores active log(server, local)
 
     if (remoteData === undefined || remoteData === null) setRemoteData(remoteLogs)
     if (localData === undefined || localData === null) setLocalData([])
@@ -60,10 +67,14 @@ const LogsDashboard: FC<LogsDashboardProps> = ({remoteLogs}) => {
     }, [remoteData])
 
     return (
-        <div className='px-4 flex flex-col w-full'>
-            <Heading size="sm" className='text-slate-700 font-medium text-left py-2'>Dashboard</Heading>
-            <TopCards serverLength={1} localLength={3}/>
-        </div>
+        <>
+            <div className='px-4 flex flex-col w-full'>
+                <Heading size="sm" className='text-slate-700 font-medium text-left py-2'>Dashboard</Heading>
+                <TopCards logs={logs} activeLog={activeLog} setActiveLog={setActiveLog}/>
+                <span className='border-b-2 w-full border-slate-400 my-4'/>
+                <MatchNav />
+            </div>
+        </>
     )
 }
 

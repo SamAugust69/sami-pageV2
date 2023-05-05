@@ -1,6 +1,6 @@
 "use client"
 import { FC } from 'react'
-import MatchInformation from '@/components/MatchInformation'
+import MatchInformation from '@/app/components/archieve/MatchInformation'
 import Paragraph from '@/ui/Paragraph'
 import Link from 'next/link'
 
