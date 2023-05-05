@@ -23,7 +23,7 @@ const MatchNav: FC<MatchNavProps> = ({displayedMatches}) => {
             whileTap={{cursor:"grabbing"}}>
                 {displayedMatches.map((val: any, key: number) => {
                     return (
-                        <MatchInformation matchInfo={val} index={key}/>
+                        <MatchInformation key={key} matchInfo={val} index={key}/>
                     )
                 })}
             </motion.div>
