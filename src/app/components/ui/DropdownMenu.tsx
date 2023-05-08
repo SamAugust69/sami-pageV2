@@ -1,19 +1,19 @@
-import { FC, Ref, useState, forwardRef } from 'react'
+import { FC, Ref, useState, forwardRef, HTMLAttributes } from 'react'
 import { motion } from "framer-motion"
 import Paragraph from '@/ui/Paragraph'
 import { cn } from '@/lib/utils'
 
-interface DropdownMenuProps {
+interface DropdownMenuProps extends HTMLAttributes<HTMLDivElement> {
     ref?: Ref<HTMLDivElement>
     children?: any
 }
 
 const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(({
-    children
+    children, className
 }, ref) => {
     return (
         <motion.div 
-        className='flex flex-col absolute top-14 left-0 bg-inherit rounded w-20 z-20 py-2'
+        className={cn('flex flex-col absolute top-14 left-0 bg-inherit rounded z-20 py-2', className)}
         transition={{ duration: .1 }}
         initial={{ y: -10, opacity: 0 }}
         animate={{ y: 0, opacity: 1}}
@@ -27,22 +27,18 @@ const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(({
 
 DropdownMenu.displayName = "DropdownMenu"
 
-interface DropdownItemProps {
+interface DropdownItemProps extends HTMLAttributes<HTMLInputElement> {
     label: string
-    className?: string
     selected: string
     handleSelected: any
 }
 
 const DropdownItem: FC<DropdownItemProps> = ({label, className, handleSelected, selected}) => { 
     return (
-        <option>
-            <input 
-            className={cn(`dark:hover:bg-slate-400 flex items-center transition-colors cursor-pointer ${selected === "true"? "bg-slate-500" : ""}`, className)} 
-            onChange={handleSelected}
-            checked={selected === "true"}
-            type="checkbox"
-            />
+        <option
+        className={cn(`dark:hover:bg-slate-400 flex items-center transition-colors cursor-pointer ${selected === "true"? "bg-slate-500" : ""} ${className}`)} 
+        onChange={handleSelected}
+        >
             <Paragraph>{label}</Paragraph>
         </option>
     )

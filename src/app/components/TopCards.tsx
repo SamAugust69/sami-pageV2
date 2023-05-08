@@ -31,7 +31,7 @@ const TopCards: FC<TopCardsProps> = ({activeLog, setActiveLog, logs}) => {
                                 />
                             )}
                             <Heading size="xs" className='font-normal text-slate-500 relative z-10'>{val.label}</Heading>
-                            <p className='font-normal text-xl relative z-10'>{val.amount.length !== null && val.amount.length}</p>
+                            <p className='font-normal text-xl relative z-10'>{val.amount[0] && val.amount.length}</p>
                         </div>
                     )
                 })}

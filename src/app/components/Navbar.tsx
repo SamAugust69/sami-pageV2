@@ -23,13 +23,13 @@ const Navbar: FC<NavbarProps> = ({}) => {
         },
         {
             icon: RxBackpack,
-            className: "bg-slate-300 dark:bg-slate-400",
+            className: "bg-slate-300 dark:bg-slate-400 border-blue-200",
             tooltip: "Home",
             link: "/documentation"
         },
         {
             icon: RxDashboard,
-            className: "bg-slate-300 dark:bg-slate-400",
+            className: "bg-slate-300 dark:bg-slate-400 border-blue-200",
             tooltip: "Home",
             link: "/logs"
         },
@@ -38,8 +38,8 @@ const Navbar: FC<NavbarProps> = ({}) => {
     const router = usePathname()
 
     return (
-        <nav className='z-20 border-r-2 border-slate-400 dark:border-slate-800 h-screen bg-slate-200 dark:bg-slate-600 w-20'>
-            <div className='container py-2 mx-auto flex flex-col items-center justify-between h-full shadow-2xl'>
+        <nav className='z-20 border-r-2 border-slate-400 dark:border-slate-800 min-h-max bg-slate-200 dark:bg-slate-600 w-20 shadow-2xl'>
+            <div className='container py-2 mx-auto flex flex-col items-center justify-between h-screen'>
                 <div className='flex flex-col items-center'>
                     {navBarItems.map((val: any, key: number) => {
                         const Icon = val.icon
@@ -52,7 +52,7 @@ const Navbar: FC<NavbarProps> = ({}) => {
                                 >   
                                     <Icon className='w-5 h-5'/>
                                 </Link>
-                                {key === 0 && <span className='border-b-2 w-10 border-slate-400'></span>}
+                                {key === 0 && <span className='border-b-2 w-10 border-slate-400 rounded'></span>}
                             </>
                         )
                     })}

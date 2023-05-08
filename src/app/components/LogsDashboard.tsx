@@ -5,6 +5,7 @@ import { useLocalStorage } from '@rehooks/local-storage';
 import TopCards from '@/components/TopCards';
 import Heading from '@/ui/Heading';
 import MatchNav from './MatchNav';
+import SearchBar from './ui/SearchBar';
 
 
 const matchSort = (a: any, b: any) => {
@@ -48,20 +49,22 @@ interface LogsDashboardProps {
 }
 
 
-// what're we tryna do, we're going to rend
 const LogsDashboard: FC<LogsDashboardProps> = ({remoteLogs}) => {
     const [ remoteData, setRemoteData ] = useLocalStorage<any>("remote-data") // stores match information from server
     const [ localData, setLocalData ] = useLocalStorage<any>("local-data") // stores local match information from scout
 
     const logs = [
-        {id: "server", label: "Server Logs", amount: remoteData || []},
-        {id: "local", label: "Local Logs", amount: localData || []},
+        {id: "server", label: "Server Logs", amount: remoteData},
+        {id: "local", label: "Local Logs", amount: localData},
     ]
-
-    const [ displayedMatches, setDisplayedMatches ] = useState<any>([])
-    const [ activeLog, setActiveLog ] = useState(logs[0].id) // stores active log(server, local)
-
     
+    // match displayed states
+    const [ displayedMatches, setDisplayedMatches ] = useState<any>([])
+    const [ activeLog, setActiveLog ] = useState(logs[0].id)
+
+    // search states
+    const [filter, setFilter] = useState<string>("")
+    const [query, setQuery] = useState<string>("")
 
     if (remoteData === undefined || remoteData === null) setRemoteData(remoteLogs)
     if (localData === undefined || localData === null) setLocalData([])
@@ -77,6 +80,7 @@ const LogsDashboard: FC<LogsDashboardProps> = ({remoteLogs}) => {
                 <Heading size="sm" className='text-slate-700 font-medium text-left py-2'>Dashboard</Heading>
                 <TopCards logs={logs} activeLog={activeLog} setActiveLog={setActiveLog}/>
                 <span className='border-b-2 w-full border-slate-400 my-4'/>
+                <SearchBar onChange={(e) => {setQuery(e.target.value)}} currentFilter={setFilter} filters={[ {"id": "0", "label": "Match", "selected": "true"}, {"id": "1", "label": "Team", "selected": "false"} ]}/>
                 <MatchNav displayedMatches={displayedMatches}/>
             </div>
         </>
