@@ -29,7 +29,7 @@ const MatchNav: FC<MatchNavProps> = ({displayedMatches, setDisplayedLogs}) => {
 
 
     return (
-        <motion.div ref={navRef} className={`my-4 scrollbar-hide overflow-scroll relative h-24`}>
+        <motion.div ref={navRef} className={`my-4 scrollbar-hide overflow-scroll relative h-80`}>
             <motion.div 
             dragConstraints={{ right: 0, left: -width}} 
             className={`flex flex-row gap-4 ${displayedMatches.length < 1 ? "justify-center": ""}`}
