@@ -4,7 +4,6 @@ import { FC, useEffect, useState, createRef } from 'react'
 import {Button} from '@/ui/Button'
 import MatchLogsTab from "@/components/MatchLogsTab"
 import SearchBar from "@/ui/SearchBar"
-import Log from "@/components/Log"
 
 interface ServerLogsProps {
     serverLogs: any
@@ -91,11 +90,7 @@ const ServerLogs: FC<ServerLogsProps> = ({serverLogs}) => {
                 })}/>
             </div>
             <div className='h-[calc(16rem*2.5)]  p-2 overflow-y-scroll border-t md:border-t-0 w-full border-slate-900 dark:border-slate-200 flex align-center justify-center flex-wrap gap-2'>
-                <Log />
-                <Log />
-                <Log />
-                <Log />
-                <Log />
+
             </div>
         </div>
     )

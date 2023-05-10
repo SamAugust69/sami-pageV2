@@ -2,18 +2,21 @@
 
 import { FC, useEffect, useState } from 'react'
 import { useLocalStorage } from '@rehooks/local-storage';
+
 import TopCards from '@/components/TopCards';
 import Heading from '@/ui/Heading';
-import MatchNav from './MatchNav';
-import SearchBar from './ui/SearchBar';
+import MatchNav from '@/components/MatchNav';
+import SearchBar from '@/ui/SearchBar';
+import LogsSection from '@/components/LogsSection';
 
 
 const matchSort = (a: any, b: any) => {
     return parseInt(a.match) - parseInt(b.match)
 } 
 
-const generateMatches = (data: any, matches: any, setMatches: any) => {
-    var newMatches = matches
+const generateMatches = (data: any, setMatches: any) => {
+    console.log("generating matches...")
+    var newMatches: any = []
     data.map((val: any) => {
         // iterate through current match info, if val.info.match[0]( logs match number ) does not exist in matchinfo, 
 
@@ -52,6 +55,7 @@ interface LogsDashboardProps {
 const LogsDashboard: FC<LogsDashboardProps> = ({remoteLogs}) => {
     const [ remoteData, setRemoteData ] = useLocalStorage<any>("remote-data") // stores match information from server
     const [ localData, setLocalData ] = useLocalStorage<any>("local-data") // stores local match information from scout
+    const [ displayedLogs, setDisplayedLogs ] = useLocalStorage<any>("displayed-logs")
 
     const logs = [
         {id: "server", label: "Server Logs", amount: remoteData},
@@ -66,22 +70,33 @@ const LogsDashboard: FC<LogsDashboardProps> = ({remoteLogs}) => {
     const [filter, setFilter] = useState<string>("")
     const [query, setQuery] = useState<string>("")
 
-    if (remoteData === undefined || remoteData === null) setRemoteData(remoteLogs)
-    if (localData === undefined || localData === null) setLocalData([])
 
     useEffect(() => {
-        if (!remoteData) return
-        generateMatches(remoteData, displayedMatches, setDisplayedMatches)
-    }, [remoteData])
+        if (remoteData === undefined || remoteData === null) setRemoteData(remoteLogs)
+        if (localData === undefined || localData === null) setLocalData([])
+        setDisplayedLogs([{}, {}])
+    }, [])
+
+    useEffect(() => {
+        if (activeLog === "server") {
+            generateMatches(remoteData, setDisplayedMatches)
+        } else {
+            generateMatches(localData, setDisplayedMatches)
+        }
+    }, [activeLog])
 
     return (
         <>
             <div className='px-4 flex flex-col w-full'>
                 <Heading size="sm" className='text-slate-700 font-medium text-left py-2'>Dashboard</Heading>
-                <TopCards logs={logs} activeLog={activeLog} setActiveLog={setActiveLog}/>
+                <TopCards activeLog={activeLog} setActiveLog={setActiveLog} remoteData={remoteData} localData={localData}/>
                 <span className='border-b-2 w-full border-slate-400 my-4'/>
                 <SearchBar onChange={(e) => {setQuery(e.target.value)}} currentFilter={setFilter} filters={[ {"id": "0", "label": "Match", "selected": "true"}, {"id": "1", "label": "Team", "selected": "false"} ]}/>
-                <MatchNav displayedMatches={displayedMatches}/>
+                <MatchNav displayedMatches={displayedMatches.filter((item: any) => {
+                    return query.toLowerCase() === "" ? item : item.match.includes(query)
+                })
+                } setDisplayedLogs/>
+                <LogsSection logsToDisplay={displayedLogs}/>
             </div>
         </>
     )

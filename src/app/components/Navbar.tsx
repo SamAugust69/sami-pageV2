@@ -22,12 +22,6 @@ const Navbar: FC<NavbarProps> = ({}) => {
             link: "/"
         },
         {
-            icon: RxBackpack,
-            className: "bg-slate-300 dark:bg-slate-400 border-blue-200",
-            tooltip: "Home",
-            link: "/documentation"
-        },
-        {
             icon: RxDashboard,
             className: "bg-slate-300 dark:bg-slate-400 border-blue-200",
             tooltip: "Home",

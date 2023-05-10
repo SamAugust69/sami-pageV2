@@ -1,15 +1,15 @@
-import { FC, useState } from 'react'
+import { FC, HTMLAttributes, useState } from 'react'
 import Paragraph from '@/ui/Paragraph'
 import {Button} from '@/ui/Button'
 import TeamLogTab from '@/app/components/TeamLogItem'
 import { motion, AnimatePresence } from "framer-motion"
 
-interface MatchInformationProps {
+interface MatchInformationProps extends HTMLAttributes<HTMLDivElement> {
     matchInfo: any
     index: number
 }
 
-const MatchInformation: FC<MatchInformationProps> = ({matchInfo, index}) => {
+const MatchInformation: FC<MatchInformationProps> = ({matchInfo, index, onClick}) => {
     // put this into a comp. later
     const [ open, setOpen ] = useState(false)
 
@@ -37,7 +37,7 @@ const MatchInformation: FC<MatchInformationProps> = ({matchInfo, index}) => {
                     exit={{ y: -10, opacity: 0 }}
                     >
                         {matchInfo.teams.map((val: any, key: number) => {
-                            return (<TeamLogTab className={key % 2 === 0 && "bg-slate-300 dark:bg-[#424f61]"} key={key} teamData={val}/>)
+                            return (<TeamLogTab onClick={onClick} className={key % 2 === 0 && "bg-slate-300 dark:bg-[#424f61]"} key={key} teamData={val}/>)
                         })}
                     </motion.div>
                     }
