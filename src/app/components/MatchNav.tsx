@@ -29,12 +29,11 @@ const MatchNav: FC<MatchNavProps> = ({displayedMatches, setDisplayedLogs}) => {
 
 
     return (
-        <motion.div ref={navRef} className={`my-4 scrollbar-hide overflow-scroll`}>
+        <motion.div ref={navRef} className={`my-4 scrollbar-hide overflow-scroll relative h-24`}>
             <motion.div 
-            drag="x" 
             dragConstraints={{ right: 0, left: -width}} 
             className={`flex flex-row gap-4 ${displayedMatches.length < 1 ? "justify-center": ""}`}
-            whileTap={{cursor:"grabbing"}}>
+            >
                 {displayedMatches.length > 0 ?
                     displayedMatches.map((val: any, key: number) => {
                         return (
