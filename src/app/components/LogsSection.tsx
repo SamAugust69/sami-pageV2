@@ -1,4 +1,6 @@
-import { FC } from 'react'
+"use client"
+import { FC, useEffect, useState } from 'react'
+import { v4 } from "uuid"
 
 
 interface LogsSectionProps {
@@ -6,13 +8,25 @@ interface LogsSectionProps {
 }
 
 const LogsSection: FC<LogsSectionProps> = ({logsToDisplay}) => {
+
+    const [logs, setLogs] = useState<any>(logsToDisplay)
+    console.log(logsToDisplay)
+    useEffect(() => {
+        setLogs(logsToDisplay)
+        console.log(typeof logs)
+    }, [logsToDisplay])
+
     return (
-        !logsToDisplay === null &&
-        logsToDisplay.map((val: any, key: number) => {
-            return (
-                <div key={key}>fart</div>
-            )
-        })
+        <div className='rounded bg-black'>
+            <p>testa</p>
+            {logs !== null &&
+                logs.map((val: any) => {
+                    return (
+                        <div key={v4()}>{val.id}</div>
+                    )
+                })
+            }
+        </div>
     )
 }
 

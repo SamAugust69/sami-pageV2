@@ -17,6 +17,7 @@ const matchSort = (a: any, b: any) => {
 const generateMatches = (data: any, setMatches: any) => {
     console.log("generating matches...")
     var newMatches: any = []
+    if (data === null) return
     data.map((val: any) => {
         // iterate through current match info, if val.info.match[0]( logs match number ) does not exist in matchinfo, 
 
@@ -25,7 +26,7 @@ const generateMatches = (data: any, setMatches: any) => {
             //add match
             newMatches = [...newMatches, {
                 "match": `${val.info.match[0]}`,
-                "teams": []
+                "teams": [],
             }]
         }
     })
@@ -33,8 +34,7 @@ const generateMatches = (data: any, setMatches: any) => {
     newMatches.map((match: any) => {
         data.map((val: any) => {
             if (val.info.match[0] === match.match) {
-                // match.teams.some((ele: any) => ele.)
-                match.teams = [...match.teams, {team: val.info.team[0]}]
+                match.teams = [...match.teams, {team: val.info.team[0], match: val.info.match[0], id: val.id}]
             }
         })
         
@@ -53,9 +53,9 @@ interface LogsDashboardProps {
 
 
 const LogsDashboard: FC<LogsDashboardProps> = ({remoteLogs}) => {
+    // locally stored
     const [ remoteData, setRemoteData ] = useLocalStorage<any>("remote-data") // stores match information from server
     const [ localData, setLocalData ] = useLocalStorage<any>("local-data") // stores local match information from scout
-    const [ displayedLogs, setDisplayedLogs ] = useLocalStorage<any>("displayed-logs")
 
     const logs = [
         {id: "server", label: "Server Logs", amount: remoteData},
@@ -64,6 +64,8 @@ const LogsDashboard: FC<LogsDashboardProps> = ({remoteLogs}) => {
     
     // match displayed states
     const [ displayedMatches, setDisplayedMatches ] = useState<any>([])
+    const [ displayedLogs, setDisplayedLogs ] = useLocalStorage<any>("displayed-logs")
+    const [ currentData, setCurrentData ] = useState(remoteData)
     const [ activeLog, setActiveLog ] = useState(logs[0].id)
 
     // search states
@@ -74,17 +76,23 @@ const LogsDashboard: FC<LogsDashboardProps> = ({remoteLogs}) => {
     useEffect(() => {
         if (remoteData === undefined || remoteData === null) setRemoteData(remoteLogs)
         if (localData === undefined || localData === null) setLocalData([])
-        setDisplayedLogs([{}, {}])
+        if (displayedLogs === undefined || displayedLogs === null) setDisplayedLogs([])
+        generateMatches(currentData, setDisplayedMatches)
     }, [])
 
     useEffect(() => {
-        if (activeLog === "server") {
-            generateMatches(remoteData, setDisplayedMatches)
+        console.log(`switching displayed matches... ${activeLog}`)
+        if (activeLog === "local") {
+            setCurrentData(localData)
         } else {
-            generateMatches(localData, setDisplayedMatches)
+            setCurrentData(remoteData)
         }
     }, [activeLog])
 
+    useEffect(() => {
+        generateMatches(currentData, setDisplayedMatches)
+        console.log(displayedMatches)
+    }, [currentData])
     return (
         <>
             <div className='px-4 flex flex-col w-full'>
@@ -95,7 +103,7 @@ const LogsDashboard: FC<LogsDashboardProps> = ({remoteLogs}) => {
                 <MatchNav displayedMatches={displayedMatches.filter((item: any) => {
                     return query.toLowerCase() === "" ? item : item.match.includes(query)
                 })
-                } setDisplayedLogs/>
+                } setDisplayedLogs={setDisplayedLogs} displayedLogs={displayedLogs} currentData={currentData} matchData={displayedMatches}/>
                 <LogsSection logsToDisplay={displayedLogs}/>
             </div>
         </>
@@ -103,3 +111,6 @@ const LogsDashboard: FC<LogsDashboardProps> = ({remoteLogs}) => {
 }
 
 export default LogsDashboard
+
+// add pecent value for each teams score controbutiom in a match
+// add first few parts of motes to quick info!

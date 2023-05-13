@@ -4,20 +4,21 @@ import { FC } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { iconButtonVariants } from '@/ui/Button'
-import { RxBackpack, RxDashboard } from "react-icons/rx"
+import { RxActivityLog, RxDashboard } from "react-icons/rx"
 import ThemeToggle from './ThemeToggle'
 
 interface NavbarProps {
 
 }
 
-
+// https://realtimecolors.com/get-suggestions?colors=000000-ffffff-4685ff-f2f2f2-ffb084
+// #6C837D #ABB6BA #7E9595 #BCC8C2 #98AA9C
 const Navbar: FC<NavbarProps> = ({}) => {
 
     const navBarItems = [
         {
-            icon: RxBackpack,
-            className: "bg-rose-400 text-rose-800 border-rose-800 dark:bg-rose-400",
+            icon: RxActivityLog,
+            className: "bg-[#6c837d] text-[#bcc8c2] border-[#98aa9c] dark:bg-rose-400",
             tooltip: "Home",
             link: "/"
         },

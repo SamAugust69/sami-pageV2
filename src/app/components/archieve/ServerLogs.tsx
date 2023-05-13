@@ -2,7 +2,6 @@
 
 import { FC, useEffect, useState, createRef } from 'react'
 import {Button} from '@/ui/Button'
-import MatchLogsTab from "@/components/MatchLogsTab"
 import SearchBar from "@/ui/SearchBar"
 
 interface ServerLogsProps {
@@ -83,11 +82,11 @@ const ServerLogs: FC<ServerLogsProps> = ({serverLogs}) => {
                     <Button>Import Logs</Button>
         
                 </div>
-                <MatchLogsTab matchInfo={matchInfo.filter((item: any) => {
+                {/* <MatchLogsTab matchInfo={matchInfo.filter((item: any) => {
                     // item.teams.filter((item: any) => {console.log(item.team); return item.team.includes(query)
                     console.log(item)
                     return query.toLowerCase() === "" ? item : item.match.includes(query)
-                })}/>
+                })}/> */}
             </div>
             <div className='h-[calc(16rem*2.5)]  p-2 overflow-y-scroll border-t md:border-t-0 w-full border-slate-900 dark:border-slate-200 flex align-center justify-center flex-wrap gap-2'>
 
