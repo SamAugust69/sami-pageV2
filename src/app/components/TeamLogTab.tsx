@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes } from 'react'
+import { FC, HTMLAttributes, useState } from 'react'
 import Paragraph from '@/ui/Paragraph'
 import {Button} from '@/ui/Button'
 import { ChevronRight, ChevronsRight } from 'lucide-react'
@@ -13,28 +13,17 @@ interface TeamLogTabProps extends HTMLAttributes<HTMLDivElement> {
     matchData: any
 }
 
-const TeamLogTab: FC<TeamLogTabProps> = ({currentData, teamData, className, displayedLogs, setDisplayedLogs, matchData}) => {
+const TeamLogTab: FC<TeamLogTabProps> = ({currentData, teamData, className, displayedLogs, setDisplayedLogs}) => {
+
+    const [isPresent, setIsPresent] = useState(false)
 
     const addLog = () => {
-        // console.log(matchData)
-        // matchData.map((matchInfo: any) => {
-        //     if (matchInfo.match === teamData.match) {
-        //         console.log(matchInfo)
-        //         console.log(currentData)
-        //         currentData.map((log: any) => {
-        //             console.log(log.info.team[0])
-        //             matchInfo.teams.map((fart: any) => {console.log(fart.team)})
-
-        //         })
-        //     }
-        // })
-        // setDisplayedLogs([...displayedLogs, {}])
-
-        // to achieve: add log from currentData with the same id as the button pressed
         currentData.map((log: any) => {
-            if (log.id === teamData.id) {
+            if (log.id === teamData.id && displayedLogs.some((item: any) => item.id === teamData.id) != true) {
                 setDisplayedLogs([...displayedLogs, log])
-                console.log(displayedLogs)
+                setIsPresent(true)
+            } else {
+                setIsPresent(true)
             }
         })
     }
@@ -42,7 +31,7 @@ const TeamLogTab: FC<TeamLogTabProps> = ({currentData, teamData, className, disp
     return (
         <div className={cn('group relative px-4 bg-slate-200 dark:bg-slate-600 flex justify-between', className)}>
             <Paragraph size="xs">{teamData.team}</Paragraph>
-            
+            <Paragraph>{displayedLogs.some((item: any) => item.id === teamData.id) ? "true" : "false"}</Paragraph>
             <Button className='flex' variant="hidden" size="xs" onClick={() => {addLog()}}>
                 <ChevronRight className='group-hover:scale-0 transition-all'/>
                 <ChevronsRight className='absolute scale-0 group-hover:scale-100 transition-all'/>
