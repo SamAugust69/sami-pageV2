@@ -8,6 +8,7 @@ import Heading from '@/ui/Heading';
 import MatchNav from '@/components/MatchNav';
 import SearchBar from '@/ui/SearchBar';
 import LogsSection from '@/components/LogsSection';
+import axios from 'axios';
 
 
 const matchSort = (a: any, b: any) => {
@@ -51,6 +52,17 @@ interface LogsDashboardProps {
     remoteLogs: Array<any>
 }
 
+const fetchLogs = async (setLog: any) => {
+    axios.request({method: 'GET', url: 'https://api.samifart.com/'})
+        .then((response) => {
+            console.log("recieved logs")
+            setLog(response.data)
+        })
+        .catch((error) => {
+            throw error
+        })
+}
+
 
 const LogsDashboard: FC<LogsDashboardProps> = ({remoteLogs}) => {
     // locally stored
@@ -74,7 +86,8 @@ const LogsDashboard: FC<LogsDashboardProps> = ({remoteLogs}) => {
 
 
     useEffect(() => {
-        if (remoteData === undefined || remoteData === null) setRemoteData(remoteLogs)
+        fetchLogs(setRemoteData)
+        if (remoteData === undefined || remoteData === null) {}
         if (localData === undefined || localData === null) setLocalData([])
         if (displayedLogs === undefined || displayedLogs === null) setDisplayedLogs([])
         generateMatches(currentData, setDisplayedMatches)
