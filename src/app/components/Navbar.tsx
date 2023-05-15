@@ -18,7 +18,7 @@ const Navbar: FC<NavbarProps> = ({}) => {
     const navBarItems = [
         {
             icon: RxActivityLog,
-            className: "bg-[#6c837d] text-[#bcc8c2] border-[#98aa9c] dark:bg-rose-400",
+            className: "bg-[#6c837d] text-[#bcc8c2] border-[#98aa9c] dark:bg-[#8285ce] dark:text-[#d5ebf1]",
             tooltip: "Home",
             link: "/"
         },

@@ -16,7 +16,7 @@ const LogSelectorTab: FC<LogSelectorTabProps> = ({id, label, logs, activeLog, se
 
     useEffect(() => {
         logs != null && setAmoumt(logs.length)
-    }, [])
+    }, [logs])
 
     return (
         <div key={v4()} className='rounded p-2 w-1/2 flex items-center justify-center flex-col relative cursor-pointer' onClick={() => setActiveLog(id)}>

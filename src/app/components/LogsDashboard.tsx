@@ -9,6 +9,7 @@ import MatchNav from '@/components/MatchNav';
 import SearchBar from '@/ui/SearchBar';
 import LogsSection from '@/components/LogsSection';
 import axios from 'axios';
+import LogButtons from './LogButtons';
 
 
 const matchSort = (a: any, b: any) => {
@@ -49,7 +50,6 @@ const generateMatches = (data: any, setMatches: any) => {
 }
 
 interface LogsDashboardProps {
-    remoteLogs: Array<any>
 }
 
 const fetchLogs = async (setLog: any) => {
@@ -64,7 +64,7 @@ const fetchLogs = async (setLog: any) => {
 }
 
 
-const LogsDashboard: FC<LogsDashboardProps> = ({remoteLogs}) => {
+const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
     // locally stored
     const [ remoteData, setRemoteData ] = useLocalStorage<any>("remote-data") // stores match information from server
     const [ localData, setLocalData ] = useLocalStorage<any>("local-data") // stores local match information from scout
@@ -106,6 +106,7 @@ const LogsDashboard: FC<LogsDashboardProps> = ({remoteLogs}) => {
         generateMatches(currentData, setDisplayedMatches)
         console.log(displayedMatches)
     }, [currentData])
+
     return (
         <>
             <div className='px-4 flex flex-col w-full'>
@@ -117,6 +118,7 @@ const LogsDashboard: FC<LogsDashboardProps> = ({remoteLogs}) => {
                     return query.toLowerCase() === "" ? item : item.match.includes(query)
                 })
                 } setDisplayedLogs={setDisplayedLogs} displayedLogs={displayedLogs} currentData={currentData} matchData={displayedMatches}/>
+                <LogButtons />
                 <LogsSection logsToDisplay={displayedLogs}/>
             </div>
         </>
@@ -127,3 +129,23 @@ export default LogsDashboard
 
 // add pecent value for each teams score controbutiom in a match
 // add first few parts of motes to quick info!
+
+//TODO(from ver.1):
+
+//SEARCH
+//sort by match number
+//sort by team number 
+//reverse order
+
+//OPTIMOZE
+//when closed, delete data
+//load data in chunks
+
+//FEATURES
+//google sheet automation
+//add from image(no?)
+//save page state
+
+//INFO
+//starting pos
+//drive train?

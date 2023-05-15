@@ -27,7 +27,7 @@ export const searchBarVariants = cva(
 interface SearchBarProps extends HTMLAttributes<HTMLInputElement>, VariantProps<typeof searchBarVariants> { 
     onChange: React.ChangeEventHandler<HTMLInputElement>
     currentFilter: any
-    filters: any
+    filters?: any
 }
 
 const SearchBar: FC<SearchBarProps> = (({
@@ -94,7 +94,23 @@ const SearchBar: FC<SearchBarProps> = (({
 })
 
 
+interface SearchBarProps {
+
+}
+
+const HiddenSearchBar: FC<SearchBarProps> = ({}) => {
+    return (
+        <div>fart</div>
+    )
+}
+
+export default SearchBar
+
+
 
 SearchBar.displayName = "SearchBar"
 
-export default SearchBar
+export {
+    SearchBar,
+    HiddenSearchBar
+}
