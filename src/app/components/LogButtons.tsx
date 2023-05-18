@@ -11,7 +11,7 @@ const LogButtons: FC<LogButtonsProps> = ({}) => {
     return (
         <div>
             <Button size="icon"><GrFormAdd className='w-5 h-5'/></Button>
-            
+            <Button>Save Local Logs</Button>
         </div>
     )
 }

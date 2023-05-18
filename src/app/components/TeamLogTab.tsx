@@ -1,7 +1,7 @@
 import { FC, HTMLAttributes, useEffect, useState } from 'react'
 import Paragraph from '@/ui/Paragraph'
 import {Button} from '@/ui/Button'
-import { ChevronRight, ChevronsRight } from 'lucide-react'
+import { ChevronRight, ChevronsRight, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface TeamLogTabProps extends HTMLAttributes<HTMLDivElement> {
@@ -32,15 +32,23 @@ const TeamLogTab: FC<TeamLogTabProps> = ({currentData, teamData, className, disp
         })
     }
 
+    const deleteLog = (logs: any, id: any) => {
+        var newLogs = logs
+        logs.splice(newLogs.findIndex((object: any) => object.id === id), 1)
+        setDisplayedLogs(newLogs)
+        console.log(displayedLogs)
+    }
+
     return (
         <div className={cn('group relative px-4 bg-slate-200 dark:bg-slate-600 flex items-center justify-between', className)}>
             <div className='flex'>
                 <Paragraph size="xs" className='m-0'>{teamData.team}</Paragraph>
                 <Paragraph size="xs" className='m-0 pl-2 font-mono text-xs'>{isPresent ? "true" : "false"}</Paragraph>
             </div>
-            <Button className='flex' variant="hidden" size="xs" onClick={() => {addLog()}}>
+            <Button className='flex' variant="hidden" size="xs" onClick={() => {!isPresent ? addLog() : deleteLog(displayedLogs, teamData.id)}}>
                 <ChevronRight className='group-hover:scale-0 transition-all'/>
-                <ChevronsRight className='absolute scale-0 group-hover:scale-100 transition-all'/>
+                {!isPresent && <ChevronsRight className='absolute scale-0 group-hover:scale-100 transition-all'/>}
+                {isPresent && <X className='absolute scale-0 group-hover:scale-100 transition-all text-rose-500'/>}
             </Button>
         </div>
     )

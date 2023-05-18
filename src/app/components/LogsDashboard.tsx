@@ -118,7 +118,7 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
                     return query.toLowerCase() === "" ? item : item.match.includes(query)
                 })
                 } setDisplayedLogs={setDisplayedLogs} displayedLogs={displayedLogs} currentData={currentData} matchData={displayedMatches}/>
-                
+                <LogButtons />
                 <LogsSection logsToDisplay={displayedLogs}/>
             </div>
         </>
