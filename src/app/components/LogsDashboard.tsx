@@ -55,11 +55,11 @@ interface LogsDashboardProps {
 const fetchLogs = async (setLog: any) => {
     axios.request({method: 'GET', url: 'https://api.samifart.com/'})
         .then((response) => {
-            console.log("recieved logs")
+            console.log("Retrieved logs from server")
             setLog(response.data)
         })
         .catch((error) => {
-            throw error
+            console.log("Couldn't retrieve logs from server")
         })
 }
 
