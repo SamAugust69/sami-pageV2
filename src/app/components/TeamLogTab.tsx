@@ -17,26 +17,28 @@ const TeamLogTab: FC<TeamLogTabProps> = ({currentData, teamData, className, disp
 
     const [isPresent, setIsPresent] = useState(false)
 
+    // fart is bad work
+    const [logs, setLogs] = useState<any>(displayedLogs)
+
     useEffect(() => {
-        displayedLogs.some((item: any) => item.id === teamData.id) && setIsPresent(true)
-    }, [])
+        setDisplayedLogs(logs)
+        logs.some((item: any) => item.id === teamData.id) ? setIsPresent(true) : setIsPresent(false)
+    }, [logs])
 
     const addLog = () => {
         currentData.map((log: any) => {
             if (log.id === teamData.id && displayedLogs.some((item: any) => item.id === teamData.id) != true) {
-                setDisplayedLogs([...displayedLogs, log])
-                setIsPresent(true)
-            } else {
-                setIsPresent(true)
+                setLogs([...displayedLogs, log])
             }
         })
     }
 
-    const deleteLog = (logs: any, id: any) => {
-        var newLogs = logs
-        logs.splice(newLogs.findIndex((object: any) => object.id === id), 1)
-        setDisplayedLogs(newLogs)
-        console.log(displayedLogs)
+    const deleteLog = (id: any) => {
+        console.log(logs)
+        var i = displayedLogs.findIndex((object: any) => object.id === id)
+        var newLogs = displayedLogs.filter((log:any) => log !== displayedLogs[i])
+        setLogs(newLogs)
+        //setLogs(newLogs)
     }
 
     return (
@@ -45,7 +47,7 @@ const TeamLogTab: FC<TeamLogTabProps> = ({currentData, teamData, className, disp
                 <Paragraph size="xs" className='m-0'>{teamData.team}</Paragraph>
                 <Paragraph size="xs" className='m-0 pl-2 font-mono text-xs'>{isPresent ? "true" : "false"}</Paragraph>
             </div>
-            <Button className='flex' variant="hidden" size="xs" onClick={() => {!isPresent ? addLog() : deleteLog(displayedLogs, teamData.id)}}>
+            <Button className='flex' variant="hidden" size="xs" onClick={() => {!isPresent ? addLog() : deleteLog(teamData.id)}}>
                 <ChevronRight className='group-hover:scale-0 transition-all'/>
                 {!isPresent && <ChevronsRight className='absolute scale-0 group-hover:scale-100 transition-all'/>}
                 {isPresent && <X className='absolute scale-0 group-hover:scale-100 transition-all text-rose-500'/>}

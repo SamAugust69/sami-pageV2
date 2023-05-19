@@ -15,7 +15,7 @@ const LogsSection: FC<LogsSectionProps> = ({logsToDisplay}) => {
     const [isMounted, setIsMounted] = useState(false)
 
     useEffect(() => {
-        console.log(logsToDisplay)
+        console.log("IP{DAIOGGN")
         setLogs(logsToDisplay)
         console.log(typeof logs)
     }, [logsToDisplay])

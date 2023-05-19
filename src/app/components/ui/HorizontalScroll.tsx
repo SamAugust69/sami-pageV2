@@ -9,7 +9,6 @@ const HorizontalScroll: FC<HorizontalScrollProps> = ({children, className}) => {
     const navRef: any = useRef()
 
     const handleHorizontalScroll = (e: any) => {
-        console.log(e)
         e.preventDefault()
         navRef.current.scrollBy({
             left: -e.wheelDeltaY

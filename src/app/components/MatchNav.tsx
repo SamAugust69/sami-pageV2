@@ -23,7 +23,7 @@ const MatchNav: FC<MatchNavProps> = ({displayedMatches, setDisplayedLogs, displa
                     displayedMatches.map((val: any, key: number) => {
                         //test={() => {setDisplayedLogs([...displayedLogs, {}]); console.log(displayedLogs)}}
                         return (
-                            <MatchInformation matchData={matchData} currentData={currentData} displayedLogs={displayedLogs} setDisplayedLogs={setDisplayedLogs} key={v4()} matchInfo={val} index={key}/>
+                            <MatchInformation matchData={matchData} currentData={currentData} displayedLogs={displayedLogs} setDisplayedLogs={setDisplayedLogs} key={key} matchInfo={val} index={key}/>
                         )
                     })
                     :
