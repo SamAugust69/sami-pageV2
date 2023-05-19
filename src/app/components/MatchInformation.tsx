@@ -3,6 +3,7 @@ import Paragraph from '@/ui/Paragraph'
 import {Button} from '@/ui/Button'
 import TeamLogTab from '@/components/TeamLogTab'
 import { motion, AnimatePresence } from "framer-motion"
+import { v4 } from "uuid"
 
 interface MatchInformationProps extends HTMLAttributes<HTMLDivElement> {
     matchInfo: any
@@ -41,7 +42,7 @@ const MatchInformation: FC<MatchInformationProps> = ({currentData, matchInfo, in
                     exit={{ y: -10, opacity: 0 }}
                     >
                         {matchInfo.teams.map((val: any, key: number) => {
-                            return (<TeamLogTab currentData={currentData} matchData={matchData} displayedLogs={displayedLogs} setDisplayedLogs={setDisplayedLogs} className={key % 2 === 0 && "bg-slate-300 dark:bg-[#424f61]"} key={key} teamData={val}/>)
+                            return (<TeamLogTab currentData={currentData} matchData={matchData} displayedLogs={displayedLogs} setDisplayedLogs={setDisplayedLogs} className={key % 2 === 0 && "bg-slate-300 dark:bg-[#424f61]"} key={v4()} teamData={val}/>)
                         })}
                     </motion.div>
                     }
