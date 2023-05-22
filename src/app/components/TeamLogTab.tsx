@@ -21,8 +21,8 @@ const TeamLogTab: FC<TeamLogTabProps> = ({currentData, teamData, className, disp
     const [logs, setLogs] = useState<any>(displayedLogs)
 
     useEffect(() => {
-        setDisplayedLogs(logs)
         logs.some((item: any) => item.id === teamData.id) ? setIsPresent(true) : setIsPresent(false)
+        setDisplayedLogs(logs)
     }, [logs])
 
     const addLog = () => {

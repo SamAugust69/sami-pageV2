@@ -1,36 +1,39 @@
 "use client"
-import { FC, useEffect, useState } from 'react'
+import { FC, HTMLAttributes, useEffect, useState } from 'react'
 import { v4 } from "uuid"
 import HorizontalScroll from './ui/HorizontalScroll'
-import Log from './Log'
+import { EditableLog } from './Log'
+import { cn } from '../lib/utils'
 
 
-interface LogsSectionProps {
+interface LogsSectionProps extends HTMLAttributes<HTMLDivElement> {
     logsToDisplay: any
 }
 
-const LogsSection: FC<LogsSectionProps> = ({logsToDisplay}) => {
+const LogsSection: FC<LogsSectionProps> = ({logsToDisplay, className}) => {
 
     const [logs, setLogs] = useState<any>(logsToDisplay)
     const [isMounted, setIsMounted] = useState(false)
 
     useEffect(() => {
-        console.log("IP{DAIOGGN")
         setLogs(logsToDisplay)
-        console.log(typeof logs)
     }, [logsToDisplay])
 
 
     useEffect(() => {
         setIsMounted(true)
     }, [])
+    
+    useEffect(() => {
+        console.log(logs)
+    }, [logs])
 
     return (
-        <HorizontalScroll className='flex gap-4'>
+        <HorizontalScroll className={cn(`flex gap-4 ${className}`)}>
             {isMounted === true && logs != null && logs.length > 0 ? (
                 logs.map((val: any, key: number) => {
                     return (
-                        <Log data={val} key={key}/>
+                        <EditableLog data={val} key={key}/>
                     )
                 })
             ) : (

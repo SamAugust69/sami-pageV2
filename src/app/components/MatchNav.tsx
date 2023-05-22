@@ -1,11 +1,11 @@
 import MatchInformation from './MatchInformation'
-import { FC } from 'react'
+import { FC, HTMLAttributes } from 'react'
 import { v4 } from "uuid"
 import Paragraph from '@/ui/Paragraph'
 import Link from 'next/link'
 import HorizontalScroll from './ui/HorizontalScroll'
 
-interface MatchNavProps {
+interface MatchNavProps extends HTMLAttributes<HTMLDivElement> {
     displayedMatches: any
     setDisplayedLogs: any
     displayedLogs: any
@@ -13,9 +13,9 @@ interface MatchNavProps {
     currentData: any
 }
 
-const MatchNav: FC<MatchNavProps> = ({displayedMatches, setDisplayedLogs, displayedLogs, matchData, currentData}) => {
+const MatchNav: FC<MatchNavProps> = ({displayedMatches, setDisplayedLogs, displayedLogs, matchData, currentData, className}) => {
     return (
-        <HorizontalScroll>
+        <HorizontalScroll className={className}>
             <div 
             className={`flex flex-row gap-4 ${displayedMatches.length < 1 ? "justify-center": ""}`}
             >

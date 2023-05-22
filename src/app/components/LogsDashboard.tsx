@@ -25,6 +25,7 @@ const generateMatches = (data: any, setMatches: any) => {
 
         //  NEVER TRY AND SET A STATE IN A LOOP!!!!!
         if (newMatches.some((ele: any) => ele.match === val.info.match[0]) === false && val.info.match[0] != 0) {
+            // this will never add a match on 0
             //add match
             newMatches = [...newMatches, {
                 "match": `${val.info.match[0]}`,
@@ -47,6 +48,7 @@ const generateMatches = (data: any, setMatches: any) => {
     }
 
     setMatches(newMatches.sort(matchSort))
+    console.log(newMatches)
 }
 
 interface LogsDashboardProps {
@@ -97,6 +99,7 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
         console.log(`switching displayed matches... ${activeLog}`)
         if (activeLog === "local") {
             setCurrentData(localData)
+
         } else {
             setCurrentData(remoteData)
         }
@@ -117,9 +120,9 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
                 <MatchNav displayedMatches={displayedMatches.filter((item: any) => {
                     return query.toLowerCase() === "" ? item : item.match.includes(query)
                 })
-                } setDisplayedLogs={setDisplayedLogs} displayedLogs={displayedLogs} currentData={currentData} matchData={displayedMatches}/>
-                <LogButtons />
-                <LogsSection logsToDisplay={displayedLogs}/>
+                } setDisplayedLogs={setDisplayedLogs} displayedLogs={displayedLogs} currentData={currentData} matchData={displayedMatches} className='py-2'/>
+                <LogButtons displayedLogs={displayedLogs} setDisplayedLogs={setDisplayedLogs} localLogs={localData} setLocalLogs={setLocalData}/>
+                <LogsSection className='py-2' logsToDisplay={displayedLogs}/>
             </div>
         </>
     )
