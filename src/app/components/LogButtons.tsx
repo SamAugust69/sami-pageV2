@@ -38,10 +38,15 @@ const LogButtons: FC<LogButtonsProps> = ({displayedLogs, setDisplayedLogs, local
         setDisplayedLogs([...displayedLogs, blankLog])
     }
 
+    const saveLogs = () => {
+        setDisplayedLogs(displayedLogs)
+        setLocalLogs(displayedLogs)
+    }
+
     return (
         <div>
             <Button size="icon" onClick={() => addNewLog()}><GrFormAdd className='w-5 h-5'/></Button>
-            <Button onClick={() => setDisplayedLogs(displayedLogs)}>Save Local Logs</Button>
+            <Button onClick={() => saveLogs()}>Save Local Logs</Button>
         </div>
     )
 }

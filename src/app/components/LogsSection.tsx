@@ -2,7 +2,7 @@
 import { FC, HTMLAttributes, useEffect, useState } from 'react'
 import { v4 } from "uuid"
 import HorizontalScroll from './ui/HorizontalScroll'
-import { EditableLog } from './Log'
+import { EditableLog, Log } from './Log'
 import { cn } from '../lib/utils'
 
 
@@ -33,7 +33,9 @@ const LogsSection: FC<LogsSectionProps> = ({logsToDisplay, className}) => {
             {isMounted === true && logs != null && logs.length > 0 ? (
                 logs.map((val: any, key: number) => {
                     return (
-                        <EditableLog data={val} key={key}/>
+                        val.disabled === false ?
+                        <EditableLog data={val} key={key}/> :
+                        <Log data={val} key={key}/>
                     )
                 })
             ) : (
