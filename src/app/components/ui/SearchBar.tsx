@@ -26,12 +26,12 @@ export const searchBarVariants = cva(
 
 interface SearchBarProps extends HTMLAttributes<HTMLInputElement>, VariantProps<typeof searchBarVariants> { 
     onChange: React.ChangeEventHandler<HTMLInputElement>
-    currentFilter: any
+    setFilter: any
     filters?: any
 }
 
 const SearchBar: FC<SearchBarProps> = (({
-    className, onChange, children, variant, size, filters, ...props
+    className, onChange, children, variant, size, filters, setFilter, ...props
 }) => {
     const [searchOpen, setSearchOpen] = useState(false)
 
@@ -56,12 +56,17 @@ const SearchBar: FC<SearchBarProps> = (({
             }
             return {...item, selected: "true"}
         })
+        console.log(newItems)
         setDropdownFilters(newItems)
     }
 
     useEffect(() => {
         document.addEventListener("mouseup", handleDropDown)
     })
+
+    useEffect(() => {
+        setFilter(dropdownFilters)
+    }, [dropdownFilters])
 
 
     return (

@@ -31,7 +31,7 @@ export default function RootLayout({
         <Providers>
           <Navbar/>
           {children}
-          <span className='text-sm absolute bottom-0 right-0 mx-2'>ver-3!</span>
+          <span className='text-sm fixed bottom-0 right-0 mx-2'>ver-3!</span>
         </Providers>
       </body>
     </html>

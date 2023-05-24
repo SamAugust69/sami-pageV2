@@ -16,6 +16,15 @@ interface TopCardsProps {
 const TopCards: FC<TopCardsProps> = ({activeLog, setActiveLog, localData, remoteData}) => {
 
     const [ totalLogs, setTotalLogs ] = useState(0)
+
+    useEffect(() => {
+        setTotalLogs(remoteData !== null && localData !== null ? (localData.length + remoteData.length) : 0)
+        // if (!remoteData === null && localData !== null) {
+        //     setTotalLogs(localData.length + remoteData.length)
+        //     console.log(totalLogs)
+        // }
+    }, [localData, remoteData])
+
     return (
         <div className='grid gap-4 lg:grid-cols-2' >
             <div className='border-2 rounded border-slate-400 dark:border-slate-800 bg-slate-200 dark:bg-slate-600 p-6 py-4 w-full shadow-md'>

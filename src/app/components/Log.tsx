@@ -4,6 +4,8 @@ import Heading from '@/ui/Heading'
 import { EditableTextLabel, TextLabel } from "@/ui/Labels"
 import Paragraph from './ui/Paragraph'
 import { Button } from './ui/Button'
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
+import { AutoPage, TeleopPage } from '@/components/FormPages'
 
 interface LogProps {
     data: any
@@ -11,9 +13,23 @@ interface LogProps {
 
 const EditableLog: FC<LogProps> = ({data}) => {
 
-    const [ open, setOpen ] = useState(false)
-    const [ logData, setLogData ] = useState(data)
+    const pages: any = {
+        0:  {
+            page: <AutoPage />,
+            title: "Auto",
+            num: 1
+        },
+        1:  {
+            page: <TeleopPage />,
+            title: "Teleop",
+            num: 2
+        }
+    }
 
+    const [ open, setOpen ] = useState(false)
+    const [ currentPage, setCurrentPage] = useState(0)
+
+    {console.log(pages)}
     return (
         <div className='flex-shrink-0 self-start rounded border-2 border-slate-400 dark:border-slate-800 bg-slate-200 dark:bg-slate-600 shadow-md w-80 md:w-96'>
             <div className='flex py-2 justify-between items-center'>
@@ -37,9 +53,20 @@ const EditableLog: FC<LogProps> = ({data}) => {
             </div>
             {open &&
             <div className='border-t-2 dark:border-slate-800 flex flex-col'>
-                <Paragraph size="xs">{JSON.stringify(data)}</Paragraph>
-                <div className='flex dark:bg-slate-700 mt-auto h-16 items-center justify-center '>
-                    <Paragraph size="sm">PAGE</Paragraph>
+                {pages[currentPage].page}
+                <div className='flex dark:bg-slate-700 mt-auto h-14 items-center justify-center '>
+                    <Button className='group transition-colors h-full w-1/2' variant='hidden' onClick={() => currentPage >= 1 && setCurrentPage(currentPage - 1)}>
+                        <ChevronLeft className='scale-100 group-hover:scale-0 transition-transform'/>
+                        <ChevronsLeft className='absolute scale-0 group-hover:scale-100 transition-transform'/>
+                    </Button>
+                    <div className='px-4'>
+                        <Paragraph size="sm" className='m-0' >{pages[currentPage].title}</Paragraph>
+                        <Paragraph size="xs" className='m-0' >{pages[currentPage].num}</Paragraph>
+                    </div>
+                    <Button className='group transition-colors h-full w-1/2' variant='hidden' onClick={() => currentPage < 1 && setCurrentPage(currentPage + 1)}>
+                        <ChevronRight className='scale-100 group-hover:scale-0 transition-transform'/>
+                        <ChevronsRight className='absolute scale-0 group-hover:scale-100 transition-transform'/>
+                    </Button>
                 </div>
             </div>
             }

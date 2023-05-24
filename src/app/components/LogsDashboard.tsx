@@ -43,10 +43,6 @@ const generateMatches = (data: any, setMatches: any) => {
         
     })
 
-    const setFilter = (filter: string) => {
-        setFilter(filter)
-    }
-
     setMatches(newMatches.sort(matchSort))
     console.log(newMatches)
 }
@@ -78,12 +74,13 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
     
     // match displayed states
     const [ displayedMatches, setDisplayedMatches ] = useState<any>([])
+    const [ filteredMatches, setFilteredMatches ] = useState(displayedMatches)
     const [ displayedLogs, setDisplayedLogs ] = useLocalStorage<any>("displayed-logs")
     const [ currentData, setCurrentData ] = useState(remoteData)
     const [ activeLog, setActiveLog ] = useState(logs[0].id)
 
     // search states
-    const [filter, setFilter] = useState<string>("")
+    const [filter, setFilter] = useState<any>("")
     const [query, setQuery] = useState<string>("")
 
 
@@ -110,17 +107,20 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
         console.log(displayedMatches)
     }, [currentData])
 
+    useEffect(() => {
+        setFilteredMatches( displayedMatches.filter((item: any) => {
+            return query.toLowerCase() === "" ? item : item.match.includes(query)
+        }) )
+    }, [query, displayedMatches])
+
     return (
         <>
             <div className='px-4 flex flex-col w-full'>
                 <Heading size="sm" className='text-slate-700 font-medium text-left py-2'>Dashboard</Heading>
                 <TopCards activeLog={activeLog} setActiveLog={setActiveLog} remoteData={remoteData} localData={localData}/>
                 <span className='border-b-2 w-full border-slate-400 my-4'/>
-                <SearchBar onChange={(e) => {setQuery(e.target.value)}} currentFilter={setFilter} filters={[ {"id": "0", "label": "Match", "selected": "true"}, {"id": "1", "label": "Team", "selected": "false"} ]}/>
-                <MatchNav displayedMatches={displayedMatches.filter((item: any) => {
-                    return query.toLowerCase() === "" ? item : item.match.includes(query)
-                })
-                } setDisplayedLogs={setDisplayedLogs} displayedLogs={displayedLogs} currentData={currentData} matchData={displayedMatches} className='py-2'/>
+                <SearchBar onChange={(e) => {setQuery(e.target.value)}} setFilter={setFilter} filters={[ {"id": "0", "label": "Match", "selected": "true"}, {"id": "1", "label": "Team", "selected": "false"} ]}/>
+                <MatchNav displayedMatches={filteredMatches} setDisplayedLogs={setDisplayedLogs} displayedLogs={displayedLogs} currentData={currentData} matchData={displayedMatches} className='py-2'/>
                 <LogButtons displayedLogs={displayedLogs} setDisplayedLogs={setDisplayedLogs} localLogs={localData} setLocalLogs={setLocalData}/>
                 <LogsSection className='py-2' logsToDisplay={displayedLogs}/>
             </div>

@@ -37,7 +37,7 @@ const DropdownItem: FC<DropdownItemProps> = ({label, className, handleSelected, 
     return (
         <option
         className={cn(`dark:hover:bg-slate-400 flex items-center transition-colors cursor-pointer ${selected === "true"? "bg-slate-500" : ""} ${className}`)} 
-        onChange={handleSelected}
+        onClick={handleSelected}
         >
             <Paragraph>{label}</Paragraph>
         </option>
