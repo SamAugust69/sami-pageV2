@@ -36,7 +36,7 @@ const SearchBar: FC<SearchBarProps> = (({
     const [searchOpen, setSearchOpen] = useState(false)
 
     const [dropdownOpen, setDropdownOpen] = useState(false)
-    const [dropdownFilters, setDropdownFilters] = useState(filters)
+    const [dropdownFilters, setDropdownFilters] = useState<any>(filters)
     const dropdownRef = useRef<HTMLDivElement>(null)
     const dropdownButton = useRef<HTMLButtonElement>(null)
 
