@@ -113,13 +113,19 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
         }) )
     }, [query, displayedMatches])
 
+
+    const searchbarProps = {
+        setFilter: {setFilter},
+        filters: [ {"id": "0", "label": "Match", "selected": "true"}, {"id": "1", "label": "Team", "selected": "false"} ]
+    }
+
     return (
         <>
             <div className='px-4 flex flex-col w-full'>
                 <Heading size="sm" className='text-slate-700 font-medium text-left py-2'>Dashboard</Heading>
                 <TopCards activeLog={activeLog} setActiveLog={setActiveLog} remoteData={remoteData} localData={localData}/>
                 <span className='border-b-2 w-full border-slate-400 my-4'/>
-                <SearchBar onChange={(e) => {setQuery(e.target.value)}} setFilter={setFilter} filters={[ {"id": "0", "label": "Match", "selected": "true"}, {"id": "1", "label": "Team", "selected": "false"} ]}/>
+                <SearchBar onChange={(e) => {setQuery(e.target.value)}} {...searchbarProps}/>
                 <MatchNav displayedMatches={filteredMatches} setDisplayedLogs={setDisplayedLogs} displayedLogs={displayedLogs} currentData={currentData} matchData={displayedMatches} className='py-2'/>
                 <LogButtons displayedLogs={displayedLogs} setDisplayedLogs={setDisplayedLogs} localLogs={localData} setLocalLogs={setLocalData}/>
                 <LogsSection className='py-2' logsToDisplay={displayedLogs}/>
