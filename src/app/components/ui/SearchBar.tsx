@@ -26,12 +26,12 @@ export const searchBarVariants = cva(
 
 interface SearchBarProps extends HTMLAttributes<HTMLInputElement>, VariantProps<typeof searchBarVariants> { 
     onChange: React.ChangeEventHandler<HTMLInputElement>
-    setFilter: any
+    setFilterA: any
     filters?: any
 }
 
 const SearchBar: FC<SearchBarProps> = (({
-    className, onChange, children, variant, size, filters, setFilter, ...props
+    className, onChange, children, variant, size, filters, setFilterA, ...props
 }) => {
     const [searchOpen, setSearchOpen] = useState(false)
 
@@ -65,7 +65,7 @@ const SearchBar: FC<SearchBarProps> = (({
     })
 
     useEffect(() => {
-        setFilter(dropdownFilters)
+        setFilterA(dropdownFilters)
     }, [dropdownFilters])
 
 

@@ -75,7 +75,7 @@ const ServerLogs: FC<ServerLogsProps> = ({serverLogs}) => {
     return (
         <div className='container border flex rounded flex-col md:flex-row border-slate-900 dark:border-slate-200 dark:bg-slate-910 bg-slate-310 shadow-md'>
             <div className='md:border-r border-slate-900 dark:border-slate-200'>
-            <SearchBar size="sm" currentFilter={setFilter} filters={[ {"id": "0", "label": "Match", "selected": "true"}, {"id": "1", "label": "Team", "selected": "false"} ]} onChange={(e) => {setQuery(e.target.value)}}/>
+            {/* <SearchBar size="sm" currentFilter={setFilter} filters={[ {"id": "0", "label": "Match", "selected": "true"}, {"id": "1", "label": "Team", "selected": "false"} ]} onChange={(e) => {setQuery(e.target.value)}}/> */}
                 <div className='p-2 gap-2 flex justify-center border-slate-900 dark:border-slate-200 max-w-[26rem] overflow-hidden'>
                     <Button>New Log</Button>
                     <Button>Save Logs</Button>
