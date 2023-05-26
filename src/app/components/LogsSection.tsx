@@ -8,9 +8,11 @@ import { cn } from '../lib/utils'
 
 interface LogsSectionProps extends HTMLAttributes<HTMLDivElement> {
     logsToDisplay: any
+    setUnsavedLogs: any
+    unsavedLogs: any
 }
 
-const LogsSection: FC<LogsSectionProps> = ({logsToDisplay, className}) => {
+const LogsSection: FC<LogsSectionProps> = ({logsToDisplay, className, unsavedLogs}) => {
 
     const [logs, setLogs] = useState<any>(logsToDisplay)
     const [isMounted, setIsMounted] = useState(false)
@@ -30,12 +32,13 @@ const LogsSection: FC<LogsSectionProps> = ({logsToDisplay, className}) => {
 
     return (
         <HorizontalScroll className={cn(`flex gap-4 ${className}`)}>
-            {isMounted === true && logs != null && logs.length > 0 ? (
+            {isMounted === true && logs != null && logs.length >= 0 ? (
                 logs.map((val: any, key: number) => {
+                    console.log(val)
                     return (
                         val.disabled === false ?
-                        <EditableLog data={val} key={key}/> :
-                        <Log data={val} key={key}/>
+                        <EditableLog unsavedLogs={unsavedLogs} data={val} key={key}/> :
+                        <Log unsavedLogs={unsavedLogs} data={val} key={key}/>
                     )
                 })
             ) : (

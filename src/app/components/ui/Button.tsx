@@ -1,6 +1,6 @@
 import { cn } from '@/app/lib/utils'
 import { VariantProps, cva } from 'class-variance-authority'
-import { ButtonHTMLAttributes, FC, Ref, forwardRef } from 'react'
+import { ButtonHTMLAttributes, FC, Ref, forwardRef, useEffect, useState } from 'react'
 import { Loader2 } from "lucide-react"
 
 
@@ -12,7 +12,7 @@ export const buttonVariants = cva(
                 default: "bg-slate-400 dark:bg-slate-300 dark:text-slate-900",
                 icon: "bg-slate-300 hover:border-2 border-slate-400 dark:bg-slate-300 dark:text-slate-900",
                 link: "bg-transparent underline-offset-4 hover:underline text-slate-900 dark:text-slate-100 hover:bg-transparent dark:hover:bg-transparent",
-                hidden: "bg-transparent dark:hover:bg-slate-700 hover:bg-slate-200"
+                hidden: "bg-transparent"
             },
             size: {
                 default: "h-10 py-2 px-4",
@@ -78,10 +78,33 @@ const IconButton: FC<IconButtonProps> = forwardRef<HTMLButtonElement, IconButton
     )
 })
 
+interface ToggleButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    toggled: any
+    ref?: Ref<HTMLButtonElement>
+}
+
+const ToggleButton: FC<ToggleButtonProps> = forwardRef<HTMLButtonElement, ToggleButtonProps>(({
+    className, children, toggled, ...props
+}, ref) => {
+    const [ toggledButton, setToggledButton ] = useState(toggled)
+
+    useEffect(() => {
+        toggled[0] = toggledButton
+    }, [toggledButton])
+    return (
+        <button onClick={() => {setToggledButton(!toggledButton)}} className={cn(`transition-colors border-2 border-slate-400 dark:border-slate-600 px-2 py-1 rounded ${toggledButton ? "bg-slate-400" : ""} ${className}`)} ref={ref} {...props}>
+            {children}
+        </button>
+    )
+})
+
 Button.displayName = "Button"
 IconButton.displayName = "IconButton"
+ToggleButton.displayName = "ToggleButton"
+
 export {
     Button,
-    IconButton
+    IconButton,
+    ToggleButton
 }
 

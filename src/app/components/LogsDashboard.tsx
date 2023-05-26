@@ -76,11 +76,15 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
     const [ displayedMatches, setDisplayedMatches ] = useState<any>([])
     const [ filteredMatches, setFilteredMatches ] = useState(displayedMatches)
     const [ displayedLogs, setDisplayedLogs ] = useLocalStorage<any>("displayed-logs")
+    const [ unsavedLogs, setUnsavedLogs ] = useState<any>([])
     const [ currentData, setCurrentData ] = useState(remoteData)
     const [ activeLog, setActiveLog ] = useState(logs[0].id)
+    
 
     // search states
     const [filter, setFilter] = useState<any>("")
+
+    const [ isLoaded, setIsLoaded ] = useState(false)
     const [query, setQuery] = useState<string>("")
 
 
@@ -90,6 +94,7 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
         if (localData === undefined || localData === null) setLocalData([])
         if (displayedLogs === undefined || displayedLogs === null) setDisplayedLogs([])
         generateMatches(currentData, setDisplayedMatches)
+        setIsLoaded(true)
     }, [])
 
     useEffect(() => {
@@ -119,6 +124,12 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
         filters: [ {"id": "0", "label": "Match", "selected": "true"}, {"id": "1", "label": "Team", "selected": "false"} ]
     }
 
+
+    console.log(displayedLogs)
+    console.log(localData)
+    console.log(isLoaded && [...displayedLogs, ...localData])
+
+
     return (
         <>
             <div className='px-4 flex flex-col w-full'>
@@ -127,8 +138,8 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
                 <span className='border-b-2 w-full border-slate-400 my-4'/>
                 <SearchBar setFilterA={setFilter} onChange={(e) => {setQuery(e.target.value)}} filters={[ {"id": "0", "label": "Match", "selected": "true"}, {"id": "1", "label": "Team", "selected": "false"} ]}/>
                 <MatchNav displayedMatches={filteredMatches} setDisplayedLogs={setDisplayedLogs} displayedLogs={displayedLogs} currentData={currentData} matchData={displayedMatches} className='py-2'/>
-                <LogButtons displayedLogs={displayedLogs} setDisplayedLogs={setDisplayedLogs} localLogs={localData} setLocalLogs={setLocalData}/>
-                <LogsSection className='py-2' logsToDisplay={displayedLogs}/>
+                <LogButtons displayedLogs={displayedLogs} setUnsavedLogs={setUnsavedLogs} unsavedLogs={unsavedLogs} setDisplayedLogs={setDisplayedLogs} localLogs={localData} setLocalLogs={setLocalData}/>
+                <LogsSection className='py-2' setUnsavedLogs={setUnsavedLogs} unsavedLogs={unsavedLogs} logsToDisplay={isLoaded && [...displayedLogs, ...localData] }/>
             </div>
         </>
     )

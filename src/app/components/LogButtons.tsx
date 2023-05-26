@@ -9,9 +9,11 @@ interface LogButtonsProps {
     setDisplayedLogs: any
     localLogs: any
     setLocalLogs: any
+    setUnsavedLogs: any
+    unsavedLogs: any
 }
 
-const LogButtons: FC<LogButtonsProps> = ({displayedLogs, setDisplayedLogs, localLogs, setLocalLogs}) => {
+const LogButtons: FC<LogButtonsProps> = ({displayedLogs, setDisplayedLogs, localLogs, setLocalLogs, setUnsavedLogs, unsavedLogs}) => {
 
     //needs to have the ability to add a new log to local logs, and display it..!!!
 
@@ -35,18 +37,26 @@ const LogButtons: FC<LogButtonsProps> = ({displayedLogs, setDisplayedLogs, local
     }
     
     const addNewLog = () => {
-        setDisplayedLogs([...displayedLogs, blankLog])
+        setUnsavedLogs([...unsavedLogs, blankLog])
     }
 
-    const saveLogs = () => {
-        setDisplayedLogs(displayedLogs)
-        setLocalLogs(displayedLogs)
+    const saveLogs = (log: any) => {
+        console.log(log)
+        
+        // var logsToAdd: any = []
+        // displayedLogs.map((val: any) => {
+        //     if (val.disabled == false) {
+        //         logsToAdd = [...logsToAdd, val]
+        //     }
+        // })
+        setLocalLogs(unsavedLogs)
+
     }
 
     return (
         <div>
             <Button size="icon" onClick={() => addNewLog()}><GrFormAdd className='w-5 h-5'/></Button>
-            <Button onClick={() => saveLogs()}>Save Local Logs</Button>
+            <Button onClick={() => saveLogs(displayedLogs)}>Save Local Logs</Button>
         </div>
     )
 }

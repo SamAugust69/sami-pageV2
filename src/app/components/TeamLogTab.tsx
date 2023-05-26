@@ -44,7 +44,7 @@ const TeamLogTab: FC<TeamLogTabProps> = ({currentData, teamData, className, disp
     return (
         <div className={cn('group relative px-4 bg-slate-200 dark:bg-slate-600 flex items-center justify-between', className)}>
             <div className='flex'>
-                <Paragraph size="xs" className='m-0'>{teamData.team}</Paragraph>
+                <Paragraph size="xs" className={`m-0 transition-colors ${isPresent ? "text-[#6c837d] dark:text-[#a3c8be]" : "text-white"}`}>{teamData.team}</Paragraph>
                 <Paragraph size="xs" className='m-0 pl-2 font-mono text-xs'>{isPresent ? "true" : "false"}</Paragraph>
             </div>
             <Button className='flex' variant="hidden" size="xs" onClick={() => {!isPresent ? addLog() : deleteLog(teamData.id)}}>
