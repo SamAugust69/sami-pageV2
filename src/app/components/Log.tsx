@@ -10,30 +10,47 @@ import { AutoPage, TeleopPage } from '@/components/FormPages'
 interface LogProps {
     data: any
     unsavedLogs: any
+    setUnsavedLogs: any
 }
 
-const EditableLog: FC<LogProps> = ({data, unsavedLogs}) => {
+const EditableLog: FC<LogProps> = ({data, unsavedLogs, setUnsavedLogs}) => {
 
     //const [fuck, setFuck] = useState(data)
-    const {auto, info, teleop} = data
+
+    const {info, auto} = data
 
     const pages: any = {
         0:  {
-            page: <AutoPage data={auto}/>,
+            page: <AutoPage data={data} unsavedLogs={unsavedLogs} setUnsavedLogs={setUnsavedLogs}/>,
             title: "Auto",
             num: 1
         },
         1:  {
-            page: <TeleopPage data={data}/>,
+            page: <TeleopPage data={data} unsavedLogs={unsavedLogs} setUnsavedLogs={setUnsavedLogs}/>,
             title: "Teleop",
             num: 2
         }
     }
 
+    const saveInfoAt = () => {
+        if (unsavedLogs.includes(data) == false) {
+            setUnsavedLogs([...unsavedLogs, data]) 
+        } else {
+            var newUnsavedLogs = unsavedLogs.map((val: any) => {
+                if (val.id == data.id) {
+                    return data
+                } else {
+                    return val
+                }
+            })
+            setUnsavedLogs(newUnsavedLogs)
+        }
+    }   
+
+
     const [ open, setOpen ] = useState(false)
     const [ currentPage, setCurrentPage] = useState(0)
 
-    console.log(unsavedLogs.map((item: any) => {return item === data}))
     return (
         <div className='flex-shrink-0 self-start rounded border-2 border-slate-400 dark:border-slate-800 bg-slate-200 dark:bg-slate-600 shadow-md w-80 md:w-96'>
             <div className='flex py-2 justify-between items-center'>
@@ -42,8 +59,8 @@ const EditableLog: FC<LogProps> = ({data, unsavedLogs}) => {
                     <div>
                         {/* setLogData({...logData, info: {...logData.info, match: [e.target.value]}}) */}
                         {/* data.info.match[0] = e.target.value */}
-                        <EditableTextLabel label="MATCH:" placeholder={info.match[0]} onChange={(e: any) => info.match[0] = e.target.value}/>
-                        <EditableTextLabel label="TEAM:" placeholder={info.team[0]} onChange={(e: any) => info.team[0] = e.target.value}/>
+                        <EditableTextLabel label="MATCH:" placeholder={info.match[0]} onChange={(e: any) => {data.info.match[0] = e.target.value; saveInfoAt()}}/>
+                        <EditableTextLabel label="TEAM:" placeholder={info.team[0]} onChange={(e: any) => {data.info.team[0] = e.target.value; saveInfoAt()}}/>
                     </div>
                     <span className='border-r-2 h-10 border-slate-400 rounded hidden md:block'></span>
                     <div className='hidden md:block'>
@@ -74,8 +91,6 @@ const EditableLog: FC<LogProps> = ({data, unsavedLogs}) => {
                 </div>
             </div>
             }
-            {unsavedLogs.map((item: any) => {return item === data}) &&
-            <Paragraph>Unsaved</Paragraph>}
         </div>
     )
 }
@@ -85,7 +100,6 @@ const Log: FC<LogProps> = ({data}) => {
     const [ open, setOpen ] = useState(false)
     const [ logData, setLogData ] = useState(data)
 
-    console.log(data)
     return (
         <div className='flex-shrink-0 self-start rounded border-2 border-slate-400 dark:border-slate-800 bg-slate-200 dark:bg-slate-600 shadow-md w-80 md:w-96'>
             <div className='flex py-2 justify-between items-center'>

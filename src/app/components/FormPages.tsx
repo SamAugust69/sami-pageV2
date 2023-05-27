@@ -5,23 +5,56 @@ import { Button, ToggleButton } from './ui/Button'
 
 interface FormPagesProps extends HTMLAttributes<HTMLDivElement> {
     data: any
+    unsavedLogs: any
+    setUnsavedLogs: any
 }
 
 const AutoPage: FC<FormPagesProps> = ({
-    data
+    data, unsavedLogs, setUnsavedLogs
 }) => {
-    console.log(data)
+
+    const saveInfoAt = () => {
+        if (unsavedLogs.includes(data) == false) {
+            setUnsavedLogs([...unsavedLogs, data]) 
+        } else {
+            var newUnsavedLogs = unsavedLogs.map((val: any) => {
+                if (val.id == data.id) {
+                    return data
+                } else {
+                    return val
+                }
+            })
+            setUnsavedLogs(newUnsavedLogs)
+        }
+
+    }   
+
     return (
         <div className='p-2 flex flex-col'>
-            <div className='mx-4 flex justify-center gap-2'>
-                <ToggleButton toggled={data.dock}>
+            <div className='mx-4 flex justify-center gap-2 flex-wrap'>
+                <ToggleButton toggled={data.auto.move}>
+                    <Paragraph size="sm" className={`m-0 text-slate-600`}>Moved</Paragraph>
+                </ToggleButton>
+                <ToggleButton toggled={data.auto.leave}>
+                    <Paragraph size="sm" className={`m-0 text-slate-600`}>Leave</Paragraph>
+                </ToggleButton>
+                <ToggleButton toggled={data.auto.dock}>
                     <Paragraph size="sm" className={`m-0 text-slate-600`}>Docked</Paragraph>
                 </ToggleButton>
-
+                <ToggleButton toggled={data.auto.score}>
+                    <Paragraph size="sm" className={`m-0 text-slate-600`}>Scored</Paragraph>
+                </ToggleButton>
+                <ToggleButton toggled={data.auto.engage}>
+                    <Paragraph size="sm" className={`m-0 text-slate-600`}>Engage</Paragraph>
+                </ToggleButton>
             </div>
             <span className='border-b-2 mx-auto w-72 border-slate-400 rounded my-2'></span>
-            <Input onChange={(e: any) => { data.cones[0] = parseInt(e.target.value)}} placeholder={data.cones}>Cones Scored</Input>
-            <Input onChange={(e: any) => { data.cones[0] = parseInt(e.target.value)}} placeholder={data.cubes}>Cubes Scored</Input>
+            <Input onChange={(e: any) => { data.auto.cones[0] = parseInt(e.target.value); saveInfoAt()}} placeholder={data.auto.cones}>Cones Scored</Input>
+            <Input onChange={(e: any) => { data.auto.cubes[0] = parseInt(e.target.value); saveInfoAt()}} placeholder={data.auto.cubes}>Cubes Scored</Input>
+
+            <Paragraph>
+                Add the scoring grid later 😃
+            </Paragraph>
         </div>
     )
 }

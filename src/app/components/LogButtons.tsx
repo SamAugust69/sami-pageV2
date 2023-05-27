@@ -37,26 +37,24 @@ const LogButtons: FC<LogButtonsProps> = ({displayedLogs, setDisplayedLogs, local
     }
     
     const addNewLog = () => {
-        setUnsavedLogs([...unsavedLogs, blankLog])
+        setDisplayedLogs([...displayedLogs, blankLog])
     }
 
-    const saveLogs = (log: any) => {
-        console.log(log)
-        
-        // var logsToAdd: any = []
-        // displayedLogs.map((val: any) => {
-        //     if (val.disabled == false) {
-        //         logsToAdd = [...logsToAdd, val]
-        //     }
-        // })
-        setLocalLogs(unsavedLogs)
-
+    const saveLogs = () => {
+        var newLogs: any = []
+        unsavedLogs.map((val: any) => {
+            if (localLogs.some((ele: any) => ele.id === val.id) === false) {
+                newLogs = [...newLogs, val]
+                setUnsavedLogs(unsavedLogs.filter((item: any) => item.id !== val.id))
+            }
+        })
+        setLocalLogs([...localLogs, ...newLogs])
     }
 
     return (
         <div>
             <Button size="icon" onClick={() => addNewLog()}><GrFormAdd className='w-5 h-5'/></Button>
-            <Button onClick={() => saveLogs(displayedLogs)}>Save Local Logs</Button>
+            <Button onClick={() => saveLogs()}>Save Local Logs</Button>
         </div>
     )
 }

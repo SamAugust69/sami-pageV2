@@ -86,13 +86,13 @@ interface ToggleButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 const ToggleButton: FC<ToggleButtonProps> = forwardRef<HTMLButtonElement, ToggleButtonProps>(({
     className, children, toggled, ...props
 }, ref) => {
-    const [ toggledButton, setToggledButton ] = useState(toggled)
+    const [ toggledButton, setToggledButton ] = useState(toggled[0])
 
     useEffect(() => {
         toggled[0] = toggledButton
     }, [toggledButton])
     return (
-        <button onClick={() => {setToggledButton(!toggledButton)}} className={cn(`transition-colors border-2 border-slate-400 dark:border-slate-600 px-2 py-1 rounded ${toggledButton ? "bg-slate-400" : ""} ${className}`)} ref={ref} {...props}>
+        <button onClick={() => {setToggledButton(!toggledButton)}} className={cn(`transition-colors border-2 border-slate-400 dark:border-slate-400 px-2 py-1 rounded ${toggledButton ? "bg-slate-400 dark:bg-slate-400" : ""} ${className}`)} ref={ref} {...props}>
             {children}
         </button>
     )

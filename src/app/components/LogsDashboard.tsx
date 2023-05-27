@@ -44,7 +44,6 @@ const generateMatches = (data: any, setMatches: any) => {
     })
 
     setMatches(newMatches.sort(matchSort))
-    console.log(newMatches)
 }
 
 interface LogsDashboardProps {
@@ -109,7 +108,6 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
 
     useEffect(() => {
         generateMatches(currentData, setDisplayedMatches)
-        console.log(displayedMatches)
     }, [currentData])
 
     useEffect(() => {
@@ -125,11 +123,6 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
     }
 
 
-    console.log(displayedLogs)
-    console.log(localData)
-    console.log(isLoaded && [...displayedLogs, ...localData])
-
-
     return (
         <>
             <div className='px-4 flex flex-col w-full'>
@@ -139,7 +132,7 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
                 <SearchBar setFilterA={setFilter} onChange={(e) => {setQuery(e.target.value)}} filters={[ {"id": "0", "label": "Match", "selected": "true"}, {"id": "1", "label": "Team", "selected": "false"} ]}/>
                 <MatchNav displayedMatches={filteredMatches} setDisplayedLogs={setDisplayedLogs} displayedLogs={displayedLogs} currentData={currentData} matchData={displayedMatches} className='py-2'/>
                 <LogButtons displayedLogs={displayedLogs} setUnsavedLogs={setUnsavedLogs} unsavedLogs={unsavedLogs} setDisplayedLogs={setDisplayedLogs} localLogs={localData} setLocalLogs={setLocalData}/>
-                <LogsSection className='py-2' setUnsavedLogs={setUnsavedLogs} unsavedLogs={unsavedLogs} logsToDisplay={isLoaded && [...displayedLogs, ...localData] }/>
+                <LogsSection className='py-2' setUnsavedLogs={setUnsavedLogs} unsavedLogs={unsavedLogs} logsToDisplay={isLoaded && displayedLogs }/>
             </div>
         </>
     )
