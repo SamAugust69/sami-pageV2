@@ -43,18 +43,38 @@ const LogButtons: FC<LogButtonsProps> = ({displayedLogs, setDisplayedLogs, local
     const saveLogs = () => {
         var newLogs: any = []
         unsavedLogs.map((val: any) => {
+            console.log(`--------------`)
+            console.log(unsavedLogs)
+            console.log(`adding unsaved log to local`)
+            console.log(`${val.info.match}, ${val.info.team}, ${val.id}`)
             if (localLogs.some((ele: any) => ele.id === val.id) === false) {
-                newLogs = [...newLogs, val]
+                console.log("log wasn't found in local, adding new log")
+                setLocalLogs([...localLogs, val])
                 setUnsavedLogs(unsavedLogs.filter((item: any) => item.id !== val.id))
+            } else {
+                console.log("log was found in local, updating log")
+                setLocalLogs(localLogs.map((item: any) => {
+                    if (item.id == val.id) {
+                        console.log(`Found log ${item.info.match}, ${item.info.team}, ${item.id}`)
+                        setUnsavedLogs(unsavedLogs.filter((item: any) => item.id !== val.id))
+                        return val
+                    } else {
+                        console.log(`Log not found, adding existing ${item.info.match}, ${item.info.team}, ${item.id}`)
+                        return item
+                    }
+                }))
             }
+            console.log(`Finished, updating with new logs =>`)
+            console.log(localLogs)
+            console.log(`--------------`)
+            //setLocalLogs([...newLogs])
         })
-        setLocalLogs([...localLogs, ...newLogs])
     }
 
     return (
-        <div>
+        <div className='flex items-center justify-center'>
             <Button size="icon" onClick={() => addNewLog()}><GrFormAdd className='w-5 h-5'/></Button>
-            <Button onClick={() => saveLogs()}>Save Local Logs</Button>
+            <Button size="lg" onClick={() => saveLogs()}>Save Local Logs</Button>
         </div>
     )
 }

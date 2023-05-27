@@ -33,8 +33,8 @@ const LogsSection: FC<LogsSectionProps> = ({logsToDisplay, className, unsavedLog
                 logs.map((val: any, key: number) => {
                     return (
                         val.disabled === false ?
-                        <EditableLog unsavedLogs={unsavedLogs} setUnsavedLogs={setUnsavedLogs} data={val} key={key}/> :
-                        <Log unsavedLogs={unsavedLogs} setUnsavedLogs={setUnsavedLogs} data={val} key={key}/>
+                        <EditableLog unsavedLogs={unsavedLogs} setUnsavedLogs={setUnsavedLogs} data={val} key={val.id}/> :
+                        <Log unsavedLogs={unsavedLogs} setUnsavedLogs={setUnsavedLogs} data={val} key={val.id}/>
                     )
                 })
             ) : (

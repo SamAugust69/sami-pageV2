@@ -108,6 +108,10 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
 
     useEffect(() => {
         generateMatches(currentData, setDisplayedMatches)
+    }, [unsavedLogs])
+
+    useEffect(() => {
+        generateMatches(currentData, setDisplayedMatches)
     }, [currentData])
 
     useEffect(() => {

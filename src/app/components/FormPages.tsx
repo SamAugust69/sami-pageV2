@@ -2,6 +2,7 @@ import { FC, HTMLAttributes } from 'react'
 import Input from './ui/Input'
 import Paragraph from './ui/Paragraph'
 import { Button, ToggleButton } from './ui/Button'
+import ScoringGrid from './ScoringGrid'
 
 interface FormPagesProps extends HTMLAttributes<HTMLDivElement> {
     data: any
@@ -26,7 +27,7 @@ const AutoPage: FC<FormPagesProps> = ({
             })
             setUnsavedLogs(newUnsavedLogs)
         }
-
+        console.log(unsavedLogs)
     }   
 
     return (
@@ -55,6 +56,7 @@ const AutoPage: FC<FormPagesProps> = ({
             <Paragraph>
                 Add the scoring grid later 😃
             </Paragraph>
+            <ScoringGrid grid={data.auto.sco}/>
         </div>
     )
 }

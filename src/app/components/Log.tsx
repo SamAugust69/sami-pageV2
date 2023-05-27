@@ -45,10 +45,17 @@ const EditableLog: FC<LogProps> = ({data, unsavedLogs, setUnsavedLogs}) => {
             })
             setUnsavedLogs(newUnsavedLogs)
         }
-    }   
+        console.log(unsavedLogs)
+    }
+
+    useEffect(() => {
+        unsavedLogs.includes(data) ? setSaved(false) : setSaved(true)
+        console.log(unsavedLogs)
+    }, [unsavedLogs])
 
 
     const [ open, setOpen ] = useState(false)
+    const [ saved, setSaved ] = useState(true)
     const [ currentPage, setCurrentPage] = useState(0)
 
     return (
@@ -59,8 +66,8 @@ const EditableLog: FC<LogProps> = ({data, unsavedLogs, setUnsavedLogs}) => {
                     <div>
                         {/* setLogData({...logData, info: {...logData.info, match: [e.target.value]}}) */}
                         {/* data.info.match[0] = e.target.value */}
-                        <EditableTextLabel label="MATCH:" placeholder={info.match[0]} onChange={(e: any) => {data.info.match[0] = e.target.value; saveInfoAt()}}/>
-                        <EditableTextLabel label="TEAM:" placeholder={info.team[0]} onChange={(e: any) => {data.info.team[0] = e.target.value; saveInfoAt()}}/>
+                        <EditableTextLabel label="MATCH:" placeholder={data.info.match[0]} onChange={(e: any) => {data.info.match[0] = e.target.value; saveInfoAt()}}/>
+                        <EditableTextLabel label="TEAM:" placeholder={data.info.team[0]} onChange={(e: any) => {data.info.team[0] = e.target.value; saveInfoAt()}}/>
                     </div>
                     <span className='border-r-2 h-10 border-slate-400 rounded hidden md:block'></span>
                     <div className='hidden md:block'>
@@ -91,6 +98,8 @@ const EditableLog: FC<LogProps> = ({data, unsavedLogs, setUnsavedLogs}) => {
                 </div>
             </div>
             }
+            {!saved && 
+            <div>test</div>}
         </div>
     )
 }
