@@ -8,11 +8,11 @@ import { cn } from '../lib/utils'
 
 interface LogsSectionProps extends HTMLAttributes<HTMLDivElement> {
     logsToDisplay: any
-    setUnsavedLogs: any
+    dispatch: any
     unsavedLogs: any
 }
 
-const LogsSection: FC<LogsSectionProps> = ({logsToDisplay, className, unsavedLogs, setUnsavedLogs}) => {
+const LogsSection: FC<LogsSectionProps> = ({logsToDisplay, className, unsavedLogs, dispatch}) => {
 
     const [logs, setLogs] = useState<any>(logsToDisplay)
     const [isMounted, setIsMounted] = useState(false)
@@ -33,8 +33,8 @@ const LogsSection: FC<LogsSectionProps> = ({logsToDisplay, className, unsavedLog
                 logs.map((val: any, key: number) => {
                     return (
                         val.disabled === false ?
-                        <EditableLog unsavedLogs={unsavedLogs} setUnsavedLogs={setUnsavedLogs} data={val} key={val.id}/> :
-                        <Log unsavedLogs={unsavedLogs} setUnsavedLogs={setUnsavedLogs} data={val} key={val.id}/>
+                        <EditableLog unsavedLogs={unsavedLogs} dispatch={dispatch} data={val} key={val.id}/> :
+                        <Log unsavedLogs={unsavedLogs} dispatch={dispatch} data={val} key={val.id}/>
                     )
                 })
             ) : (

@@ -2,6 +2,7 @@ import { cn } from '@/app/lib/utils'
 import { VariantProps, cva } from 'class-variance-authority'
 import { ButtonHTMLAttributes, FC, Ref, forwardRef, useEffect, useState } from 'react'
 import { Loader2 } from "lucide-react"
+import {REDUCER_ACTION_TYPE} from "@/lib/unsavedReducer"
 
 
 export const buttonVariants = cva(
@@ -82,16 +83,31 @@ const IconButton: FC<IconButtonProps> = forwardRef<HTMLButtonElement, IconButton
 interface ToggleButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     toggled: any
     ref?: Ref<HTMLButtonElement>
+    dispatch?: any
+    data: any
+    unsavedLogs: any
 }
 
 const ToggleButton: FC<ToggleButtonProps> = forwardRef<HTMLButtonElement, ToggleButtonProps>(({
-    className, children, toggled, ...props
+    className, children, toggled, dispatch, data, unsavedLogs, ...props
 }, ref) => {
-    const [ toggledButton, setToggledButton ] = useState(toggled[0])
+    const [ toggledButton, setToggledButton ] = useState<boolean>(toggled)
+
+    const saveInfo = () => {
+        if (unsavedLogs.includes(data) === false) {
+            console.log("adding")
+            dispatch({ type: REDUCER_ACTION_TYPE.ADDED_LOG, payload: data})
+        } else {
+            console.log("updating")
+            dispatch({ type: REDUCER_ACTION_TYPE.UPDATED_LOG, payload: data})
+        }
+    }   
 
     useEffect(() => {
-        toggled[0] = toggledButton
+        toggled = toggledButton;
+        saveInfo()
     }, [toggledButton])
+
     return (
         <button onClick={() => {setToggledButton(!toggledButton)}} className={cn(`transition-colors border-2 border-slate-400 dark:border-slate-400 px-2 py-1 rounded ${toggledButton ? "bg-slate-400 dark:bg-slate-400" : ""} ${className}`)} ref={ref} {...props}>
             {children}

@@ -3,17 +3,18 @@ import { Button, IconButton } from './ui/Button'
 import { GrFormAdd } from "react-icons/gr"
 import { HiddenSearchBar } from './ui/SearchBar'
 import { v4 } from "uuid"
+import {unsavedReducer, REDUCER_ACTION_TYPE} from "@/lib/unsavedReducer"
 
 interface LogButtonsProps {
     displayedLogs: any
     setDisplayedLogs: any
     localLogs: any
     setLocalLogs: any
-    setUnsavedLogs: any
+    dispatch: any
     unsavedLogs: any
 }
 
-const LogButtons: FC<LogButtonsProps> = ({displayedLogs, setDisplayedLogs, localLogs, setLocalLogs, setUnsavedLogs, unsavedLogs}) => {
+const LogButtons: FC<LogButtonsProps> = ({displayedLogs, setDisplayedLogs, localLogs, setLocalLogs, dispatch, unsavedLogs}) => {
 
     //needs to have the ability to add a new log to local logs, and display it..!!!
 
@@ -43,30 +44,19 @@ const LogButtons: FC<LogButtonsProps> = ({displayedLogs, setDisplayedLogs, local
     const saveLogs = () => {
         var newLogs: any = []
         unsavedLogs.map((val: any) => {
-            console.log(`--------------`)
-            console.log(unsavedLogs)
-            console.log(`adding unsaved log to local`)
-            console.log(`${val.info.match}, ${val.info.team}, ${val.id}`)
             if (localLogs.some((ele: any) => ele.id === val.id) === false) {
-                console.log("log wasn't found in local, adding new log")
                 setLocalLogs([...localLogs, val])
-                setUnsavedLogs(unsavedLogs.filter((item: any) => item.id !== val.id))
+                dispatch({ type: REDUCER_ACTION_TYPE.REMOVED_LOG, payload: val})
             } else {
-                console.log("log was found in local, updating log")
                 setLocalLogs(localLogs.map((item: any) => {
                     if (item.id == val.id) {
-                        console.log(`Found log ${item.info.match}, ${item.info.team}, ${item.id}`)
-                        setUnsavedLogs(unsavedLogs.filter((item: any) => item.id !== val.id))
+                        dispatch({ type: REDUCER_ACTION_TYPE.REMOVED_LOG, payload: val})
                         return val
                     } else {
-                        console.log(`Log not found, adding existing ${item.info.match}, ${item.info.team}, ${item.id}`)
                         return item
                     }
                 }))
             }
-            console.log(`Finished, updating with new logs =>`)
-            console.log(localLogs)
-            console.log(`--------------`)
             //setLocalLogs([...newLogs])
         })
     }

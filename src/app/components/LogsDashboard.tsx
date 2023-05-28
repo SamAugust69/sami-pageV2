@@ -1,6 +1,6 @@
 "use client"
 
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useReducer, useState } from 'react'
 import { useLocalStorage } from '@rehooks/local-storage';
 
 import TopCards from '@/components/TopCards';
@@ -11,6 +11,7 @@ import LogsSection from '@/components/LogsSection';
 import axios from 'axios';
 import LogButtons from './LogButtons';
 
+import {unsavedReducer, REDUCER_ACTION_TYPE} from "@/lib/unsavedReducer"
 
 const matchSort = (a: any, b: any) => {
     return parseInt(a.match) - parseInt(b.match)
@@ -75,7 +76,7 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
     const [ displayedMatches, setDisplayedMatches ] = useState<any>([])
     const [ filteredMatches, setFilteredMatches ] = useState(displayedMatches)
     const [ displayedLogs, setDisplayedLogs ] = useLocalStorage<any>("displayed-logs")
-    const [ unsavedLogs, setUnsavedLogs ] = useState<any>([])
+    const [ state, dispatch ] = useReducer(unsavedReducer, [])
     const [ currentData, setCurrentData ] = useState(remoteData)
     const [ activeLog, setActiveLog ] = useState(logs[0].id)
     
@@ -108,7 +109,7 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
 
     useEffect(() => {
         generateMatches(currentData, setDisplayedMatches)
-    }, [unsavedLogs])
+    }, [state])
 
     useEffect(() => {
         generateMatches(currentData, setDisplayedMatches)
@@ -135,8 +136,8 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
                 <span className='border-b-2 w-full border-slate-400 my-4'/>
                 <SearchBar setFilterA={setFilter} onChange={(e) => {setQuery(e.target.value)}} filters={[ {"id": "0", "label": "Match", "selected": "true"}, {"id": "1", "label": "Team", "selected": "false"} ]}/>
                 <MatchNav displayedMatches={filteredMatches} setDisplayedLogs={setDisplayedLogs} displayedLogs={displayedLogs} currentData={currentData} matchData={displayedMatches} className='py-2'/>
-                <LogButtons displayedLogs={displayedLogs} setUnsavedLogs={setUnsavedLogs} unsavedLogs={unsavedLogs} setDisplayedLogs={setDisplayedLogs} localLogs={localData} setLocalLogs={setLocalData}/>
-                <LogsSection className='py-2' setUnsavedLogs={setUnsavedLogs} unsavedLogs={unsavedLogs} logsToDisplay={isLoaded && displayedLogs }/>
+                <LogButtons displayedLogs={displayedLogs} dispatch={dispatch} unsavedLogs={state} setDisplayedLogs={setDisplayedLogs} localLogs={localData} setLocalLogs={setLocalData}/>
+                <LogsSection className='py-4' dispatch={dispatch} unsavedLogs={state} logsToDisplay={isLoaded && displayedLogs }/>
             </div>
         </>
     )

@@ -5,15 +5,16 @@ import { EditableTextLabel, TextLabel } from "@/ui/Labels"
 import Paragraph from './ui/Paragraph'
 import { Button } from './ui/Button'
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
+import {unsavedReducer, REDUCER_ACTION_TYPE} from "@/lib/unsavedReducer"
 import { AutoPage, TeleopPage } from '@/components/FormPages'
 
 interface LogProps {
     data: any
     unsavedLogs: any
-    setUnsavedLogs: any
+    dispatch: any
 }
 
-const EditableLog: FC<LogProps> = ({data, unsavedLogs, setUnsavedLogs}) => {
+const EditableLog: FC<LogProps> = ({data, unsavedLogs, dispatch}) => {
 
     //const [fuck, setFuck] = useState(data)
 
@@ -21,32 +22,26 @@ const EditableLog: FC<LogProps> = ({data, unsavedLogs, setUnsavedLogs}) => {
 
     const pages: any = {
         0:  {
-            page: <AutoPage data={data} unsavedLogs={unsavedLogs} setUnsavedLogs={setUnsavedLogs}/>,
+            page: <AutoPage data={data} unsavedLogs={unsavedLogs} dispatch={dispatch}/>,
             title: "Auto",
             num: 1
         },
         1:  {
-            page: <TeleopPage data={data} unsavedLogs={unsavedLogs} setUnsavedLogs={setUnsavedLogs}/>,
+            page: <TeleopPage data={data} unsavedLogs={unsavedLogs} dispatch={dispatch}/>,
             title: "Teleop",
             num: 2
         }
     }
 
-    const saveInfoAt = () => {
-        if (unsavedLogs.includes(data) == false) {
-            setUnsavedLogs([...unsavedLogs, data]) 
+    const saveInfo = () => {
+        if (unsavedLogs.includes(data) === false) {
+            console.log("adding")
+            dispatch({ type: REDUCER_ACTION_TYPE.ADDED_LOG, payload: data})
         } else {
-            var newUnsavedLogs = unsavedLogs.map((val: any) => {
-                if (val.id == data.id) {
-                    return data
-                } else {
-                    return val
-                }
-            })
-            setUnsavedLogs(newUnsavedLogs)
+            console.log("updating")
+            dispatch({ type: REDUCER_ACTION_TYPE.UPDATED_LOG, payload: data})
         }
-        console.log(unsavedLogs)
-    }
+    }   
 
     useEffect(() => {
         unsavedLogs.includes(data) ? setSaved(false) : setSaved(true)
@@ -59,20 +54,19 @@ const EditableLog: FC<LogProps> = ({data, unsavedLogs, setUnsavedLogs}) => {
     const [ currentPage, setCurrentPage] = useState(0)
 
     return (
-        <div className='flex-shrink-0 self-start rounded border-2 border-slate-400 dark:border-slate-800 bg-slate-200 dark:bg-slate-600 shadow-md w-80 md:w-96'>
+        <div className='relative flex-shrink-0 self-start rounded border-2 border-slate-400 dark:border-slate-800 bg-slate-200 dark:bg-slate-600 shadow-md w-80 md:w-96'>
             <div className='flex py-2 justify-between items-center'>
                 <div className='flex items-center gap-4 px-4'>
                     <Button size="sm" onClick={() => setOpen(!open)}>Close</Button>
                     <div>
                         {/* setLogData({...logData, info: {...logData.info, match: [e.target.value]}}) */}
                         {/* data.info.match[0] = e.target.value */}
-                        <EditableTextLabel label="MATCH:" placeholder={data.info.match[0]} onChange={(e: any) => {data.info.match[0] = e.target.value; saveInfoAt()}}/>
-                        <EditableTextLabel label="TEAM:" placeholder={data.info.team[0]} onChange={(e: any) => {data.info.team[0] = e.target.value; saveInfoAt()}}/>
+                        <EditableTextLabel label="MATCH:" placeholder={data.info.match[0]} onChange={(e: any) => {data.info.match[0] = e.target.value; saveInfo()}}/>
+                        <EditableTextLabel label="TEAM:" placeholder={data.info.team[0]} onChange={(e: any) => {data.info.team[0] = e.target.value; saveInfo()}}/>
                     </div>
                     <span className='border-r-2 h-10 border-slate-400 rounded hidden md:block'></span>
                     <div className='hidden md:block'>
-                        <Paragraph size="sm" className='m-0 text-left text-slate-500'>SCOUT</Paragraph>
-                        <Paragraph size="sm" className='m-0 text-left font-semibold text-slate-700'>{typeof info.scout[0] === "string" ? data.info.scout : "N/A"}</Paragraph>
+                        <EditableTextLabel label="SCOUT:" className='flex flex-col items-center' placeholder={data.info.scout[0]} onChange={(e: any) => {data.info.scout[0] = e.target.value; saveInfo()}}/>
                     </div>
                 </div>
                 <div className={`h-8 flex items-center justify-center px-2 rounded-l ${data.disabled === true ? "border-[#98aa9c] bg-[#6c837d]" : "border-[#ee1145] bg-[#f2524f]"} border-y-2 border-l-2`}>
@@ -99,7 +93,7 @@ const EditableLog: FC<LogProps> = ({data, unsavedLogs, setUnsavedLogs}) => {
             </div>
             }
             {!saved && 
-            <div>test</div>}
+            <Paragraph size="xs" className='absolute -top-5 w-full'>unsaved</Paragraph>}
         </div>
     )
 }
