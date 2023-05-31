@@ -13,11 +13,13 @@ export const buttonVariants = cva(
                 default: "bg-slate-400 dark:bg-slate-300 dark:text-slate-900",
                 icon: "bg-slate-300 hover:border-2 border-slate-400 dark:bg-slate-300 dark:text-slate-900",
                 link: "bg-transparent underline-offset-4 hover:underline text-slate-900 dark:text-slate-100 hover:bg-transparent dark:hover:bg-transparent",
-                hidden: "bg-transparent"
+                hidden: "bg-transparent",
+                unstyled: ""
             },
             size: {
                 default: "h-10 py-2 px-4",
                 icon: "h-12 w-12 m-2",
+                square: "h-8 w-8",
                 lg: "h-12 m-2 px-2",
                 sm: "h-8 p-2",
                 xs: "h-6 p-2"
@@ -83,33 +85,13 @@ const IconButton: FC<IconButtonProps> = forwardRef<HTMLButtonElement, IconButton
 interface ToggleButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     toggled: any
     ref?: Ref<HTMLButtonElement>
-    dispatch?: any
-    data: any
-    unsavedLogs: any
 }
 
 const ToggleButton: FC<ToggleButtonProps> = forwardRef<HTMLButtonElement, ToggleButtonProps>(({
-    className, children, toggled, dispatch, data, unsavedLogs, ...props
-}, ref) => {
-    const [ toggledButton, setToggledButton ] = useState<boolean>(toggled)
-
-    const saveInfo = () => {
-        if (unsavedLogs.includes(data) === false) {
-            console.log("adding")
-            dispatch({ type: REDUCER_ACTION_TYPE.ADDED_LOG, payload: data})
-        } else {
-            console.log("updating")
-            dispatch({ type: REDUCER_ACTION_TYPE.UPDATED_LOG, payload: data})
-        }
-    }   
-
-    useEffect(() => {
-        toggled = toggledButton;
-        saveInfo()
-    }, [toggledButton])
-
+    className, children, toggled, onClick, ...props
+}, ref) => {  
     return (
-        <button onClick={() => {setToggledButton(!toggledButton)}} className={cn(`transition-colors border-2 border-slate-400 dark:border-slate-400 px-2 py-1 rounded ${toggledButton ? "bg-slate-400 dark:bg-slate-400" : ""} ${className}`)} ref={ref} {...props}>
+        <button onClick={onClick} className={cn(`transition-colors border-2 border-slate-400 dark:border-slate-400 px-2 py-1 rounded ${toggled ? "bg-slate-400 dark:bg-slate-400" : ""} ${className}`)} ref={ref} {...props}>
             {children}
         </button>
     )

@@ -42,11 +42,17 @@ const LogButtons: FC<LogButtonsProps> = ({displayedLogs, setDisplayedLogs, local
     }
 
     const saveLogs = () => {
-        var newLogs: any = []
+        
+        var newLogs: any = localLogs
+        console.log("-------------------------")
+        console.log(unsavedLogs)
         unsavedLogs.map((val: any) => {
-            if (localLogs.some((ele: any) => ele.id === val.id) === false) {
-                setLocalLogs([...localLogs, val])
+            if (localLogs.some((ele: any) => ele.id === val.id) !== true) {
+                console.log(`adding log ${val.info.match}, ${val.info.team}, ${val.id}`)
+                newLogs = ([...newLogs, val])
                 dispatch({ type: REDUCER_ACTION_TYPE.REMOVED_LOG, payload: val})
+                console.log(newLogs)
+                setLocalLogs(newLogs)
             } else {
                 setLocalLogs(localLogs.map((item: any) => {
                     if (item.id == val.id) {
@@ -57,14 +63,25 @@ const LogButtons: FC<LogButtonsProps> = ({displayedLogs, setDisplayedLogs, local
                     }
                 }))
             }
-            //setLocalLogs([...newLogs])
+            console.log(localLogs)
         })
+
+        console.log("-------------------------")
+
+        setDisplayedLogs(displayedLogs.map((log: any) => {
+            if (localLogs.includes(log)) {
+                return localLogs.filter((item: any) => item.id === log.id)[0]
+            } else {
+                return log
+            }
+        }))
     }
 
     return (
         <div className='flex items-center justify-center'>
             <Button size="icon" onClick={() => addNewLog()}><GrFormAdd className='w-5 h-5'/></Button>
             <Button size="lg" onClick={() => saveLogs()}>Save Local Logs</Button>
+            <Button size="lg" onClick={() => setDisplayedLogs([])}>Close All Logs</Button>
         </div>
     )
 }

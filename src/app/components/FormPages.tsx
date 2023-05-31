@@ -31,38 +31,68 @@ const AutoPage: FC<FormPagesProps> = ({
     return (
         <div className='p-2 flex flex-col'>
             <div className='mx-4 flex justify-center gap-2 flex-wrap'>
-                <ToggleButton toggled={data.auto.move[0]} dispatch={dispatch} data={data} unsavedLogs={unsavedLogs}>
+                <ToggleButton onClick={() => {data.auto.move[0] = !data.auto.move[0]; saveInfo()}} toggled={data.auto.move[0]}>
                     <Paragraph size="sm" className={`m-0 text-slate-600`}>Moved</Paragraph>
                 </ToggleButton>
-                <ToggleButton toggled={data.auto.leave[0]} dispatch={dispatch} data={data} unsavedLogs={unsavedLogs}>
+                <ToggleButton onClick={() => {data.auto.leave[0] = !data.auto.leave[0]; saveInfo()}} toggled={data.auto.leave[0]}>
                     <Paragraph size="sm" className={`m-0 text-slate-600`}>Leave</Paragraph>
                 </ToggleButton>
-                <ToggleButton toggled={data.auto.dock[0]} dispatch={dispatch} data={data} unsavedLogs={unsavedLogs}>
+                <ToggleButton onClick={() => {data.auto.dock[0] = !data.auto.dock[0]; saveInfo()}} toggled={data.auto.dock[0]}>
                     <Paragraph size="sm" className={`m-0 text-slate-600`}>Docked</Paragraph>
                 </ToggleButton>
-                <ToggleButton toggled={data.auto.score[0]} dispatch={dispatch} data={data} unsavedLogs={unsavedLogs}>
+                <ToggleButton onClick={() => {data.auto.score[0] = !data.auto.score[0]; saveInfo()}} toggled={data.auto.score[0]}>
                     <Paragraph size="sm" className={`m-0 text-slate-600`}>Scored</Paragraph>
                 </ToggleButton>
-                <ToggleButton toggled={data.auto.engage[0]} dispatch={dispatch} data={data} unsavedLogs={unsavedLogs}>
+                <ToggleButton onClick={() => {data.auto.engage[0] = !data.auto.engage[0]; saveInfo()}} toggled={data.auto.engage[0]}>
                     <Paragraph size="sm" className={`m-0 text-slate-600`}>Engage</Paragraph>
                 </ToggleButton>
             </div>
             <span className='border-b-2 mx-auto w-72 border-slate-400 rounded my-2'></span>
-            <Input onChange={(e: any) => { data.auto.cones[0] = parseInt(e.target.value); saveInfo()}} placeholder={data.auto.cones}>Cones Scored</Input>
-            <Input onChange={(e: any) => { data.auto.cubes[0] = parseInt(e.target.value); saveInfo()}} placeholder={data.auto.cubes}>Cubes Scored</Input>
+            <Input onChange={(e: any) => { data.auto.cones[0] = parseInt(e.target.value); saveInfo()}} placeholder={data.auto.cones[0]}>Cones Scored</Input>
+            <Input onChange={(e: any) => { data.auto.cubes[0] = parseInt(e.target.value); saveInfo()}} placeholder={data.auto.cubes[0]}>Cubes Scored</Input>
 
             <Paragraph>
-                Add the scoring grid later 😃
+                Select where the team scored 😃
             </Paragraph>
-            <ScoringGrid grid={data.auto.sco}/>
+            <ScoringGrid grid={data.auto.scoreLocations} data={data} unsavedLogs={unsavedLogs} dispatch={dispatch}/>
         </div>
     )
 }
 
-const TeleopPage: FC<FormPagesProps> = ({}) => {
+const TeleopPage: FC<FormPagesProps> = ({
+    data, unsavedLogs, dispatch
+}) => {
+
+    const saveInfo = () => {
+        if (unsavedLogs.includes(data) === false) {
+            console.log("adding")
+            dispatch({ type: REDUCER_ACTION_TYPE.ADDED_LOG, payload: data})
+        } else {
+            console.log("updating")
+            dispatch({ type: REDUCER_ACTION_TYPE.UPDATED_LOG, payload: data})
+        }
+    }  
+    
     return (
-        <div>
-            teleop
+        <div className='p-2 flex flex-col'>
+            <div className='mx-4 flex justify-center gap-2 flex-wrap'>
+                <ToggleButton onClick={() => {data.auto.move[0] = !data.auto.move[0]; saveInfo()}} toggled={data.auto.move[0]}>
+                    <Paragraph size="sm" className={`m-0 text-slate-600`}>Dock</Paragraph>
+                </ToggleButton>
+                <ToggleButton onClick={() => {data.auto.leave[0] = !data.auto.leave[0]; saveInfo()}} toggled={data.auto.leave[0]}>
+                    <Paragraph size="sm" className={`m-0 text-slate-600`}>Engage</Paragraph>
+                </ToggleButton>
+            </div>
+            <span className='border-b-2 mx-auto w-72 border-slate-400 rounded my-2'></span>
+            <Input onChange={(e: any) => { data.teleop.cones[0] = parseInt(e.target.value); saveInfo()}} placeholder={data.teleop.cones[0]}>Cones Scored</Input>
+            <Input onChange={(e: any) => { data.teleop.conesAttempted[0] = parseInt(e.target.value); saveInfo()}} placeholder={data.teleop.conesAttempted[0]}>Cones Attempted</Input>
+            <Input onChange={(e: any) => { data.teleop.cubes[0] = parseInt(e.target.value); saveInfo()}} placeholder={data.teleop.cubes[0]}>Cubes Scored</Input>
+            <Input onChange={(e: any) => { data.teleop.cubesAttempted[0] = parseInt(e.target.value); saveInfo()}} placeholder={data.teleop.cubesAttempted[0]}>Cubes Attempted</Input>
+
+            <Paragraph>
+                Select where the team scored 😃
+            </Paragraph>
+            <ScoringGrid grid={data.teleop.scoreLocations} data={data} unsavedLogs={unsavedLogs} dispatch={dispatch}/>
         </div>
     )
 }
