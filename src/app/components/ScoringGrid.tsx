@@ -8,10 +8,11 @@ interface ScoringGridButtonProps extends HTMLAttributes<HTMLButtonElement> {
     data: any
     unsavedLogs: any
     dispatch: any
+    disabled: boolean
 }
 
 const ScoringGridButton: FC<ScoringGridButtonProps> = ({
-    buttonInfo, data, unsavedLogs, dispatch
+    buttonInfo, data, unsavedLogs, dispatch, disabled
 }) => {
     const [ active, setActive ] = useState(buttonInfo[0][1])
 
@@ -28,10 +29,11 @@ const ScoringGridButton: FC<ScoringGridButtonProps> = ({
     return (
         <Button 
             onClick={() => {
-                setActive(active === "0" ? "1" : "0"); 
-                active === "0" ? buttonInfo[0] = `${buttonInfo[0][0]}1` : buttonInfo[0] = `${buttonInfo[0][0]}0`
-                saveInfo(); 
-                console.log(data)}
+                if (disabled === false) {
+                    setActive(active === "0" ? "1" : "0");
+                    active === "0" ? buttonInfo[0] = `${buttonInfo[0][0]}1` : buttonInfo[0] = `${buttonInfo[0][0]}0`
+                    saveInfo()
+                }}
             } 
             size="square"
             variant="unstyled" 
@@ -51,21 +53,22 @@ interface ScoringGridProps {
     data: any
     unsavedLogs: any
     dispatch: any
+    disableInput: boolean
 }
 
 
 const ScoringGrid: FC<ScoringGridProps> = ({
-    grid, data, unsavedLogs, dispatch
+    grid, data, unsavedLogs, dispatch, disableInput
 }) => {
     return (
         <div className='flex flex-col items-center gap-2'>
-            {grid.map((row: any) => {
+            {grid.map((row: any, key: number) => {
                 return (
-                    <div className='flex gap-2'>
-                        {row.map((piece: any) => {
+                    <div key={key} className='flex gap-2'>
+                        {row.map((piece: any, key: number) => {
 
                             return (
-                                <ScoringGridButton buttonInfo={piece} data={data} unsavedLogs={unsavedLogs} dispatch={dispatch}/>
+                                <ScoringGridButton key={key} disabled={disableInput} buttonInfo={piece} data={data} unsavedLogs={unsavedLogs} dispatch={dispatch}/>
                             )
                         })}
                     </div>

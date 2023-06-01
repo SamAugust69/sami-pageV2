@@ -85,13 +85,14 @@ const IconButton: FC<IconButtonProps> = forwardRef<HTMLButtonElement, IconButton
 interface ToggleButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     toggled: any
     ref?: Ref<HTMLButtonElement>
+    disabled?: boolean
 }
 
 const ToggleButton: FC<ToggleButtonProps> = forwardRef<HTMLButtonElement, ToggleButtonProps>(({
-    className, children, toggled, onClick, ...props
+    className, children, toggled, onClick, disabled, ...props
 }, ref) => {  
     return (
-        <button onClick={onClick} className={cn(`transition-colors border-2 border-slate-400 dark:border-slate-400 px-2 py-1 rounded ${toggled ? "bg-slate-400 dark:bg-slate-400" : ""} ${className}`)} ref={ref} {...props}>
+        <button disabled={disabled} onClick={onClick} className={cn(`transition-colors border-2 border-slate-400 dark:border-slate-400 px-2 py-1 rounded ${toggled ? "bg-slate-400 dark:bg-slate-400" : ""} ${className}`)} ref={ref} {...props}>
             {children}
         </button>
     )

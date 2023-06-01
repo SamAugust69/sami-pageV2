@@ -9,11 +9,12 @@ interface FormPagesProps extends HTMLAttributes<HTMLDivElement> {
     data: any
     unsavedLogs: any
     dispatch: any
+    disabled: boolean
 }
 
 
 const AutoPage: FC<FormPagesProps> = ({
-    data, unsavedLogs, dispatch
+    data, unsavedLogs, dispatch, disabled
 }) => {
 
 
@@ -31,36 +32,36 @@ const AutoPage: FC<FormPagesProps> = ({
     return (
         <div className='p-2 flex flex-col'>
             <div className='mx-4 flex justify-center gap-2 flex-wrap'>
-                <ToggleButton onClick={() => {data.auto.move[0] = !data.auto.move[0]; saveInfo()}} toggled={data.auto.move[0]}>
+                <ToggleButton disabled={disabled} onClick={() => {data.auto.move[0] = !data.auto.move[0]; saveInfo()}} toggled={data.auto.move[0]}>
                     <Paragraph size="sm" className={`m-0 text-slate-600`}>Moved</Paragraph>
                 </ToggleButton>
-                <ToggleButton onClick={() => {data.auto.leave[0] = !data.auto.leave[0]; saveInfo()}} toggled={data.auto.leave[0]}>
+                <ToggleButton disabled={disabled} onClick={() => {data.auto.leave[0] = !data.auto.leave[0]; saveInfo()}} toggled={data.auto.leave[0]}>
                     <Paragraph size="sm" className={`m-0 text-slate-600`}>Leave</Paragraph>
                 </ToggleButton>
-                <ToggleButton onClick={() => {data.auto.dock[0] = !data.auto.dock[0]; saveInfo()}} toggled={data.auto.dock[0]}>
+                <ToggleButton disabled={disabled} onClick={() => {data.auto.dock[0] = !data.auto.dock[0]; saveInfo()}} toggled={data.auto.dock[0]}>
                     <Paragraph size="sm" className={`m-0 text-slate-600`}>Docked</Paragraph>
                 </ToggleButton>
-                <ToggleButton onClick={() => {data.auto.score[0] = !data.auto.score[0]; saveInfo()}} toggled={data.auto.score[0]}>
+                <ToggleButton disabled={disabled} onClick={() => {data.auto.score[0] = !data.auto.score[0]; saveInfo()}} toggled={data.auto.score[0]}>
                     <Paragraph size="sm" className={`m-0 text-slate-600`}>Scored</Paragraph>
                 </ToggleButton>
-                <ToggleButton onClick={() => {data.auto.engage[0] = !data.auto.engage[0]; saveInfo()}} toggled={data.auto.engage[0]}>
+                <ToggleButton disabled={disabled} onClick={() => {data.auto.engage[0] = !data.auto.engage[0]; saveInfo()}} toggled={data.auto.engage[0]}>
                     <Paragraph size="sm" className={`m-0 text-slate-600`}>Engage</Paragraph>
                 </ToggleButton>
             </div>
             <span className='border-b-2 mx-auto w-72 border-slate-400 rounded my-2'></span>
-            <Input onChange={(e: any) => { data.auto.cones[0] = parseInt(e.target.value); saveInfo()}} placeholder={data.auto.cones[0]}>Cones Scored</Input>
-            <Input onChange={(e: any) => { data.auto.cubes[0] = parseInt(e.target.value); saveInfo()}} placeholder={data.auto.cubes[0]}>Cubes Scored</Input>
+            <Input disabled={disabled} onChange={(e: any) => { data.auto.cones[0] = parseInt(e.target.value); saveInfo()}} placeholder={data.auto.cones[0]}>Cones Scored</Input>
+            <Input disabled={disabled} onChange={(e: any) => {if (disabled === false) { data.auto.cubes[0] = parseInt(e.target.value); saveInfo()}}} placeholder={data.auto.cubes[0]}>Cubes Scored</Input>
 
             <Paragraph>
                 Select where the team scored 😃
             </Paragraph>
-            <ScoringGrid grid={data.auto.scoreLocations} data={data} unsavedLogs={unsavedLogs} dispatch={dispatch}/>
+            <ScoringGrid disableInput={disabled} grid={data.auto.scoreLocations} data={data} unsavedLogs={unsavedLogs} dispatch={dispatch}/>
         </div>
     )
 }
 
 const TeleopPage: FC<FormPagesProps> = ({
-    data, unsavedLogs, dispatch
+    data, unsavedLogs, dispatch, disabled
 }) => {
 
     const saveInfo = () => {
@@ -92,7 +93,7 @@ const TeleopPage: FC<FormPagesProps> = ({
             <Paragraph>
                 Select where the team scored 😃
             </Paragraph>
-            <ScoringGrid grid={data.teleop.scoreLocations} data={data} unsavedLogs={unsavedLogs} dispatch={dispatch}/>
+            <ScoringGrid disableInput={disabled} grid={data.teleop.scoreLocations} data={data} unsavedLogs={unsavedLogs} dispatch={dispatch}/>
         </div>
     )
 }
