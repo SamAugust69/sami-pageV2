@@ -1,6 +1,6 @@
-"use client"
+'use client';
 
-import { FC, useEffect, useReducer, useState } from 'react'
+import { FC, useEffect, useReducer, useState } from 'react';
 import { useLocalStorage } from '@rehooks/local-storage';
 
 import TopCards from '@/components/TopCards';
@@ -8,142 +8,178 @@ import Heading from '@/ui/Heading';
 import MatchNav from '@/components/MatchNav';
 import SearchBar from '@/ui/SearchBar';
 import LogsSection from '@/components/LogsSection';
-import axios from 'axios';
 import LogButtons from './LogButtons';
+import { handleFetchLog } from '@/lib/api';
 
-import {unsavedReducer, REDUCER_ACTION_TYPE} from "@/lib/unsavedReducer"
+import { unsavedReducer, REDUCER_ACTION_TYPE } from '@/lib/unsavedReducer';
 
 const matchSort = (a: any, b: any) => {
-    return parseInt(a.match) - parseInt(b.match)
-} 
+	return parseInt(a.match) - parseInt(b.match);
+};
 
 const generateMatches = (data: any, setMatches: any) => {
-    console.log("generating matches...")
-    var newMatches: any = []
-    if (data === null) return
-    data.map((val: any) => {
-        // iterate through current match info, if val.info.match[0]( logs match number ) does not exist in matchinfo, 
+	console.log('generating matches...');
+	var newMatches: any = [];
+	if (data === null) return;
+	data.map((val: any) => {
+		// iterate through current match info, if val.info.match[0]( logs match number ) does not exist in matchinfo,
 
-        //  NEVER TRY AND SET A STATE IN A LOOP!!!!!
-        if (newMatches.some((ele: any) => ele.match === val.info.match[0]) === false && val.info.match[0] != 0) {
-            // this will never add a match on 0
-            //add match
-            newMatches = [...newMatches, {
-                "match": `${val.info.match[0]}`,
-                "teams": [],
-            }]
-        }
-    })
+		//  NEVER TRY AND SET A STATE IN A LOOP!!!!!
+		if (newMatches.some((ele: any) => ele.match === val.info.match[0]) === false && val.info.match[0] != 0) {
+			// this will never add a match on 0
+			//add match
+			newMatches = [
+				...newMatches,
+				{
+					match: `${val.info.match[0]}`,
+					teams: [],
+				},
+			];
+		}
+	});
 
-    newMatches.map((match: any) => {
-        data.map((val: any) => {
-            if (val.info.match[0] === match.match) {
-                match.teams = [...match.teams, {team: val.info.team[0], match: val.info.match[0], id: val.id}]
-            }
-        })
-        
-    })
+	newMatches.map((match: any) => {
+		data.map((val: any) => {
+			if (val.info.match[0] === match.match) {
+				match.teams = [
+					...match.teams,
+					{
+						team: val.info.team[0],
+						match: val.info.match[0],
+						id: val.id,
+					},
+				];
+			}
+		});
+	});
 
-    setMatches(newMatches.sort(matchSort))
-}
+	setMatches(newMatches.sort(matchSort));
+};
 
-interface LogsDashboardProps {
-}
-
-const fetchLogs = async (setLog: any) => {
-    axios.request({method: 'GET', url: 'https://api.samifart.com/'})
-        .then((response) => {
-            console.log("Retrieved logs from server")
-            setLog(response.data)
-        })
-        .catch((error) => {
-            console.log("Couldn't retrieve logs from server")
-        })
-}
-
+interface LogsDashboardProps {}
 
 const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
-    // locally stored
-    const [ remoteData, setRemoteData ] = useLocalStorage<any>("remote-data") // stores match information from server
-    const [ localData, setLocalData ] = useLocalStorage<any>("local-data") // stores local match information from scout
+	// locally stored
+	const [remoteData, setRemoteData] = useLocalStorage<any>('remote-data'); // stores match information from server
+	const [localData, setLocalData] = useLocalStorage<any>('local-data'); // stores local match information from scout
 
-    const logs = [
-        {id: "server", label: "Server Logs", amount: remoteData},
-        {id: "local", label: "Local Logs", amount: localData},
-    ]
-    
-    // match displayed states
-    const [ displayedMatches, setDisplayedMatches ] = useState<any>([])
-    const [ filteredMatches, setFilteredMatches ] = useState(displayedMatches)
-    const [ displayedLogs, setDisplayedLogs ] = useLocalStorage<any>("displayed-logs")
-    const [ state, dispatch ] = useReducer(unsavedReducer, [])
-    const [ currentData, setCurrentData ] = useState(remoteData)
-    const [ activeLog, setActiveLog ] = useState(logs[0].id)
-    
+	const logs = [
+		{
+			id: 'server',
+			label: 'Server Logs',
+			amount: remoteData,
+		},
+		{
+			id: 'local',
+			label: 'Local Logs',
+			amount: localData,
+		},
+	];
 
-    // search states
-    const [filter, setFilter] = useState<any>("")
+	// match displayed states
+	const [displayedMatches, setDisplayedMatches] = useState<any>([]);
+	const [filteredMatches, setFilteredMatches] = useState(displayedMatches);
+	const [displayedLogs, setDisplayedLogs] = useLocalStorage<any>('displayed-logs');
+	const [state, dispatch] = useReducer(unsavedReducer, []);
+	const [currentData, setCurrentData] = useState(remoteData);
+	const [activeLog, setActiveLog] = useState(logs[0].id);
 
-    const [ isLoaded, setIsLoaded ] = useState(false)
-    const [query, setQuery] = useState<string>("")
+	// search states
+	const [filter, setFilter] = useState<any>('');
 
+	const [isLoaded, setIsLoaded] = useState(false);
+	const [query, setQuery] = useState<string>('');
 
-    useEffect(() => {
-        fetchLogs(setRemoteData)
-        if (remoteData === undefined || remoteData === null) {}
-        if (localData === undefined || localData === null) setLocalData([])
-        if (displayedLogs === undefined || displayedLogs === null) setDisplayedLogs([])
-        generateMatches(currentData, setDisplayedMatches)
-        setIsLoaded(true)
-    }, [])
+	useEffect(() => {
+		handleFetchLog(setRemoteData);
+		if (localData === undefined || localData === null) setLocalData([]);
+		if (displayedLogs === undefined || displayedLogs === null) setDisplayedLogs([]);
+		generateMatches(currentData, setDisplayedMatches);
+		setIsLoaded(true);
+	}, []);
 
-    useEffect(() => {
-        console.log(`switching displayed matches... ${activeLog}`)
-        if (activeLog === "local") {
-            setCurrentData(localData)
+	useEffect(() => {
+		console.log(`switching displayed matches... ${activeLog}`);
+		if (activeLog === 'local') {
+			setCurrentData(localData);
+		} else {
+			setCurrentData(remoteData);
+		}
+	}, [activeLog]);
 
-        } else {
-            setCurrentData(remoteData)
-        }
-    }, [activeLog])
+	useEffect(() => {
+		generateMatches(currentData, setDisplayedMatches);
+	}, [state]);
 
-    useEffect(() => {
-        generateMatches(currentData, setDisplayedMatches)
-    }, [state])
+	useEffect(() => {
+		generateMatches(currentData, setDisplayedMatches);
+	}, [currentData]);
 
-    useEffect(() => {
-        generateMatches(currentData, setDisplayedMatches)
-    }, [currentData])
+	useEffect(() => {
+		var fart = filter.filter((filter: { selected: string }) => filter.selected === 'true');
+		console.log(fart[0].label);
+		setFilteredMatches(
+			fart[0].label === 'Match'
+				? displayedMatches.filter((item: any) => {
+						return query.toLowerCase() === '' ? item : item.match.includes(query);
+				  })
+				: displayedMatches.filter((item: any) => {
+						return query.toLowerCase() === '' ? item : item.match.includes(query);
+				  })
+		);
+	}, [query, displayedMatches]);
 
-    useEffect(() => {
-        setFilteredMatches( displayedMatches.filter((item: any) => {
-            return query.toLowerCase() === "" ? item : item.match.includes(query)
-        }) )
-    }, [query, displayedMatches])
+	const searchBarFilters = [
+		{
+			id: '0',
+			label: 'Match',
+			selected: 'true',
+		},
+		{
+			id: '1',
+			label: 'Team',
+			selected: 'false',
+		},
+	];
 
+	return (
+		<>
+			<div className="px-4 flex flex-col w-full">
+				<Heading size="sm" className="text-slate-700 font-medium text-left py-2">
+					Dashboard
+				</Heading>
+				<TopCards activeLog={activeLog} setActiveLog={setActiveLog} remoteData={remoteData} localData={localData} />
+				<span className="border-b-2 w-full border-slate-400 my-4" />
+				<SearchBar
+					setFilterA={setFilter}
+					onChange={(e) => {
+						setQuery(e.target.value);
+					}}
+					filters={searchBarFilters}
+				/>
+				<MatchNav
+					displayedMatches={filteredMatches}
+					setDisplayedLogs={setDisplayedLogs}
+					displayedLogs={displayedLogs}
+					currentData={currentData}
+					matchData={displayedMatches}
+					className="py-2"
+				/>
+				<LogButtons
+					displayedLogs={displayedLogs}
+					dispatch={dispatch}
+					unsavedLogs={state}
+					setDisplayedLogs={setDisplayedLogs}
+					localLogs={localData}
+					setLocalLogs={setLocalData}
+				/>
+				<LogsSection className="py-4" dispatch={dispatch} unsavedLogs={state} logsToDisplay={isLoaded && displayedLogs} />
+			</div>
+		</>
+	);
+};
 
-    const searchbarProps = {
-        setFilter: {setFilter},
-        filters: [ {"id": "0", "label": "Match", "selected": "true"}, {"id": "1", "label": "Team", "selected": "false"} ]
-    }
-
-
-    return (
-        <>
-            <div className='px-4 flex flex-col w-full'>
-                <Heading size="sm" className='text-slate-700 font-medium text-left py-2'>Dashboard</Heading>
-                <TopCards activeLog={activeLog} setActiveLog={setActiveLog} remoteData={remoteData} localData={localData}/>
-                <span className='border-b-2 w-full border-slate-400 my-4'/>
-                <SearchBar setFilterA={setFilter} onChange={(e) => {setQuery(e.target.value)}} filters={[ {"id": "0", "label": "Match", "selected": "true"}, {"id": "1", "label": "Team", "selected": "false"} ]}/>
-                <MatchNav displayedMatches={filteredMatches} setDisplayedLogs={setDisplayedLogs} displayedLogs={displayedLogs} currentData={currentData} matchData={displayedMatches} className='py-2'/>
-                <LogButtons displayedLogs={displayedLogs} dispatch={dispatch} unsavedLogs={state} setDisplayedLogs={setDisplayedLogs} localLogs={localData} setLocalLogs={setLocalData}/>
-                <LogsSection className='py-4' dispatch={dispatch} unsavedLogs={state} logsToDisplay={isLoaded && displayedLogs }/>
-            </div>
-        </>
-    )
-}
-
-export default LogsDashboard
+export default LogsDashboard;
 
 // add pecent value for each teams score controbutiom in a match
 // add first few parts of motes to quick info!
@@ -152,7 +188,7 @@ export default LogsDashboard
 
 //SEARCH
 //sort by match number
-//sort by team number 
+//sort by team number
 //reverse order
 
 //OPTIMOZE
