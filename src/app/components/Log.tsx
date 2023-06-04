@@ -1,16 +1,11 @@
-import { FC, useEffect, useState } from "react";
-import Heading from "@/ui/Heading";
-import { EditableTextLabel, TextLabel } from "@/ui/Labels";
-import Paragraph from "./ui/Paragraph";
-import { Button } from "./ui/Button";
-import {
-	ChevronLeft,
-	ChevronRight,
-	ChevronsLeft,
-	ChevronsRight,
-} from "lucide-react";
-import { unsavedReducer, REDUCER_ACTION_TYPE } from "@/lib/unsavedReducer";
-import { AutoPage, TeleopPage } from "@/components/FormPages";
+import { FC, useEffect, useState } from 'react';
+import Heading from '@/ui/Heading';
+import { EditableTextLabel, TextLabel } from '@/ui/Labels';
+import Paragraph from './ui/Paragraph';
+import { Button } from './ui/Button';
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
+import { unsavedReducer, REDUCER_ACTION_TYPE } from '@/lib/unsavedReducer';
+import { AutoPage, TeleopPage } from '@/components/FormPages';
 
 interface LogProps {
 	data: any;
@@ -19,49 +14,30 @@ interface LogProps {
 	disabledInput: boolean;
 }
 
-const EditableLog: FC<LogProps> = ({
-	data,
-	unsavedLogs,
-	dispatch,
-	disabledInput,
-}) => {
+const EditableLog: FC<LogProps> = ({ data, unsavedLogs, dispatch, disabledInput }) => {
 	//const [fuck, setFuck] = useState(data)
 
 	const { info, auto } = data;
 
 	const pages: any = {
 		0: {
-			page: (
-				<AutoPage
-					disabled={disabledInput}
-					data={data}
-					unsavedLogs={unsavedLogs}
-					dispatch={dispatch}
-				/>
-			),
-			title: "Auto",
+			page: <AutoPage disabled={disabledInput} data={data} unsavedLogs={unsavedLogs} dispatch={dispatch} />,
+			title: 'Auto',
 			num: 1,
 		},
 		1: {
-			page: (
-				<TeleopPage
-					disabled={disabledInput}
-					data={data}
-					unsavedLogs={unsavedLogs}
-					dispatch={dispatch}
-				/>
-			),
-			title: "Teleop",
+			page: <TeleopPage disabled={disabledInput} data={data} unsavedLogs={unsavedLogs} dispatch={dispatch} />,
+			title: 'Teleop',
 			num: 2,
 		},
 	};
 
 	const saveInfo = () => {
 		if (unsavedLogs.includes(data) === false) {
-			console.log("adding");
+			console.log('adding');
 			dispatch({ type: REDUCER_ACTION_TYPE.ADDED_LOG, payload: data });
 		} else {
-			console.log("updating");
+			console.log('updating');
 			dispatch({ type: REDUCER_ACTION_TYPE.UPDATED_LOG, payload: data });
 		}
 	};
@@ -120,16 +96,11 @@ const EditableLog: FC<LogProps> = ({
 				</div>
 				<div
 					className={`h-8 flex items-center justify-center px-2 rounded-l ${
-						data.disabled === true
-							? "border-[#98aa9c] bg-[#6c837d]"
-							: "border-[#ee1145] bg-[#f2524f]"
+						data.disabled === true ? 'border-[#98aa9c] bg-[#6c837d]' : 'border-[#ee1145] bg-[#f2524f]'
 					} border-y-2 border-l-2 absolute right-0`}
 				>
-					<Paragraph
-						size="sm"
-						className="m-0 text-left font-medium tracking-wide text-slate-200"
-					>
-						{data.disabled === true ? "SERVER" : "LOCAL"}
+					<Paragraph size="sm" className="m-0 text-left font-medium tracking-wide text-slate-200">
+						{data.disabled === true ? 'SERVER' : 'LOCAL'}
 					</Paragraph>
 				</div>
 			</div>
@@ -140,9 +111,7 @@ const EditableLog: FC<LogProps> = ({
 						<Button
 							className="group transition-colors h-full w-1/2"
 							variant="hidden"
-							onClick={() =>
-								currentPage >= 1 && setCurrentPage(currentPage - 1)
-							}
+							onClick={() => currentPage >= 1 && setCurrentPage(currentPage - 1)}
 						>
 							<ChevronLeft className="scale-100 group-hover:scale-0 transition-transform" />
 							<ChevronsLeft className="absolute scale-0 group-hover:scale-100 transition-transform" />

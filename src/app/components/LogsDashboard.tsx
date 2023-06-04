@@ -85,7 +85,7 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
 	const [activeLog, setActiveLog] = useState(logs[0].id);
 
 	// search states
-	const [filter, setFilter] = useState<any>('');
+	const [filter, setFilter] = useState<any>([]);
 
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [query, setQuery] = useState<string>('');
@@ -116,18 +116,24 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
 	}, [currentData]);
 
 	useEffect(() => {
-		var fart = filter.filter((filter: { selected: string }) => filter.selected === 'true');
-		console.log(fart[0].label);
-		setFilteredMatches(
-			fart[0].label === 'Match'
-				? displayedMatches.filter((item: any) => {
-						return query.toLowerCase() === '' ? item : item.match.includes(query);
-				  })
-				: displayedMatches.filter((item: any) => {
-						return query.toLowerCase() === '' ? item : item.match.includes(query);
-				  })
-		);
-	}, [query, displayedMatches]);
+		var fart = filter !== undefined && filter.filter((filter: { selected: string }) => filter.selected === 'true');
+		if (fart.length > 0) {
+			switch (fart[0].label) {
+				case 'Match':
+					setFilteredMatches(
+						displayedMatches.filter((item: any) => {
+							return query.toLowerCase() === '' ? item : item.match.includes(query);
+						})
+					);
+				case 'Team':
+					setFilteredMatches(
+						displayedMatches.filter((item: any) => {
+							return query.toLowerCase() === '' ? item : item.teams.some((match: any) => match.team === query);
+						})
+					);
+			}
+		}
+	}, [query, displayedMatches, filter]);
 
 	const searchBarFilters = [
 		{
