@@ -6,6 +6,7 @@ import { Button } from './ui/Button';
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
 import { unsavedReducer, REDUCER_ACTION_TYPE } from '@/lib/unsavedReducer';
 import { AutoPage, TeleopPage } from '@/components/FormPages';
+import { handleExportLog } from '../lib/api';
 
 interface LogProps {
 	data: any;
@@ -50,6 +51,7 @@ const EditableLog: FC<LogProps> = ({ data, unsavedLogs, dispatch, disabledInput 
 	const [open, setOpen] = useState(false);
 	const [saved, setSaved] = useState(true);
 	const [currentPage, setCurrentPage] = useState(0);
+	const [loading, setLoading] = useState(false);
 
 	return (
 		<div className="relative flex-shrink-0 self-start rounded border-2 border-slate-400 dark:border-slate-800 bg-slate-200 dark:bg-slate-600 shadow-md w-80 md:w-96">
@@ -107,31 +109,43 @@ const EditableLog: FC<LogProps> = ({ data, unsavedLogs, dispatch, disabledInput 
 			{open && (
 				<div className="border-t-2 border-slate-400 dark:border-slate-800 flex flex-col">
 					{pages[currentPage].page}
-					<div className="flex bg-slate-300 dark:bg-slate-700 mt-auto h-12 items-center justify-center ">
-						<Button
-							className="group transition-colors h-full w-1/2"
-							variant="hidden"
-							onClick={() => currentPage >= 1 && setCurrentPage(currentPage - 1)}
-						>
-							<ChevronLeft className="scale-100 group-hover:scale-0 transition-transform" />
-							<ChevronsLeft className="absolute scale-0 group-hover:scale-100 transition-transform" />
-						</Button>
-						<div className="px-4">
-							<Paragraph size="xs" className="m-0 font-medium">
-								{pages[currentPage].title}
-							</Paragraph>
-							<Paragraph size="xs" className="m-0">
-								{pages[currentPage].num}
-							</Paragraph>
+					<div className="bg-slate-300 dark:bg-slate-500 flex flex-col">
+						{disabledInput === false && (
+							<Button
+								variant="link"
+								className="h-6 focus:ring-0"
+								onClick={() => handleExportLog([data], setLoading)}
+								isLoading={loading}
+							>
+								Export
+							</Button>
+						)}
+						<div className="bg-slate-300 dark:bg-slate-700 flex mt-auto h-12 items-center justify-center">
+							<Button
+								className="group transition-colors h-full w-1/2"
+								variant="hidden"
+								onClick={() => currentPage >= 1 && setCurrentPage(currentPage - 1)}
+							>
+								<ChevronLeft className="scale-100 group-hover:scale-0 transition-transform" />
+								<ChevronsLeft className="absolute scale-0 group-hover:scale-100 transition-transform" />
+							</Button>
+							<div className="px-4">
+								<Paragraph size="xs" className="m-0 font-medium">
+									{pages[currentPage].title}
+								</Paragraph>
+								<Paragraph size="xs" className="m-0">
+									{pages[currentPage].num}
+								</Paragraph>
+							</div>
+							<Button
+								className="group transition-colors h-full w-1/2"
+								variant="hidden"
+								onClick={() => currentPage < 1 && setCurrentPage(currentPage + 1)}
+							>
+								<ChevronRight className="scale-100 group-hover:scale-0 transition-transform" />
+								<ChevronsRight className="absolute scale-0 group-hover:scale-100 transition-transform" />
+							</Button>
 						</div>
-						<Button
-							className="group transition-colors h-full w-1/2"
-							variant="hidden"
-							onClick={() => currentPage < 1 && setCurrentPage(currentPage + 1)}
-						>
-							<ChevronRight className="scale-100 group-hover:scale-0 transition-transform" />
-							<ChevronsRight className="absolute scale-0 group-hover:scale-100 transition-transform" />
-						</Button>
 					</div>
 				</div>
 			)}

@@ -28,4 +28,26 @@ const handleFetchLog = async (setLog: any) => {
 		});
 };
 
-export { handleDeleteLog, handleFetchLog };
+const handleExportLog = async (forms: Array<any>, setLoading?: React.SetStateAction<any>) => {
+	const clonedForms = structuredClone(forms);
+	setLoading && setLoading(true);
+	clonedForms.map((log: any) => {
+		log.disabled = true;
+		axios
+			.request({
+				method: 'POST',
+				url: 'https://api.samifart.com/',
+				headers: { 'Content-Type': 'application/json' },
+				data: log,
+			})
+			.then(function (response) {
+				console.log(response.data);
+				setLoading && setLoading(false);
+			})
+			.catch(function (error) {
+				console.error(error);
+			});
+	});
+};
+
+export { handleDeleteLog, handleFetchLog, handleExportLog };

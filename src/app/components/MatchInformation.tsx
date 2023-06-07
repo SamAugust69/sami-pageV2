@@ -1,9 +1,9 @@
-import { FC, HTMLAttributes, useState } from "react";
-import Paragraph from "@/ui/Paragraph";
-import { Button } from "@/ui/Button";
-import TeamLogTab from "@/components/TeamLogTab";
-import { motion, AnimatePresence } from "framer-motion";
-import { v4 } from "uuid";
+import { FC, HTMLAttributes, useState } from 'react';
+import Paragraph from '@/ui/Paragraph';
+import { Button } from '@/ui/Button';
+import TeamLogTab from '@/components/TeamLogTab';
+import { motion, AnimatePresence } from 'framer-motion';
+import { v4 } from 'uuid';
 
 interface MatchInformationProps extends HTMLAttributes<HTMLDivElement> {
 	matchInfo: any;
@@ -34,7 +34,7 @@ const MatchInformation: FC<MatchInformationProps> = ({
 		>
 			<div
 				className={` ${
-					open ? "border-b-2" : ""
+					open ? 'border-b-2' : ''
 				} border-slate-400 dark:border-slate-800 flex justify-between items-center p-2`}
 			>
 				<Button size="sm" onClick={() => setOpen(!open)}>
@@ -44,14 +44,9 @@ const MatchInformation: FC<MatchInformationProps> = ({
 					<Paragraph size="sm" className="m-0 text-right">
 						Match {matchInfo.match}
 					</Paragraph>
-					<Paragraph
-						size="xs"
-						className="m-0 text-slate-900 font-light relative -top-2 text-right"
-					>
+					<Paragraph size="xs" className="m-0 text-slate-900 font-light relative -top-2 text-right">
 						{matchInfo.teams.map((data: any, key: number) => {
-							return `${data.team}${
-								key !== matchInfo.teams.length - 1 ? "," : ""
-							} `;
+							return `${data.team}${key !== matchInfo.teams.length - 1 ? ',' : ''} `;
 						})}
 					</Paragraph>
 				</div>
@@ -71,7 +66,7 @@ const MatchInformation: FC<MatchInformationProps> = ({
 								matchData={matchData}
 								displayedLogs={displayedLogs}
 								setDisplayedLogs={setDisplayedLogs}
-								className={key % 2 === 0 && "bg-slate-300 dark:bg-[#424f61]"}
+								className={key % 2 === 0 && 'bg-slate-300 dark:bg-[#424f61]'}
 								key={v4()}
 								teamData={val}
 							/>

@@ -33,7 +33,7 @@ const TeamLogTab: FC<TeamLogTabProps> = ({ currentData, teamData, className, dis
 		});
 	};
 
-	const deleteLog = (id: any) => {
+	const removeLog = (id: any) => {
 		console.log(logs);
 		var i = displayedLogs.findIndex((object: any) => object.id === id);
 		var newLogs = displayedLogs.filter((log: any) => log !== displayedLogs[i]);
@@ -41,6 +41,11 @@ const TeamLogTab: FC<TeamLogTabProps> = ({ currentData, teamData, className, dis
 		//setLogs(newLogs)
 	};
 
+	const deleteLocalLog = (id: any) => {
+		console.log(id);
+	};
+
+	console.log(teamData);
 	return (
 		<div
 			className={cn(
@@ -51,7 +56,9 @@ const TeamLogTab: FC<TeamLogTabProps> = ({ currentData, teamData, className, dis
 			<div className="flex">
 				<Paragraph
 					size="xs"
-					onClick={() => handleDeleteLog(teamData.id)}
+					onClick={() => {
+						teamData.disabled ? handleDeleteLog(teamData.id) : deleteLocalLog(teamData.id);
+					}}
 					className={`hover:line-through hover:text-red-500 dark:hover:text-red-500 hover:cursor-pointer m-0 transition-colors ${
 						isPresent ? 'text-[#6c837d] dark:text-[#a3c8be]' : ''
 					}`}
@@ -65,7 +72,7 @@ const TeamLogTab: FC<TeamLogTabProps> = ({ currentData, teamData, className, dis
 				variant="hidden"
 				size="xs"
 				onClick={() => {
-					!isPresent ? addLog() : deleteLog(teamData.id);
+					!isPresent ? addLog() : removeLog(teamData.id);
 				}}
 			>
 				<ChevronRight className="group-hover:scale-0 transition-all" />

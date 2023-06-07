@@ -47,6 +47,7 @@ const generateMatches = (data: any, setMatches: any) => {
 						team: val.info.team[0],
 						match: val.info.match[0],
 						id: val.id,
+						disabled: val.disabled,
 					},
 				];
 			}
@@ -120,17 +121,21 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
 		if (fart.length > 0) {
 			switch (fart[0].label) {
 				case 'Match':
+					console.log(fart[0].label);
 					setFilteredMatches(
 						displayedMatches.filter((item: any) => {
 							return query.toLowerCase() === '' ? item : item.match.includes(query);
 						})
 					);
+					break;
 				case 'Team':
+					console.log(fart[0].label);
 					setFilteredMatches(
 						displayedMatches.filter((item: any) => {
 							return query.toLowerCase() === '' ? item : item.teams.some((match: any) => match.team === query);
 						})
 					);
+					break;
 			}
 		}
 	}, [query, displayedMatches, filter]);
