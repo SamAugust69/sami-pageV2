@@ -1,34 +1,30 @@
-import { cn } from "@/app/lib/utils";
-import { VariantProps, cva } from "class-variance-authority";
-import { FC, HTMLAttributes, useState, useRef, useEffect } from "react";
-import { ChevronDown, SearchIcon } from "lucide-react";
-import { Button } from "@/ui/Button";
-import { DropdownItem, DropdownMenu } from "@/ui/DropdownMenu";
-import { motion } from "framer-motion";
+import { cn } from '@/app/lib/utils';
+import { VariantProps, cva } from 'class-variance-authority';
+import { FC, HTMLAttributes, useState, useRef, useEffect } from 'react';
+import { ChevronDown, SearchIcon } from 'lucide-react';
+import { Button } from '@/ui/Button';
+import { DropdownItem, DropdownMenu } from '@/ui/DropdownMenu';
 
 export const searchBarVariants = cva(
-	"rounded flex focus:ring-2 outline-none flex justify-center w-72 sm:w-96 relative shadow-md",
+	'rounded flex focus:ring-2 outline-none flex justify-center w-72 sm:w-96 relative shadow-md',
 	{
 		variants: {
 			variant: {
-				default:
-					" border-2 border-slate-400 dark:border-slate-800 bg-slate-200 dark:bg-slate-600",
+				default: ' border-2 border-slate-400 dark:border-slate-800 bg-slate-200 dark:bg-slate-600',
 			},
 			size: {
-				default: "py-2 px-4",
-				sm: "px-2 h-10",
+				default: 'py-2 px-4',
+				sm: 'px-2 h-10',
 			},
 		},
 		defaultVariants: {
-			variant: "default",
-			size: "default",
+			variant: 'default',
+			size: 'default',
 		},
 	}
 );
 
-interface SearchBarProps
-	extends HTMLAttributes<HTMLInputElement>,
-		VariantProps<typeof searchBarVariants> {
+interface SearchBarProps extends HTMLAttributes<HTMLInputElement>, VariantProps<typeof searchBarVariants> {
 	onChange: React.ChangeEventHandler<HTMLInputElement>;
 	setFilterA: any;
 	filters?: any;
@@ -54,11 +50,7 @@ const SearchBar: FC<SearchBarProps> = ({
 	// [ {"filter": "matchFilter", "label": "Match"}, {"filter": "teamFilter", "label": "Team"} ]
 
 	const handleDropDown = (e: any) => {
-		if (
-			dropdownOpen &&
-			!dropdownRef.current?.contains(e.target) &&
-			!dropdownButton.current?.contains(e.target)
-		) {
+		if (dropdownOpen && !dropdownRef.current?.contains(e.target) && !dropdownButton.current?.contains(e.target)) {
 			setDropdownOpen(false);
 		}
 	};
@@ -66,16 +58,16 @@ const SearchBar: FC<SearchBarProps> = ({
 	const handleChange = (id: string) => {
 		let newItems = filters.map((item: any) => {
 			if (item.id != id) {
-				return { ...item, selected: "false" };
+				return { ...item, selected: 'false' };
 			}
-			return { ...item, selected: "true" };
+			return { ...item, selected: 'true' };
 		});
 		console.log(newItems);
 		setDropdownFilters(newItems);
 	};
 
 	useEffect(() => {
-		document.addEventListener("mouseup", handleDropDown);
+		document.addEventListener('mouseup', handleDropDown);
 	});
 
 	useEffect(() => {
@@ -83,14 +75,9 @@ const SearchBar: FC<SearchBarProps> = ({
 	}, [dropdownFilters]);
 
 	return (
-		<div className="w-full flex justify-center">
+		<div className=" flex justify-center">
 			<div className={cn(searchBarVariants({ size, variant }), className)}>
-				<Button
-					ref={dropdownButton}
-					onClick={() => setSearchOpen(!searchOpen)}
-					variant="link"
-					size="sm"
-				>
+				<Button ref={dropdownButton} onClick={() => setSearchOpen(!searchOpen)} variant="link" size="sm">
 					<SearchIcon className={`w-5 h-5 mx-1 dark:text-slate-200`} />
 				</Button>
 
@@ -109,9 +96,7 @@ const SearchBar: FC<SearchBarProps> = ({
 					size="sm"
 				>
 					<ChevronDown
-						className={`w-5 h-5 mx-1 transition-transform dark:text-slate-200 ${
-							dropdownOpen ? "rotate-180" : ""
-						}`}
+						className={`w-5 h-5 mx-1 transition-transform dark:text-slate-200 ${dropdownOpen ? 'rotate-180' : ''}`}
 					/>
 				</Button>
 				{dropdownOpen && (
@@ -145,6 +130,6 @@ const HiddenSearchBar: FC<SearchBarProps> = ({}) => {
 
 export default SearchBar;
 
-SearchBar.displayName = "SearchBar";
+SearchBar.displayName = 'SearchBar';
 
 export { SearchBar, HiddenSearchBar };

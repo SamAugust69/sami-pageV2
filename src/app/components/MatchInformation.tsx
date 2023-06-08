@@ -2,7 +2,7 @@ import { FC, HTMLAttributes, useState } from 'react';
 import Paragraph from '@/ui/Paragraph';
 import { Button } from '@/ui/Button';
 import TeamLogTab from '@/components/TeamLogTab';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { v4 } from 'uuid';
 
 interface MatchInformationProps extends HTMLAttributes<HTMLDivElement> {

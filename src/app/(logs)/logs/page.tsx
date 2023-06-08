@@ -1,10 +1,10 @@
-import { FC } from "react";
-import { Metadata } from "next";
-import LogsDashboard from "@/components/LogsDashboard";
+import { FC } from 'react';
+import { Metadata } from 'next';
+import LogsDashboard from '@/components/LogsDashboard';
 
 export const metadata: Metadata = {
-	title: "Sami Scouting | Logs",
-	description: "Purpose built scouting app for team 155",
+	title: 'Sami Scouting | Logs',
+	description: 'Purpose built scouting app for team 155',
 };
 
 interface pageProps {}

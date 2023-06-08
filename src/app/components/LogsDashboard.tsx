@@ -7,11 +7,13 @@ import TopCards from '@/components/TopCards';
 import Heading from '@/ui/Heading';
 import MatchNav from '@/components/MatchNav';
 import SearchBar from '@/ui/SearchBar';
+import { BiRefresh } from 'react-icons/bi';
 import LogsSection from '@/components/LogsSection';
 import LogButtons from './LogButtons';
 import { handleFetchLog } from '@/lib/api';
 
-import { unsavedReducer, REDUCER_ACTION_TYPE } from '@/lib/unsavedReducer';
+import { unsavedReducer } from '@/lib/unsavedReducer';
+import { Button } from './ui/Button';
 
 const matchSort = (a: any, b: any) => {
 	return parseInt(a.match) - parseInt(b.match);
@@ -161,13 +163,25 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
 				</Heading>
 				<TopCards activeLog={activeLog} setActiveLog={setActiveLog} remoteData={remoteData} localData={localData} />
 				<span className="border-b-2 w-full border-slate-400 my-4" />
-				<SearchBar
-					setFilterA={setFilter}
-					onChange={(e) => {
-						setQuery(e.target.value);
-					}}
-					filters={searchBarFilters}
-				/>
+				<div className="flex items-center justify-center">
+					<SearchBar
+						setFilterA={setFilter}
+						onChange={(e) => {
+							setQuery(e.target.value);
+						}}
+						filters={searchBarFilters}
+					/>
+					<Button
+						variant="search"
+						size="lg"
+						className="shadow-md group"
+						onClick={() => {
+							handleFetchLog(setRemoteData);
+						}}
+					>
+						<BiRefresh className="h-6 w-6 group-hover:animate-spin" />
+					</Button>
+				</div>
 				<MatchNav
 					displayedMatches={filteredMatches}
 					setDisplayedLogs={setDisplayedLogs}

@@ -1,8 +1,9 @@
-import { FC } from "react";
-import { Button } from "./ui/Button";
-import { GrFormAdd } from "react-icons/gr";
-import { REDUCER_ACTION_TYPE } from "@/lib/unsavedReducer";
-import blankLog from "@/lib/blankLog";
+import { FC, useState } from 'react';
+import { Button } from './ui/Button';
+import { GrFormAdd } from 'react-icons/gr';
+import { REDUCER_ACTION_TYPE } from '@/lib/unsavedReducer';
+import blankLog from '@/lib/blankLog';
+import { handleExportLog } from '../lib/api';
 
 interface LogButtonsProps {
 	displayedLogs: any;
@@ -29,13 +30,11 @@ const LogButtons: FC<LogButtonsProps> = ({
 
 	const saveLogs = () => {
 		var newLogs: any = localLogs;
-		console.log("-------------------------");
+		console.log('-------------------------');
 		console.log(unsavedLogs);
 		unsavedLogs.map((val: any) => {
 			if (localLogs.some((ele: any) => ele.id === val.id) !== true) {
-				console.log(
-					`adding log ${val.info.match}, ${val.info.team}, ${val.id}`
-				);
+				console.log(`adding log ${val.info.match}, ${val.info.team}, ${val.id}`);
 				newLogs = [...newLogs, val];
 				dispatch({ type: REDUCER_ACTION_TYPE.REMOVED_LOG, payload: val });
 				console.log(newLogs);
@@ -55,7 +54,7 @@ const LogButtons: FC<LogButtonsProps> = ({
 			console.log(localLogs);
 		});
 
-		console.log("-------------------------");
+		console.log('-------------------------');
 
 		setDisplayedLogs(
 			displayedLogs.map((log: any) => {
@@ -68,6 +67,8 @@ const LogButtons: FC<LogButtonsProps> = ({
 		);
 	};
 
+	const [loading, setLoading] = useState(false);
+
 	return (
 		<div className="flex items-center justify-center">
 			<Button size="icon" onClick={() => addNewLog()}>
@@ -76,8 +77,8 @@ const LogButtons: FC<LogButtonsProps> = ({
 			<Button size="lg" onClick={() => saveLogs()}>
 				Save Local Logs
 			</Button>
-			<Button size="lg" onClick={() => setDisplayedLogs([])}>
-				Close All Logs
+			<Button size="lg" onClick={() => handleExportLog(localLogs, setLoading)} isLoading={loading}>
+				Export Local Logs
 			</Button>
 		</div>
 	);

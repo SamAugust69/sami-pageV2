@@ -1,9 +1,8 @@
-import MatchInformation from "./MatchInformation";
-import { FC, HTMLAttributes } from "react";
-import { v4 } from "uuid";
-import Paragraph from "@/ui/Paragraph";
-import Link from "next/link";
-import HorizontalScroll from "./ui/HorizontalScroll";
+import MatchInformation from './MatchInformation';
+import { FC, HTMLAttributes } from 'react';
+import Paragraph from '@/ui/Paragraph';
+import Link from 'next/link';
+import HorizontalScroll from './ui/HorizontalScroll';
 
 interface MatchNavProps extends HTMLAttributes<HTMLDivElement> {
 	displayedMatches: any;
@@ -23,11 +22,7 @@ const MatchNav: FC<MatchNavProps> = ({
 }) => {
 	return (
 		<HorizontalScroll className={className}>
-			<div
-				className={`flex flex-row gap-4 ${
-					displayedMatches.length < 1 ? "justify-center" : ""
-				}`}
-			>
+			<div className={`flex flex-row gap-4 ${displayedMatches.length < 1 ? 'justify-center' : ''}`}>
 				{displayedMatches.length > 0 ? (
 					displayedMatches.map((val: any, key: number) => {
 						//test={() => {setDisplayedLogs([...displayedLogs, {}]); console.log(displayedLogs)}}
@@ -48,7 +43,7 @@ const MatchNav: FC<MatchNavProps> = ({
 						size="sm"
 						className="w-80 md:w-full border-2 m-0 border-slate-400 dark:border-slate-800 rounded p-2 bg-slate-200 dark:bg-slate-600 shadow-md"
 					>
-						no results{" "}
+						no results{' '}
 						<Link
 							className="underline hover:text-slate-900 hover:dark:text-slate-300 transition-colors"
 							href="/documentation"

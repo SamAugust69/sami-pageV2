@@ -1,10 +1,9 @@
 import { FC, useEffect, useState } from 'react';
-import Heading from '@/ui/Heading';
-import { EditableTextLabel, TextLabel } from '@/ui/Labels';
+import { EditableTextLabel } from '@/ui/Labels';
 import Paragraph from './ui/Paragraph';
 import { Button } from './ui/Button';
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
-import { unsavedReducer, REDUCER_ACTION_TYPE } from '@/lib/unsavedReducer';
+import { REDUCER_ACTION_TYPE } from '@/lib/unsavedReducer';
 import { AutoPage, TeleopPage } from '@/components/FormPages';
 import { handleExportLog } from '../lib/api';
 

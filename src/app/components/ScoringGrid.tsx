@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes, useEffect, useState } from 'react';
+import { FC, HTMLAttributes, useState } from 'react';
 import { Button } from './ui/Button';
 import { REDUCER_ACTION_TYPE } from '@/lib/unsavedReducer';
 
