@@ -179,7 +179,7 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
 							handleFetchLog(setRemoteData);
 						}}
 					>
-						<BiRefresh className="h-6 w-6 group-hover:animate-spin" />
+						<BiRefresh className="h-6 w-6 group-hover:animate-spin dark:text-slate-200" />
 					</Button>
 				</div>
 				<MatchNav

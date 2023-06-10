@@ -20,7 +20,7 @@ export const buttonVariants = cva(
 				default: 'h-10 py-2 px-4',
 				icon: 'h-12 w-12 m-2',
 				square_sm: 'h-7 w-7',
-				lg: 'h-12 mx-2 px-2 md:px-4',
+				lg: 'h-12 mx-2 px-2 md:px-3',
 				sm: 'h-8 p-2',
 				xs: 'h-6 p-2',
 			},

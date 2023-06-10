@@ -2,8 +2,8 @@ import { FC, useState } from 'react';
 import { Button } from './ui/Button';
 import { GrFormAdd } from 'react-icons/gr';
 import { REDUCER_ACTION_TYPE } from '@/lib/unsavedReducer';
-import blankLog from '@/lib/blankLog';
 import { handleExportLog } from '../lib/api';
+import { v4 } from 'uuid';
 
 interface LogButtonsProps {
 	displayedLogs: any;
@@ -25,6 +25,39 @@ const LogButtons: FC<LogButtonsProps> = ({
 	//needs to have the ability to add a new log to local logs, and display it..!!!
 
 	const addNewLog = () => {
+		const blankLog = {
+			id: v4(),
+			disabled: false,
+			info: { match: ['0'], team: ['0'], scout: [''], notes: [''] },
+			auto: {
+				move: [false],
+				score: [false],
+				leave: [false],
+				dock: [false],
+				engage: [false],
+				cones: [0],
+				cubes: [0],
+				scoreLocations: [
+					[['10'], ['00'], ['10'], ['10'], ['00'], ['10'], ['10'], ['00'], ['10']],
+					[['10'], ['00'], ['10'], ['10'], ['00'], ['10'], ['10'], ['00'], ['10']],
+					[['20'], ['20'], ['20'], ['20'], ['20'], ['20'], ['20'], ['20'], ['20']],
+				],
+			},
+			teleop: {
+				conesAttempted: [0],
+				cones: [0],
+				cubes: [0],
+				cubesAttempted: [0],
+				dock: [false],
+				engage: [false],
+				scoreLocations: [
+					[['10'], ['00'], ['10'], ['10'], ['00'], ['10'], ['10'], ['00'], ['10']],
+					[['10'], ['00'], ['10'], ['10'], ['00'], ['10'], ['10'], ['00'], ['10']],
+					[['20'], ['20'], ['20'], ['20'], ['20'], ['20'], ['20'], ['20'], ['20']],
+				],
+			},
+		};
+
 		setDisplayedLogs([...displayedLogs, blankLog]);
 	};
 
