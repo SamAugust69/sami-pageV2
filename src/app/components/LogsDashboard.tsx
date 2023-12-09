@@ -10,10 +10,12 @@ import SearchBar from '@/ui/SearchBar';
 import { BiRefresh } from 'react-icons/bi';
 import LogsSection from '@/components/LogsSection';
 import LogButtons from './LogButtons';
+import LogsTableView from './LogsTableView';
 import { handleFetchLog } from '@/lib/api';
 
 import { unsavedReducer } from '@/lib/unsavedReducer';
 import { Button } from './ui/Button';
+import Dialog from './ui/Dialog';
 
 const matchSort = (a: any, b: any) => {
 	return parseInt(a.match) - parseInt(b.match);
@@ -93,11 +95,15 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [query, setQuery] = useState<string>('');
 
+	// other things
+	const [experiments, setExperiments] = useState(false);
+
 	useEffect(() => {
 		handleFetchLog(setRemoteData);
 		if (localData === undefined || localData === null) setLocalData([]);
 		if (displayedLogs === undefined || displayedLogs === null) setDisplayedLogs([]);
 		generateMatches(currentData, setDisplayedMatches);
+		setCurrentData(remoteData);
 		setIsLoaded(true);
 	}, []);
 
@@ -155,6 +161,8 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
 		},
 	];
 
+	const [isDialogShown, setIsDiologShown] = useState(false);
+
 	return (
 		<>
 			<div className="px-4 flex flex-col w-full">
@@ -199,6 +207,11 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
 					setLocalLogs={setLocalData}
 				/>
 				<LogsSection className="py-4" dispatch={dispatch} unsavedLogs={state} logsToDisplay={isLoaded && displayedLogs} />
+				<LogsTableView displayedMatches={displayedMatches} />
+				<Dialog visible={isDialogShown} setVisible={setIsDiologShown}>
+					test
+				</Dialog>
+				<Button onClick={() => setIsDiologShown(!isDialogShown)}>test</Button>
 			</div>
 		</>
 	);
@@ -222,7 +235,7 @@ export default LogsDashboard;
 
 //FEATURES
 //google sheet automation
-//add from image(no?)
+//add from image(no?), no.
 //save page state
 
 //INFO

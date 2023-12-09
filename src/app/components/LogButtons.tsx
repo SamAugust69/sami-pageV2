@@ -64,7 +64,6 @@ const LogButtons: FC<LogButtonsProps> = ({
 	const saveLogs = () => {
 		var newLogs: any = localLogs;
 		console.log('-------------------------');
-		console.log(unsavedLogs);
 		unsavedLogs.map((val: any) => {
 			if (localLogs.some((ele: any) => ele.id === val.id) !== true) {
 				console.log(`adding log ${val.info.match}, ${val.info.team}, ${val.id}`);
@@ -84,7 +83,6 @@ const LogButtons: FC<LogButtonsProps> = ({
 					})
 				);
 			}
-			console.log(localLogs);
 		});
 
 		console.log('-------------------------');
