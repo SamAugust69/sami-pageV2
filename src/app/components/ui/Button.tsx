@@ -17,7 +17,7 @@ export const buttonVariants = cva(
 				unstyled: '',
 			},
 			size: {
-				default: 'h-10 py-2 px-4',
+				default: 'h-9 py-2.5 px-4',
 				icon: 'h-12 w-12 m-2',
 				square_sm: 'h-7 w-7',
 				lg: 'h-12 mx-2 px-2 md:px-3',
@@ -57,6 +57,7 @@ export const iconButtonVariants = cva(
 			},
 			size: {
 				default: 'h-12 w-12 m-2',
+				dropdown: "h-12 w-12"
 			},
 		},
 		defaultVariants: {

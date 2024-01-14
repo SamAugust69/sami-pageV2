@@ -11,11 +11,13 @@ import { BiRefresh } from 'react-icons/bi';
 import LogsSection from '@/components/LogsSection';
 import LogButtons from './LogButtons';
 import LogsTableView from './LogsTableView';
-import { handleFetchLog } from '@/lib/api';
+import { v4 } from 'uuid';
+import { handleExportLog, handleFetchLog } from '@/lib/api';
 
-import { unsavedReducer } from '@/lib/unsavedReducer';
+import { REDUCER_ACTION_TYPE, unsavedReducer } from '@/lib/unsavedReducer';
 import { Button } from './ui/Button';
 import Dialog from './ui/Dialog';
+import { GrFormAdd } from 'react-icons/gr';
 
 const matchSort = (a: any, b: any) => {
 	return parseInt(a.match) - parseInt(b.match);
@@ -65,8 +67,8 @@ interface LogsDashboardProps {}
 
 const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
 	// locally stored
-	const [remoteData, setRemoteData] = useLocalStorage<any>('remote-data'); // stores match information from server
-	const [localData, setLocalData] = useLocalStorage<any>('local-data'); // stores local match information from scout
+	const [remoteData, setRemoteData] = useLocalStorage<any>('remote-data', []); // stores match information from server
+	const [localData, setLocalData] = useLocalStorage<any>('local-data', []); // stores local match information from scout
 
 	const logs = [
 		{
@@ -84,8 +86,8 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
 	// match displayed states
 	const [displayedMatches, setDisplayedMatches] = useState<any>([]);
 	const [filteredMatches, setFilteredMatches] = useState(displayedMatches);
-	const [displayedLogs, setDisplayedLogs] = useLocalStorage<any>('displayed-logs');
-	const [state, dispatch] = useReducer(unsavedReducer, []);
+	const [displayedLogs, setDisplayedLogs] = useLocalStorage<any>('displayed-logs', []);
+	const [unsavedLogsState, unsavedDispatch] = useReducer(unsavedReducer, []);
 	const [currentData, setCurrentData] = useState(remoteData);
 	const [activeLog, setActiveLog] = useState(logs[0].id);
 
@@ -100,8 +102,6 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
 
 	useEffect(() => {
 		handleFetchLog(setRemoteData);
-		if (localData === undefined || localData === null) setLocalData([]);
-		if (displayedLogs === undefined || displayedLogs === null) setDisplayedLogs([]);
 		generateMatches(currentData, setDisplayedMatches);
 		setCurrentData(remoteData);
 		setIsLoaded(true);
@@ -118,7 +118,7 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
 
 	useEffect(() => {
 		generateMatches(currentData, setDisplayedMatches);
-	}, [state]);
+	}, [unsavedLogsState]);
 
 	useEffect(() => {
 		generateMatches(currentData, setDisplayedMatches);
@@ -161,59 +161,103 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
 		},
 	];
 
+	const saveLogs = () => {
+		var newLogs: any = localData;
+		console.log('-------------------------');
+		unsavedLogsState.map((val: any) => {
+			if (localData.some((ele: any) => ele.id === val.id) !== true) {
+				console.log(`adding log ${val.info.match}, ${val.info.team}, ${val.id}`);
+				newLogs = [...newLogs, val];
+				unsavedDispatch({ type: REDUCER_ACTION_TYPE.REMOVED_LOG, payload: val });
+				console.log(newLogs);
+				setLocalData(newLogs);
+			} else {
+				setLocalData(
+					localData.map((item: any) => {
+						if (item.id == val.id) {
+							unsavedDispatch({ type: REDUCER_ACTION_TYPE.REMOVED_LOG, payload: val });
+							return val;
+						} else {
+							return item;
+						}
+					})
+				);
+			}
+		});
+
+		console.log('-------------------------');
+
+		setDisplayedLogs(
+			displayedLogs.map((log: any) => {
+				if (localData.includes(log)) {
+					return localData.filter((item: any) => item.id === log.id)[0];
+				} else {
+					return log;
+				}
+			})
+		);
+	};
+
+	const addNewLog = () => {
+		const blankLog = {
+			id: v4(),
+			disabled: false,
+			info: { match: ['0'], team: ['0'], scout: [''], notes: [''] },
+			auto: {
+				move: [false],
+				score: [false],
+				leave: [false],
+				dock: [false],
+				engage: [false],
+				cones: [0],
+				cubes: [0],
+				scoreLocations: [
+					[['10'], ['00'], ['10'], ['10'], ['00'], ['10'], ['10'], ['00'], ['10']],
+					[['10'], ['00'], ['10'], ['10'], ['00'], ['10'], ['10'], ['00'], ['10']],
+					[['20'], ['20'], ['20'], ['20'], ['20'], ['20'], ['20'], ['20'], ['20']],
+				],
+			},
+			teleop: {
+				conesAttempted: [0],
+				cones: [0],
+				cubes: [0],
+				cubesAttempted: [0],
+				dock: [false],
+				engage: [false],
+				scoreLocations: [
+					[['10'], ['00'], ['10'], ['10'], ['00'], ['10'], ['10'], ['00'], ['10']],
+					[['10'], ['00'], ['10'], ['10'], ['00'], ['10'], ['10'], ['00'], ['10']],
+					[['20'], ['20'], ['20'], ['20'], ['20'], ['20'], ['20'], ['20'], ['20']],
+				],
+			},
+		};
+
+		setDisplayedLogs([...displayedLogs, blankLog]);
+	};
+
 	const [isDialogShown, setIsDiologShown] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	return (
-		<>
-			<div className="px-4 flex flex-col w-full">
-				<Heading size="sm" className="text-slate-700 font-medium text-left py-2">
-					Dashboard
-				</Heading>
-				<TopCards activeLog={activeLog} setActiveLog={setActiveLog} remoteData={remoteData} localData={localData} />
-				<span className="border-b-2 w-full border-slate-400 my-4" />
-				<div className="flex items-center justify-center">
-					<SearchBar
-						setFilterA={setFilter}
-						onChange={(e) => {
-							setQuery(e.target.value);
-						}}
-						filters={searchBarFilters}
-					/>
-					<Button
-						variant="search"
-						size="lg"
-						className="shadow-md group"
-						onClick={() => {
-							handleFetchLog(setRemoteData);
-						}}
-					>
-						<BiRefresh className="h-6 w-6 group-hover:animate-spin dark:text-slate-200" />
-					</Button>
-				</div>
-				<MatchNav
-					displayedMatches={filteredMatches}
-					setDisplayedLogs={setDisplayedLogs}
-					displayedLogs={displayedLogs}
-					currentData={currentData}
-					matchData={displayedMatches}
-					className="py-2"
-				/>
-				<LogButtons
-					displayedLogs={displayedLogs}
-					dispatch={dispatch}
-					unsavedLogs={state}
-					setDisplayedLogs={setDisplayedLogs}
-					localLogs={localData}
-					setLocalLogs={setLocalData}
-				/>
-				<LogsSection className="py-4" dispatch={dispatch} unsavedLogs={state} logsToDisplay={isLoaded && displayedLogs} />
-				<LogsTableView displayedMatches={displayedMatches} />
-				<Dialog visible={isDialogShown} setVisible={setIsDiologShown}>
-					test
-				</Dialog>
-				<Button onClick={() => setIsDiologShown(!isDialogShown)}>test</Button>
+		<div className='flex flex-col gap-2 w-full'>
+			<TopCards localData={1} remoteData={2}/>
+			<div className='bg-slate-200 border-2 border-slate-400 rounded'>
+				{displayedLogs.map((log: any) =>{
+					return JSON.stringify(log)
+				})}
 			</div>
-		</>
+			<div className="flex items-center justify-center">
+				<Button size="icon" onClick={() => addNewLog()}>
+					<GrFormAdd className="w-5 h-5" />
+				</Button>
+				<Button size="lg" onClick={() => saveLogs()}>
+					Save Local Logs
+				</Button>
+				<Button size="lg" onClick={() => handleExportLog(localData, setLoading)} isLoading={loading}>
+					Export Local Logs
+				</Button>
+			</div>
+		</div>
 	);
 };
 
