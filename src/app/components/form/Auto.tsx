@@ -22,9 +22,9 @@ const Auto = ({ updateForm, onKeyDown, auto }: stepItems) => {
 			type: 'toggle',
 			onClick: (e: any) =>
 				updateForm({
-					auto: { ...auto, moved: !auto.moved },
+					auto: { ...auto, leftStartingZone: !auto.leftStartingZone },
 				}),
-			toggled: auto.moved,
+			toggled: auto.leftStartingZone,
 			className: 'mb-5',
 			title: 'Moved',
 			description: 'Did the robot move during auto?',
@@ -38,20 +38,14 @@ const Auto = ({ updateForm, onKeyDown, auto }: stepItems) => {
 			toggled: auto.scored,
 			className: 'mb-5',
 			description: 'Did the robot score during auto?',
-			showIf: auto.scored === true,
+			showChildren: auto.scored === true,
 			children: [
 				{
-					type: 'text',
-					onClick: (e: any) => e.stopPropagation(),
-					variant: 'purpler',
-					onChange: (e: any) =>
-						updateForm({
-							auto: { ...auto, cones_scored: Number.isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value) },
-						}),
-					className: 'mx-2',
-					title: 'Cones Scored',
-					placeholder: auto.cones_scored.toString(),
-				},
+					type: "",
+					variant: "purpler",
+					onChange: {...}
+
+				}
 				{
 					type: 'text',
 					onClick: (e: any) => e.stopPropagation(),

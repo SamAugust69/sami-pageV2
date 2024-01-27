@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Metadata } from 'next';
 import LogsDashboard from '@/components/LogsDashboard';
 import TopCards from '@/app/components/TopCards';
-import FormTest from '@/app/components/form/FormTest';
+import FormTest from '@/app/components/form/Form';
 
 export const metadata: Metadata = {
 	title: 'Sami Scouting | Logs',

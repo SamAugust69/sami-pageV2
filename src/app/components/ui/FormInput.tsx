@@ -25,16 +25,16 @@ const InputVariants = cva('peer flex bg-slate-200 disabled:pointer-events-none o
 interface InputProps extends HTMLAttributes<HTMLInputElement>, VariantProps<typeof InputVariants> {
 	disabled?: boolean;
 	type: string;
-	showIf?: boolean;
+	visible?: boolean;
 	title?: string;
 }
 
-const Input: FC<InputProps> = ({ size, variant, showIf, className, title, children, disabled, type, ...props }) => {
+const TextInput: FC<InputProps> = ({ size, variant, visible, className, title, children, disabled, type, ...props }) => {
 	return (
 		<div
 			className={cn(
 				`${
-					showIf === false ? 'hidden' : 'block'
+					visible === false ? 'hidden' : 'block'
 				} mx-5 my-3 relative bg-gradient-to-r from-slate-400 to-slate-300 dark:from-slate-400 dark:to-slate-500 pb-0.5`,
 				className
 			)}
@@ -50,19 +50,42 @@ const Input: FC<InputProps> = ({ size, variant, showIf, className, title, childr
 	);
 };
 
+const NumberInput: FC<InputProps> = ({ size, variant, visible, className, title, children, disabled, type, ...props }) => {
+	return (
+		<div
+			className={cn(
+				`${
+					visible === false ? 'hidden' : 'block'
+				} mx-5 my-3 relative bg-gradient-to-r from-slate-400 to-slate-300 dark:from-slate-400 dark:to-slate-500 pb-0.5`,
+				className
+			)}
+		>
+			<input required disabled={disabled} pattern="[0-9]*" className={cn(InputVariants({ size, variant }))} {...props} />
+			<span
+				className=" absolute top-0 left-0 peer-focus:text-xs peer-focus:text-slate-500 dark:peer-focus:text-slate-200 peer-focus:-top-2.5 peer-valid:text-xs peer-valid:text-slate-500 dark:peer-valid:text-slate-200 peer-valid:-top-2.5 transition-all peer-placeholder-shown:text-xs peer-placeholder-shown:text-slate-500 dark:peer-placeholder-shown:text-slate-200 peer-placeholder-shown:-top-2.5"
+				placeholder=""
+			>
+				{title}
+			</span>
+		</div>
+	);
+};
+
+
+
 interface ToggleProps extends HTMLAttributes<HTMLDivElement> {
 	toggled: boolean;
 	children?: Array<any>;
 	disabled?: boolean;
 	description?: string;
-	showIf?: boolean;
+	showChildren?: boolean;
 	title?: string;
 	hoverColor?: string;
 	checkbox?: boolean;
 }
 
 const Toggle: FC<ToggleProps> = ({
-	showIf,
+	showChildren,
 	description,
 	title,
 	children,
@@ -92,6 +115,7 @@ const Toggle: FC<ToggleProps> = ({
 					toggled ? `border-indigo-600 ${hoverColor ? hoverColor : 'bg-indigo-100'}` : 'border-slate-400 '
 				} rounded p-2 transition-all cursor-pointer ${className} `
 			)}
+			onClick={(e: any) => e.stopPropagation()}
 			{...props}
 		>
 			<div className="flex items-center justify-between">
@@ -110,7 +134,7 @@ const Toggle: FC<ToggleProps> = ({
 				</div>
 			</div>
 
-			{children !== undefined && showIf && (
+			{children !== undefined && showChildren && (
 				<div className=" border-black py-2 px-1 my-2 bg-indigo-200 rounded">
 					{children.map((input, i) => {
 						return (
@@ -133,11 +157,13 @@ interface FormInputProps extends HTMLAttributes<HTMLAllCollection> {
 const formInputSwitch = (type: any, children: any, props: any) => {
 	switch (type) {
 		case 'text':
-			return <Input {...props}>{children}</Input>;
+			return <TextInput {...props}>{children}</TextInput>;
 		case 'toggle':
 			return <Toggle {...props}>{children}</Toggle>;
+		case 'number':
+			return <NumberInput {...props}>{children}</NumberInput>
 		default:
-			return <Input {...props}>{children}</Input>;
+			return <TextInput {...props}>{children}</TextInput>;
 	}
 };
 

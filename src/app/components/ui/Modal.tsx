@@ -4,16 +4,16 @@ import { FC, HtmlHTMLAttributes, useEffect, useRef } from 'react';
 interface ModalProps extends HtmlHTMLAttributes<HTMLDivElement> {
 	visible: boolean;
 	clickOut?: boolean;
-	setVisible: Function;
+	closeModal: Function;
 }
 
-const Modal: FC<ModalProps> = ({ children, visible, setVisible, clickOut, className }) => {
+const Modal: FC<ModalProps> = ({ children, visible, closeModal, clickOut, className }) => {
 	const modalRef = useRef<HTMLDivElement>(null);
 
 	const handleDialogClick = (e: any) => {
 		if (clickOut !== true) return;
 		if (visible && !modalRef.current?.contains(e.target) && !modalRef.current?.contains(e.target)) {
-			setVisible(false);
+			closeModal(false);
 		}
 	};
 
@@ -24,7 +24,7 @@ const Modal: FC<ModalProps> = ({ children, visible, setVisible, clickOut, classN
 	return (
 		(
 			<section
-				className={`${!visible ? "w-0 h-0" : "w-full h-full "}fixed top-0 left-0 z-20 bg-slate-600/30 flex items-center justify-center overflow-hidden`}
+				className={`${!visible ? "w-0 h-0" : "w-full h-full"} fixed top-0 left-0 z-20 bg-slate-600/30 flex items-center justify-center overflow-auto`}
 			>{
 				 (
 					<div

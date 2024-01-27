@@ -3,7 +3,7 @@ import { FC, useState } from 'react';
 import Modal from '@/ui/Modal';
 import { Button } from '../ui/Button';
 import { formItems } from '@/lib/formTypes';
-import { v4 } from 'uuid';
+import { initialValues } from "@/lib/formTypes"
 
 import Auto from '@/components/form/Auto';
 import useMultiForm from '@/lib/useMultiForm';
@@ -12,37 +12,11 @@ import Finishing from '@/components/form/Finishing';
 import Beginning from './Beginning';
 
 interface FormTestProps {
-	label: string
+	modalState: boolean
+	closeModal: () => void
 }
 
-const initialValues: formItems = {
-	id: v4(),
-	completed: false,
-	match: 0,
-	team: 0,
-	scout: 'Sam',
-	notes: '',
-	bot_preformed: 'well',
-	auto: {
-		moved: false,
-		scored: false,
-		left_community: false,
-		docked: false,
-		engaged_station: false,
-		cones_scored: 0,
-		cubes_scored: 0,
-	},
-	teleop: {
-		cones_attempted: 0,
-		cones_scored: 0,
-		cubes_attempted: 0,
-		cubes_scored: 0,
-		docked: false,
-		engaged_station: false,
-	},
-};
-
-const FormTest: FC<FormTestProps> = ({label}) => {
+const FormTest: FC<FormTestProps> = ({modalState, closeModal}) => {
 	const [formData, setFormData] = useState(initialValues);
 	const [formVisible, setFormVisible] = useState(true);
 
@@ -62,6 +36,8 @@ const FormTest: FC<FormTestProps> = ({label}) => {
 		e.preventDefault();
 		console.log('submitted');
 		console.log(formData);
+		setFormData(initialValues)
+		closeModal()
 	};
 
 	const { currentStep, forwards, backwards, goToStep, currentStepNumber, isFirstStep, isLastStep } = useMultiForm([
@@ -71,13 +47,11 @@ const FormTest: FC<FormTestProps> = ({label}) => {
 		<Finishing {...formData} updateForm={updateForm} />,
 	]);
 
-
 	return (
 		<>
-			<Button onClick={() => setFormVisible(!formVisible)}>{label}</Button>
 			<Modal
-				visible={formVisible}
-				setVisible={setFormVisible}
+				visible={modalState}
+				closeModal={closeModal}
 				clickOut={true}
 				className="bg-slate-300 sm:bg-slate-200 flex flex-col sm:flex-row p-0 relative border-0 w-11/12 max-w-4xl h-5/6"
 			>

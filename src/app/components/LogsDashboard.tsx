@@ -18,6 +18,8 @@ import { REDUCER_ACTION_TYPE, unsavedReducer } from '@/lib/unsavedReducer';
 import { Button } from './ui/Button';
 import Dialog from './ui/Dialog';
 import { GrFormAdd } from 'react-icons/gr';
+import FormTest from './form/Form';
+import useForm from '@/lib/useForm';
 
 const matchSort = (a: any, b: any) => {
 	return parseInt(a.match) - parseInt(b.match);
@@ -198,58 +200,28 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
 		);
 	};
 
-	const addNewLog = () => {
-		const blankLog = {
-			id: v4(),
-			disabled: false,
-			info: { match: ['0'], team: ['0'], scout: [''], notes: [''] },
-			auto: {
-				move: [false],
-				score: [false],
-				leave: [false],
-				dock: [false],
-				engage: [false],
-				cones: [0],
-				cubes: [0],
-				scoreLocations: [
-					[['10'], ['00'], ['10'], ['10'], ['00'], ['10'], ['10'], ['00'], ['10']],
-					[['10'], ['00'], ['10'], ['10'], ['00'], ['10'], ['10'], ['00'], ['10']],
-					[['20'], ['20'], ['20'], ['20'], ['20'], ['20'], ['20'], ['20'], ['20']],
-				],
-			},
-			teleop: {
-				conesAttempted: [0],
-				cones: [0],
-				cubes: [0],
-				cubesAttempted: [0],
-				dock: [false],
-				engage: [false],
-				scoreLocations: [
-					[['10'], ['00'], ['10'], ['10'], ['00'], ['10'], ['10'], ['00'], ['10']],
-					[['10'], ['00'], ['10'], ['10'], ['00'], ['10'], ['10'], ['00'], ['10']],
-					[['20'], ['20'], ['20'], ['20'], ['20'], ['20'], ['20'], ['20'], ['20']],
-				],
-			},
-		};
-
-		setDisplayedLogs([...displayedLogs, blankLog]);
-	};
-
-	const [isDialogShown, setIsDiologShown] = useState(false);
+	const {formState, toggleOpen, setOpen, setClose} = useForm()
 	const [loading, setLoading] = useState(false);
 
 	return (
 		<div className='flex flex-col gap-2 w-full'>
+			{
+				displayedLogs.map((val: any) => {
+					return (
+						<div>
+							{JSON.stringify(val)}
+						</div>
+					)
+				})
+			}
+			<FormTest modalState={formState} closeModal={setClose}/>
 			<TopCards localData={1} remoteData={2}/>
-			<div className='bg-slate-200 border-2 border-slate-400 rounded'>
-				{displayedLogs.map((log: any) =>{
-					return JSON.stringify(log)
-				})}
-			</div>
+
 			<div className="flex items-center justify-center">
-				<Button size="icon" onClick={() => addNewLog()}>
+				<Button size="icon" onClick={() => setOpen()}>
 					<GrFormAdd className="w-5 h-5" />
 				</Button>
+				{formState}
 				<Button size="lg" onClick={() => saveLogs()}>
 					Save Local Logs
 				</Button>

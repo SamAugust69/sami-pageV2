@@ -11,14 +11,14 @@ type stepItems = formItems & {
 const Beginning = ({ updateForm, team, match, scout }: stepItems) => {
 	const formInputs = [
 		{
-			type: 'text',
+			type: 'number',
 			onChange: (e: any) => updateForm({ match: Number.isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value) }),
 			className: 'mb-5',
 			title: 'Match',
 			placeholder: match.toString(),
 		},
 		{
-			type: 'text',
+			type: 'number',
 			onChange: (e: any) => updateForm({ team: Number.isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value) }),
 			className: 'mb-5',
 			title: 'Team',
