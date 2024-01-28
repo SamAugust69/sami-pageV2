@@ -1,10 +1,10 @@
-import { formItems } from '@/lib/formTypes';
+import { FormItems } from '@/lib/formTypes';
 import FormInput from '@/ui/FormInput';
 import Heading from '../ui/Heading';
 import Paragraph from '../ui/Paragraph';
 
-type stepItems = formItems & {
-	updateForm: (item: Partial<formItems>) => void;
+type stepItems = FormItems & {
+	updateForm: (item: Partial<FormItems>) => void;
 };
 
 // {
@@ -72,7 +72,6 @@ const Teleop = ({ updateForm, teleop }: stepItems) => {
 					type: 'toggle',
 					variant: 'purpler',
 					onClick: (e: any) => {
-						
 						e.stopPropagation(),
 							updateForm({
 								teleop: { ...teleop, engaged_station: !teleop.engaged_station },
@@ -91,8 +90,8 @@ const Teleop = ({ updateForm, teleop }: stepItems) => {
 	];
 	return (
 		<div>
-			<Heading size={"xs"}>Teleop</Heading>
-			<Paragraph>How'd your robot preform during teleop?🗣️</Paragraph>
+			<Heading size={'xs'}>Teleop</Heading>
+			<Paragraph>Howd your robot preform during teleop?🗣️</Paragraph>
 			<div className="py-2">
 				{formInputs.map((input: any, i) => {
 					return (

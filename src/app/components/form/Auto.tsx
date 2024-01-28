@@ -57,7 +57,7 @@ const Auto = ({ updateForm, auto }: stepItems) => {
 	return (
 		<div>
 			<Heading size={'xs'}>Auto</Heading>
-			<Paragraph>How'd your robot preform during auto?</Paragraph>
+			<Paragraph>Howd your robot preform during auto?</Paragraph>
 			<div className="py-2">
 				{formInputs.map((input: any, i) => {
 					return (

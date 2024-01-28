@@ -24,12 +24,7 @@ const LogButtons: FC<LogButtonsProps> = ({
 }) => {
 	//needs to have the ability to add a new log to local logs, and display it..!!!
 
-
-
-
-	return (
-
-	);
+	return <div></div>;
 };
 
 export default LogButtons;

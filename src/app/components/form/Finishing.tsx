@@ -1,4 +1,4 @@
-import { formItems } from '@/lib/formTypes';
+import { FormItems } from '@/lib/formTypes';
 import FormInput from '@/ui/FormInput';
 import { Button } from '../ui/Button';
 import LogOverview from '../log-design/LogOverview';
@@ -6,8 +6,8 @@ import Heading from '../ui/Heading';
 import Paragraph from '../ui/Paragraph';
 import { useState } from 'react';
 
-type stepItems = formItems & {
-	updateForm: (item: Partial<formItems>) => void;
+type stepItems = FormItems & {
+	updateForm: (item: Partial<FormItems>) => void;
 };
 
 // {
@@ -79,8 +79,8 @@ const Finishing = ({ updateForm, bot_preformed, match, team, scout, auto, teleop
 
 	return (
 		<div>
-			<Heading  size={"xs"}>Finishing Up</Heading>
-			<Paragraph>How'd your robot do overall?</Paragraph>
+			<Heading size={'xs'}>Finishing Up</Heading>
+			<Paragraph>Howd your robot do overall?</Paragraph>
 			<div className="py-2">
 				{formInputs.map((input: any, i) => {
 					return (

@@ -96,5 +96,6 @@ const TableRow = forwardRef<HTMLLIElement, TableRowProps>(({ children, className
 		</>
 	);
 });
+TableRow.displayName = 'Table Row';
 
 export default LogsTableView;

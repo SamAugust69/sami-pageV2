@@ -41,10 +41,10 @@ const FormTest: FC<FormTestProps> = ({ modalState, closeModal }) => {
 	};
 
 	const { currentStep, forwards, backwards, goToStep, currentStepNumber, isFirstStep, isLastStep } = useMultiForm([
-		<Beginning {...formData} updateForm={updateForm} />,
-		<Auto {...formData} updateForm={updateForm} />,
-		<Teleop {...formData} updateForm={updateForm} />,
-		<Finishing {...formData} updateForm={updateForm} />,
+		<Beginning key={0} {...formData} updateForm={updateForm} />,
+		<Auto key={1} {...formData} updateForm={updateForm} />,
+		<Teleop key={2} {...formData} updateForm={updateForm} />,
+		<Finishing key={3} {...formData} updateForm={updateForm} />,
 	]);
 
 	return (

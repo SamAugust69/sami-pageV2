@@ -14,9 +14,8 @@ interface pageProps {}
 const page: FC<pageProps> = () => {
 	return (
 		<main className="py-16 px-2 flex justify-center flex-wrap w-full overflow-hidden">
-			<div className='w-full h-full'>
-				<TopCards localData={1} remoteData={4}/>
-				<FormTest label='test'/>
+			<div className="w-full h-full">
+				<TopCards localData={1} remoteData={4} />
 			</div>
 		</main>
 	);

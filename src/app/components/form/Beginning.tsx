@@ -1,11 +1,11 @@
 import { FC } from 'react';
-import { formItems } from '@/lib/formTypes';
+import { FormItems } from '@/lib/formTypes';
 import FormInput from '@/ui/FormInput';
 import Heading from '../ui/Heading';
 import Paragraph from '../ui/Paragraph';
 
-type stepItems = formItems & {
-	updateForm: (item: Partial<formItems>) => void;
+type stepItems = FormItems & {
+	updateForm: (item: Partial<FormItems>) => void;
 };
 
 const Beginning = ({ updateForm, team, match, scout }: stepItems) => {
@@ -34,8 +34,8 @@ const Beginning = ({ updateForm, team, match, scout }: stepItems) => {
 	];
 	return (
 		<div>
-			<Heading size={"xs"}>Scouting Info</Heading>
-			<Paragraph>Who're you scouting?</Paragraph>
+			<Heading size={'xs'}>Scouting Info</Heading>
+			<Paragraph>Whore you scouting?</Paragraph>
 			<div className="py-2">
 				{formInputs.map((input: any, i) => {
 					return (

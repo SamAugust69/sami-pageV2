@@ -200,22 +200,16 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
 		);
 	};
 
-	const {formState, toggleOpen, setOpen, setClose} = useForm()
+	const { formState, toggleOpen, setOpen, setClose } = useForm();
 	const [loading, setLoading] = useState(false);
 
 	return (
-		<div className='flex flex-col gap-2 w-full'>
-			{
-				displayedLogs.map((val: any) => {
-					return (
-						<div>
-							{JSON.stringify(val)}
-						</div>
-					)
-				})
-			}
-			<FormTest modalState={formState} closeModal={setClose}/>
-			<TopCards localData={1} remoteData={2}/>
+		<div className="flex flex-col gap-2 w-full">
+			{displayedLogs.map((val: any, i: number) => {
+				return <div key={i}>{JSON.stringify(val)}</div>;
+			})}
+			<FormTest modalState={formState} closeModal={setClose} />
+			<TopCards localData={1} remoteData={2} />
 
 			<div className="flex items-center justify-center">
 				<Button size="icon" onClick={() => setOpen()}>
