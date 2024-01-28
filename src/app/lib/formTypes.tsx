@@ -1,6 +1,6 @@
 import { v4 } from 'uuid';
 
-export type formItems = {
+export type FormItems = {
 	id: string;
 	completed: boolean;
 	match: number;
@@ -9,14 +9,14 @@ export type formItems = {
 	notes: string;
 	bot_preformed: string;
 	auto: {
-		leftStartingZone: boolean
-		scored: boolean
-		totalScored: number
-		scoredSpeaker: boolean
-		speakerScore: number
-		scoredAmp: boolean
-		ampScore: number
-	}
+		leftStartingZone: boolean;
+		scored: boolean;
+		totalScored: number;
+		scoredSpeaker: boolean;
+		speakerScore: number;
+		scoredAmp: boolean;
+		ampScore: number;
+	};
 	teleop: {
 		cones_attempted: number;
 		cones_scored: number;
@@ -27,8 +27,7 @@ export type formItems = {
 	};
 };
 
-
-export const initialValues: formItems = {
+export const initialValues: FormItems = {
 	id: v4(),
 	completed: false,
 	match: 0,
@@ -43,7 +42,7 @@ export const initialValues: formItems = {
 		scoredSpeaker: false,
 		speakerScore: 0,
 		scoredAmp: false,
-		ampScore: 0
+		ampScore: 0,
 	},
 	teleop: {
 		cones_attempted: 0,
@@ -53,4 +52,18 @@ export const initialValues: formItems = {
 		docked: false,
 		engaged_station: false,
 	},
+};
+
+export type FormInputType = {
+	type: string;
+	title: string;
+	toggled?: boolean;
+	description?: string;
+	onClick: (e: any) => void;
+	className?: string;
+	showChildren?: boolean;
+	children?: Array<FormInputType>;
+	variant?: string;
+	onChange?: (e: any) => void;
+	placeholder?: string;
 };

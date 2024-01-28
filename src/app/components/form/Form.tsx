@@ -1,9 +1,9 @@
-"use client"
+'use client';
 import { FC, useState } from 'react';
 import Modal from '@/ui/Modal';
 import { Button } from '../ui/Button';
-import { formItems } from '@/lib/formTypes';
-import { initialValues } from "@/lib/formTypes"
+import { FormItems } from '@/lib/formTypes';
+import { initialValues } from '@/lib/formTypes';
 
 import Auto from '@/components/form/Auto';
 import useMultiForm from '@/lib/useMultiForm';
@@ -12,23 +12,23 @@ import Finishing from '@/components/form/Finishing';
 import Beginning from './Beginning';
 
 interface FormTestProps {
-	modalState: boolean
-	closeModal: () => void
+	modalState: boolean;
+	closeModal: () => void;
 }
 
-const FormTest: FC<FormTestProps> = ({modalState, closeModal}) => {
+const FormTest: FC<FormTestProps> = ({ modalState, closeModal }) => {
 	const [formData, setFormData] = useState(initialValues);
 	const [formVisible, setFormVisible] = useState(true);
 
-	const updateForm = (fieldsToUpdate: Partial<formItems>) => {
+	const updateForm = (fieldsToUpdate: Partial<FormItems>) => {
 		console.log({ ...fieldsToUpdate });
 		setFormData({ ...formData, ...fieldsToUpdate });
 	};
 
 	const handleKey = (event: any) => {
-		if (event.key == "ArrowDown" || event.key == "ArrowRight") forwards()
-		if (event.key == "ArrowUp" || event.key == "ArrowLeft") backwards()
-	}
+		if (event.key == 'ArrowDown' || event.key == 'ArrowRight') forwards();
+		if (event.key == 'ArrowUp' || event.key == 'ArrowLeft') backwards();
+	};
 
 	const MultiFormSteps = ['Beginning', 'Auto', 'Teleop', 'Finishing-Up'];
 
@@ -36,13 +36,13 @@ const FormTest: FC<FormTestProps> = ({modalState, closeModal}) => {
 		e.preventDefault();
 		console.log('submitted');
 		console.log(formData);
-		setFormData(initialValues)
-		closeModal()
+		setFormData(initialValues);
+		closeModal();
 	};
 
 	const { currentStep, forwards, backwards, goToStep, currentStepNumber, isFirstStep, isLastStep } = useMultiForm([
-		<Beginning {...formData} updateForm={updateForm}/>,
-		<Auto {...formData} updateForm={updateForm} onKeyDown={handleKey}/>,
+		<Beginning {...formData} updateForm={updateForm} />,
+		<Auto {...formData} updateForm={updateForm} />,
 		<Teleop {...formData} updateForm={updateForm} />,
 		<Finishing {...formData} updateForm={updateForm} />,
 	]);
@@ -56,7 +56,11 @@ const FormTest: FC<FormTestProps> = ({modalState, closeModal}) => {
 				className="bg-slate-300 sm:bg-slate-200 flex flex-col sm:flex-row p-0 relative border-0 w-11/12 max-w-4xl h-5/6"
 			>
 				<div className="bg-indigo-700 w-full rounded-t sm:rounded h-40 sm:h-full absolute z-0 left-0 top-0 visible sm:invisible"></div>
-				<div tabIndex={0} onKeyUp={handleKey} className="flex flex-col sm:flex-row p-4 h-full overflow-scroll w-full max-h-fit">
+				<div
+					tabIndex={0}
+					onKeyUp={handleKey}
+					className="flex flex-col sm:flex-row p-4 h-full overflow-scroll w-full max-h-fit"
+				>
 					<div className="flex flex-row pb-2 sm:flex-col sm:justify-normal justify-center mr-0 sm:mr-6 px-4 py-4 relative bg-indigo-700 rounded">
 						{MultiFormSteps.map((step, i) => {
 							return (
@@ -92,10 +96,7 @@ const FormTest: FC<FormTestProps> = ({modalState, closeModal}) => {
 							>
 								Go Back
 							</Button>
-							<Button
-								className="text-slate-100 bg-indigo-950 h-full"
-								onClick={isLastStep ? handleSubmit : forwards}
-							>
+							<Button className="text-slate-100 bg-indigo-950 h-full" onClick={isLastStep ? handleSubmit : forwards}>
 								{isLastStep ? 'Submit' : 'Next Step'}
 							</Button>
 						</div>
