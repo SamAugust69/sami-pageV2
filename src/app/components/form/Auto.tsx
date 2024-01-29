@@ -23,7 +23,6 @@ const Auto = ({ updateForm, auto }: stepItems) => {
 					auto: { ...auto, leftStartingZone: !auto.leftStartingZone },
 				}),
 			toggled: auto.leftStartingZone,
-			className: 'mb-5',
 			title: '',
 			description: '?',
 		},
@@ -34,7 +33,6 @@ const Auto = ({ updateForm, auto }: stepItems) => {
 					auto: { ...auto, scored: !auto.scored },
 				}),
 			toggled: auto.scored,
-			className: 'mb-5',
 			description: 'Did the robot score during auto?',
 			showChildren: auto.scored === true,
 			children: [
@@ -46,7 +44,6 @@ const Auto = ({ updateForm, auto }: stepItems) => {
 						updateForm({
 							auto: { ...auto, ampScore: Number.isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value) },
 						}),
-					className: 'mx-2',
 					title: 'Cubes Scored',
 					placeholder: auto.ampScore.toString(),
 				},
@@ -60,10 +57,13 @@ const Auto = ({ updateForm, auto }: stepItems) => {
 			<Paragraph>Howd your robot preform during auto?</Paragraph>
 			<div className="py-2">
 				{formInputs.map((input: any, i) => {
+
 					return (
-						<FormInput key={i} {...input}>
-							{input.children}
-						</FormInput>
+						<>
+							<FormInput key={i} {...input}>
+								{input.children}
+							</FormInput>
+						</>
 					);
 				})}
 			</div>

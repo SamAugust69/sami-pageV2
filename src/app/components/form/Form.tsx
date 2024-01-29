@@ -53,7 +53,7 @@ const FormTest: FC<FormTestProps> = ({ modalState, closeModal }) => {
 				visible={modalState}
 				closeModal={closeModal}
 				clickOut={true}
-				className="bg-slate-300 sm:bg-slate-200 flex flex-col sm:flex-row p-0 relative border-0 w-11/12 max-w-4xl h-5/6"
+				className="bg-slate-300 sm:bg-slate-200 flex flex-col sm:flex-row p-0 relative border-0 max-w-4xl h-5/6 w-full "
 			>
 				<div className="bg-indigo-700 w-full rounded-t sm:rounded h-40 sm:h-full absolute z-0 left-0 top-0 visible sm:invisible"></div>
 				<div
