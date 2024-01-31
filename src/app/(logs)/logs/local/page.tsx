@@ -12,7 +12,7 @@ interface pageProps {}
 const page: FC<pageProps> = () => {
 	return (
 		<main className="py-16 px-2 flex justify-center flex-wrap w-full overflow-hidden">
-			<LogsDashboard/>
+			<LogsDashboard />
 		</main>
 	);
 };
