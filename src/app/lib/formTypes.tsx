@@ -59,7 +59,8 @@ export type FormInputType = {
 	title: string;
 	toggled?: boolean;
 	description?: string;
-	onClick: (e: any) => void;
+	onClick?: (e: any) => void;
+	checkbox?: boolean;
 	className?: string;
 	showChildren?: boolean;
 	children?: Array<FormInputType>;

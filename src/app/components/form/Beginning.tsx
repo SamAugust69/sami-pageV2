@@ -13,21 +13,18 @@ const Beginning = ({ updateForm, team, match, scout }: stepItems) => {
 		{
 			type: 'number',
 			onChange: (e: any) => updateForm({ match: Number.isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value) }),
-			className: 'mb-5',
 			title: 'Match',
 			placeholder: match.toString(),
 		},
 		{
 			type: 'number',
 			onChange: (e: any) => updateForm({ team: Number.isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value) }),
-			className: 'mb-5',
 			title: 'Team',
 			placeholder: team.toString(),
 		},
 		{
 			type: 'text',
 			onChange: (e: any) => updateForm({ scout: e.target.value }),
-			className: 'mb-5',
 			title: "Scouter's Name",
 			placeholder: scout,
 		},

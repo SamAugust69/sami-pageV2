@@ -35,7 +35,7 @@ const TextInput: FC<InputProps> = ({ size, variant, visible, className, title, c
 			className={cn(
 				`${
 					visible === false ? 'hidden' : 'block'
-				} mx-5 my-3 relative bg-gradient-to-r from-slate-400 to-slate-300 dark:from-slate-400 dark:to-slate-500 pb-0.5`,
+				} mx-3 my-3 relative bg-gradient-to-r from-slate-400 to-slate-300 dark:from-slate-400 dark:to-slate-500 pb-0.5 `,
 				className
 			)}
 		>
@@ -56,7 +56,7 @@ const NumberInput: FC<InputProps> = ({ size, variant, visible, className, title,
 			className={cn(
 				`${
 					visible === false ? 'hidden' : 'block'
-				} mx-5 my-3 relative bg-gradient-to-r from-slate-400 to-slate-300 dark:from-slate-400 dark:to-slate-500 pb-0.5`,
+				} mx-3 my-3 relative bg-gradient-to-r from-slate-400 to-slate-300 dark:from-slate-400 dark:to-slate-500 pb-0.5`,
 				className
 			)}
 		>
@@ -97,23 +97,11 @@ const Toggle: FC<ToggleProps> = ({
 	...props
 }) => {
 	return (
-		// <button
-		// 	disabled={disabled}
-		// 	onClick={onClick}
-		// 	className={cn(
-		// 		`transition-colors border-2 border-slate-400 dark:border-slate-400 px-2 py-1 rounded ${
-		// 			toggled ? 'bg-slate-400 dark:bg-slate-400' : ''
-		// 		} ${className}`
-		// 	)}
-		// 	{...props}
-		// >
-		// 	{children}
-		// </button>mx-5
 		<div
 			className={cn(
-				`mx-5 border ${
-					toggled ? `border-indigo-600 ${hoverColor ? hoverColor : 'bg-indigo-100'}` : 'border-slate-400 '
-				} rounded p-2 transition-all cursor-pointer ${className} `
+				`mx-3 border mb-2 ${
+					toggled ? `border-indigo-600 ${hoverColor ? hoverColor : 'bg-indigo-100'}` : 'border-slate-400'
+				} rounded p-2 transition-all cursor-pointer ${className}`
 			)}
 			onClick={(e: any) => e.stopPropagation()}
 			{...props}
@@ -134,11 +122,11 @@ const Toggle: FC<ToggleProps> = ({
 				</div>
 			</div>
 
-			{children !== undefined && showChildren && (
+			{children !== undefined && toggled && (
 				<div className=" border-black py-2 px-1 my-2 bg-indigo-200 rounded">
 					{children.map((input, i) => {
 						return (
-							<FormInput key={i} {...input}>
+							<FormInput key={i} className='mx-1 border-0 mb-0' variant={"purpler"} hoverColor={"bg-indigo-200"}  {...input}>
 								{input.children}
 							</FormInput>
 						);
@@ -154,6 +142,7 @@ interface FormInputProps extends HTMLAttributes<HTMLAllCollection> {
 	type: string;
 }
 
+// lets make a selector, left and right thingy.
 const formInputSwitch = (type: any, children: any, props: any) => {
 	switch (type) {
 		case 'text':
