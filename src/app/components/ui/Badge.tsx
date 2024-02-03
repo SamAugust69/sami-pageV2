@@ -14,7 +14,7 @@ const badgeVariants = cva('rounded border-2 uppercase inline-flex items-center b
 			great: 'bg-emerald-200 border-emerald-400 text-emerald-700',
 		},
 		size: {
-			sm: 'px-2 py-1 text-xs',
+			sm: 'px-2 py-1 text-xs h-8',
 			default: 'py-1 px-3 mx-2',
 			lg: 'py-2 px-4',
 		},

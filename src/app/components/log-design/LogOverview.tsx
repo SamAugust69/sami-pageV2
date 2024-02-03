@@ -25,7 +25,7 @@ const LogOverview: FC<LogOverviewProps> = ({
 	const [isExpanded, setIsExpanded] = useState(true);
 
 	return (
-		<div className="border border-black rounded">
+		<div className="border border-slate-400 rounded">
 			<div className="flex justify-between items-center pt-4 px-3 " onClick={() => setIsExpanded(!isExpanded)}>
 				<div className="flex h-11">
 					<div className="flex items-center px-4 py-1 relative">
