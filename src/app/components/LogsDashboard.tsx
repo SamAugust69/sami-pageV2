@@ -21,7 +21,7 @@ import Dialog from './ui/Dialog';
 import { GrFormAdd } from 'react-icons/gr';
 import FormTest from './form/Form';
 import useForm from '@/lib/useForm';
-import { initialValues } from '../lib/formTypes';
+import { FormItems, initialValues } from '../lib/formTypes';
 
 const matchSort = (a: any, b: any) => {
 	return parseInt(a.match) - parseInt(b.match);
@@ -224,6 +224,15 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
 				<Button size="lg" onClick={() => handleExportLog(localData, setLoading)} isLoading={loading}>
 					Export Local Logs
 				</Button>
+			</div>
+			<div className='bg-slate-200 border-2 border-slate-400 rounded p-2'>
+				{
+					localData.map((val: FormItems) => {
+						return (
+							JSON.stringify(val)
+						)
+					})
+				}
 			</div>
 		</div>
 	);

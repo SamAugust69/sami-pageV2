@@ -102,7 +102,6 @@ const Toggle: FC<ToggleProps> = ({
 					toggled ? `border-indigo-600 ${hoverColor ? hoverColor : 'bg-indigo-100'}` : 'border-slate-400'
 				} rounded p-2 transition-all cursor-pointer ${className}`
 			)}
-			onClick={(e: any) => e.stopPropagation()}
 			{...props}
 		>
 			<div className="flex items-center justify-between">

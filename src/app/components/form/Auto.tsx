@@ -23,8 +23,8 @@ const Auto = ({ updateForm, auto }: stepItems) => {
 					auto: { ...auto, leftStartingZone: !auto.leftStartingZone },
 				}),
 			toggled: auto.leftStartingZone,
-			title: '',
-			description: '?',
+			title: 'Left Starting Zone',
+			description: 'Yeh',
 		},
 		{
 			type: 'toggle',
@@ -37,13 +37,24 @@ const Auto = ({ updateForm, auto }: stepItems) => {
 			children: [
 				{
 					type: 'number',
-					onClick: (e: any) => e.stopPropagation(),
+					variant: 'purpler',
+					onChange: (e: any) => {
+						e.stopPropagation();
+						updateForm({
+							auto: { ...auto, speakerScore: Number.isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value) },
+						})
+					},
+					title: 'Speaker Score',
+					placeholder: auto.ampScore.toString(),
+				},
+				{
+					type: 'number',
 					variant: 'purpler',
 					onChange: (e: any) =>
 						updateForm({
 							auto: { ...auto, ampScore: Number.isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value) },
 						}),
-					title: 'Cubes Scored',
+					title: 'Amp Score',
 					placeholder: auto.ampScore.toString(),
 				},
 			],

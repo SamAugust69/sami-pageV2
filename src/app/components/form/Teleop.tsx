@@ -14,11 +14,11 @@ type stepItems = FormItems & {
 // 	placeholder: 'text',
 // },
 // (parameter) teleop: {
-//     scoredAmp: boolean;
-//     ampActivatedAmount: number;
-//     ampScore: number;
-//     scoredSpeaker: boolean;
-//     speakerScore: number;
+//     scoredAmp: boolean; X
+//     ampActivatedAmount: number; 
+//     ampScore: number; X
+//     scoredSpeaker: boolean; X
+//     speakerScore: number; X
 //     amplifiedSpeakerScore: number;
 //     hangOnChain: boolean;
 //     hangInHarmony: boolean;
@@ -60,7 +60,20 @@ const Teleop = ({ updateForm, teleop }: stepItems) => {
 			]
 		},
 		{
-			type: "carousel",
+			type: "toggle",
+			onClick: () => updateForm({teleop: {...teleop, hangOnChain: !teleop.hangOnChain}}),
+			toggled: teleop.hangOnChain,
+			title: "Hung On Chain?",
+			description: "Did they hang?",
+			children: [
+				{
+					type: "toggle",
+					onClick: () => updateForm({teleop: {...teleop, hangInHarmony: !teleop.hangInHarmony}}),
+					toggled: teleop.hangInHarmony,
+					title: "Hung On Chain?",
+					description: "Did they hang?"
+				}
+			]
 		}
 	];
 	return (

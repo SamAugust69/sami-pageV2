@@ -11,7 +11,7 @@ interface LogDetailsProps {
 
 const LogDetails: FC<LogDetailsProps> = ({ auto, teleop }) => {
 	console.log(auto);
-	type Auto = FormItems[keyof FormItems][number]
+	type Auto = FormItems[keyof FormItems]
 	return (
 		<div className=" mx-3 my-2 rounded flex flex-col">
 			<div className="rounded p-2 my-2 mx-2 flex gap-1 flex-wrap bg-slate-300">
@@ -30,15 +30,6 @@ const LogDetails: FC<LogDetailsProps> = ({ auto, teleop }) => {
 				<Badge size="sm" variant={auto.scored ? 'great' : 'well'}>
 					Scored
 				</Badge>
-				{
-					auto.map((val: FormItems, i: number) => {
-						return (
-							<Badge size="sm" variant={auto.scored ? 'great' : 'well'}>
-								{val.}
-							</Badge>
-						)
-					})
-				}
 			</div>
 			{/* <span className="bg-indigo-300 h-1 w-1/3 rounded-full self-center"></span> */}
 			<div className=" rounded p-2 my-2 mx-2 flex gap-1 flex-wrap">
