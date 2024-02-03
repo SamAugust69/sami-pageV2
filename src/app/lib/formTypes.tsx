@@ -1,13 +1,16 @@
 import { v4 } from 'uuid';
 
+// objective data, take data and 
 export type FormItems = {
 	id: string;
 	completed: boolean;
 	match: number;
 	team: number;
 	scout: string;
+	dateAdded: Date;
 	notes: string;
 	bot_preformed: string;
+	// offensive vs defensive
 	auto: {
 		leftStartingZone: boolean;
 		scored: boolean;
@@ -18,12 +21,20 @@ export type FormItems = {
 		ampScore: number;
 	};
 	teleop: {
-		cones_attempted: number;
-		cones_scored: number;
-		cubes_attempted: number;
-		cubes_scored: number;
-		docked: boolean;
-		engaged_station: boolean;
+		scoredAmp: boolean;
+		ampActivatedAmount: number;
+		ampScore: number;
+
+		scoredSpeaker: boolean;
+		speakerScore: number;
+		amplifiedSpeakerScore: number;
+
+		hangOnChain: boolean;
+		hangInHarmony: boolean; // is big bulky, or bad at coordination
+		scoredTrap: boolean;
+
+		thrownNoteScore: boolean;
+		thrownNoteAmount: number;
 	};
 };
 
@@ -32,6 +43,7 @@ export const initialValues: FormItems = {
 	completed: false,
 	match: 0,
 	team: 0,
+	dateAdded: new Date(),
 	scout: 'Sam',
 	notes: '',
 	bot_preformed: 'well',
@@ -45,18 +57,26 @@ export const initialValues: FormItems = {
 		ampScore: 0,
 	},
 	teleop: {
-		cones_attempted: 0,
-		cones_scored: 0,
-		cubes_attempted: 0,
-		cubes_scored: 0,
-		docked: false,
-		engaged_station: false,
+		scoredAmp: false,
+		ampActivatedAmount: 0,
+		ampScore: 0,
+
+		scoredSpeaker: false,
+		speakerScore: 0,
+		amplifiedSpeakerScore: 0,
+
+		hangOnChain: false,
+		hangInHarmony: false,
+		scoredTrap: false,
+
+		thrownNoteScore: false,
+		thrownNoteAmount: 0,
 	},
 };
 
 export type FormInputType = {
 	type: string;
-	title: string;
+	title?: string;
 	toggled?: boolean;
 	description?: string;
 	onClick?: (e: any) => void;

@@ -4,6 +4,7 @@ import { Check } from 'lucide-react';
 import { VariantProps, cva } from 'class-variance-authority';
 import { FC } from 'react';
 import Paragraph from './Paragraph';
+import useMultiForm from '@/app/lib/useMultiForm';
 
 const InputVariants = cva('peer flex bg-slate-200 disabled:pointer-events-none outline-none rounded-none', {
 	variants: {
@@ -35,14 +36,13 @@ const TextInput: FC<InputProps> = ({ size, variant, visible, className, title, c
 			className={cn(
 				`${
 					visible === false ? 'hidden' : 'block'
-				} mx-3 my-3 relative bg-gradient-to-r from-slate-400 to-slate-300 dark:from-slate-400 dark:to-slate-500 pb-0.5 `,
+				} mx-3 my-4 relative bg-gradient-to-r from-slate-400 to-slate-300 dark:from-slate-400 dark:to-slate-500 pb-0.5 `,
 				className
 			)}
 		>
-			<input required disabled={disabled} className={cn(InputVariants({ size, variant }))} {...props} />
+			<input required disabled={disabled} className={cn(InputVariants({ size, variant }))} onClick={(e: any) => e.stopPropagation()} {...props} />
 			<span
 				className=" absolute top-0 left-0 peer-focus:text-xs peer-focus:text-slate-500 dark:peer-focus:text-slate-200 peer-focus:-top-2.5 peer-valid:text-xs peer-valid:text-slate-500 dark:peer-valid:text-slate-200 peer-valid:-top-2.5 transition-all peer-placeholder-shown:text-xs peer-placeholder-shown:text-slate-500 dark:peer-placeholder-shown:text-slate-200 peer-placeholder-shown:-top-2.5"
-				placeholder=""
 			>
 				{title}
 			</span>
@@ -56,14 +56,13 @@ const NumberInput: FC<InputProps> = ({ size, variant, visible, className, title,
 			className={cn(
 				`${
 					visible === false ? 'hidden' : 'block'
-				} mx-3 my-3 relative bg-gradient-to-r from-slate-400 to-slate-300 dark:from-slate-400 dark:to-slate-500 pb-0.5`,
+				} mx-3 my-4 relative bg-gradient-to-r from-slate-400 to-slate-300 dark:from-slate-400 dark:to-slate-500 pb-0.5`,
 				className
 			)}
 		>
-			<input required disabled={disabled} pattern="[0-9]*" className={cn(InputVariants({ size, variant }))} {...props} />
+			<input required disabled={disabled} pattern="[0-9]*" className={cn(InputVariants({ size, variant }))} onClick={(e: any) => e.stopPropagation()} {...props} />
 			<span
-				className=" absolute top-0 left-0 peer-focus:text-xs peer-focus:text-slate-500 dark:peer-focus:text-slate-200 peer-focus:-top-2.5 peer-valid:text-xs peer-valid:text-slate-500 dark:peer-valid:text-slate-200 peer-valid:-top-2.5 transition-all peer-placeholder-shown:text-xs peer-placeholder-shown:text-slate-500 dark:peer-placeholder-shown:text-slate-200 peer-placeholder-shown:-top-2.5"
-				placeholder=""
+				className=" absolute top-0 left-0 peer-focus:text-xs peer-focus:text-slate-500 dark:peer-focus:text-slate-200 peer-focus:-top-2.5 peer-valid:text-xs peer-valid:text-slate-500 dark:peer-valid:text-slate-200 peer-valid:-top-2.5 transition-all peer-placeholder-shown:text-xs peer-placeholder-shown:text-slate-500 dark:peer-placeholder-shown:text-slate-200 peer-placeholder-shown:-top-2.5 "
 			>
 				{title}
 			</span>
@@ -113,10 +112,10 @@ const Toggle: FC<ToggleProps> = ({
 					</div>
 				)}
 				<div className="p-1">
-					<Paragraph className={`px-0 select-none text-slate-700 font-bold ${checkbox ? 'text-right' : 'text-left'}`}>
+					<Paragraph className={`px-0 select-none text-slate-700 font-bold ${checkbox ? 'text-right' : 'text-left'} mb-0`}>
 						{title}
 					</Paragraph>
-					<Paragraph className={`px-0 select-none leading-normal ${checkbox ? 'text-right' : 'text-left'}`}>
+					<Paragraph size={"sm"} className={`px-0 select-none leading-normal ${checkbox ? 'text-right' : 'text-left'} mb-0`}>
 						{description}
 					</Paragraph>
 				</div>
@@ -137,24 +136,38 @@ const Toggle: FC<ToggleProps> = ({
 	);
 };
 
-interface FormInputProps extends HTMLAttributes<HTMLAllCollection> {
-	disabled?: boolean;
-	type: string;
+interface CarouselProps extends HTMLAttributes<HTMLDivElement> {
+}
+
+const CarouselSelector: FC<CarouselProps> = ({ className }) => {
+
+	return (
+		<div className={`bg-indigo-100 ${className}`}>
+			s
+		</div>
+	)
 }
 
 // lets make a selector, left and right thingy.
-const formInputSwitch = (type: any, children: any, props: any) => {
-	switch (type) {
+const formInputSwitch = (type: string, children: any, props: any) => {
+	switch (type.toLowerCase()) {
 		case 'text':
 			return <TextInput {...props}>{children}</TextInput>;
 		case 'toggle':
 			return <Toggle {...props}>{children}</Toggle>;
 		case 'number':
 			return <NumberInput {...props}>{children}</NumberInput>
+		case "carousel":
+			return <CarouselSelector {...props}></CarouselSelector>
 		default:
 			return <TextInput {...props}>{children}</TextInput>;
 	}
 };
+
+interface FormInputProps extends HTMLAttributes<HTMLAllCollection> {
+	disabled?: boolean;
+	type: string;
+}
 
 const FormInput: FC<FormInputProps> = ({ children, type, ...props }) => {
 	return formInputSwitch(type, children, props);

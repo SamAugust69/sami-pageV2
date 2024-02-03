@@ -3,6 +3,7 @@
 import { FC, useEffect, useReducer, useState } from 'react';
 import { useLocalStorage } from '@rehooks/local-storage';
 
+
 import TopCards from '@/components/TopCards';
 import Heading from '@/ui/Heading';
 import MatchNav from '@/components/MatchNav';
@@ -20,6 +21,7 @@ import Dialog from './ui/Dialog';
 import { GrFormAdd } from 'react-icons/gr';
 import FormTest from './form/Form';
 import useForm from '@/lib/useForm';
+import { initialValues } from '../lib/formTypes';
 
 const matchSort = (a: any, b: any) => {
 	return parseInt(a.match) - parseInt(b.match);
@@ -69,8 +71,9 @@ interface LogsDashboardProps {}
 
 const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
 	// locally stored
-	const [remoteData, setRemoteData] = useLocalStorage<any>('remote-data', []); // stores match information from server
 	const [localData, setLocalData] = useLocalStorage<any>('local-data', []); // stores local match information from scout
+	const [localDispatchState, localDispatch] = useReducer(unsavedReducer, localData);
+	const [remoteData, setRemoteData] = useLocalStorage<any>('remote-data'); // stores match information from server
 
 	const logs = [
 		{
@@ -89,7 +92,6 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
 	const [displayedMatches, setDisplayedMatches] = useState<any>([]);
 	const [filteredMatches, setFilteredMatches] = useState(displayedMatches);
 	const [displayedLogs, setDisplayedLogs] = useLocalStorage<any>('displayed-logs', []);
-	const [unsavedLogsState, unsavedDispatch] = useReducer(unsavedReducer, []);
 	const [currentData, setCurrentData] = useState(remoteData);
 	const [activeLog, setActiveLog] = useState(logs[0].id);
 
@@ -103,24 +105,25 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
 	const [experiments, setExperiments] = useState(false);
 
 	useEffect(() => {
+		localData == undefined ?? setLocalData([])
 		handleFetchLog(setRemoteData);
 		generateMatches(currentData, setDisplayedMatches);
-		setCurrentData(remoteData);
 		setIsLoaded(true);
 	}, []);
 
-	useEffect(() => {
-		console.log(`switching displayed matches... ${activeLog}`);
-		if (activeLog === 'local') {
-			setCurrentData(localData);
-		} else {
-			setCurrentData(remoteData);
-		}
-	}, [activeLog]);
+	// useEffect(() => {
+	// 	console.log(`switching displayed matches... ${activeLog}`);
+	// 	if (activeLog === 'local') {
+	// 		setCurrentData(localData);
+	// 	} else {
+	// 		setCurrentData(remoteData);
+	// 	}
+	// }, [activeLog]);
 
 	useEffect(() => {
 		generateMatches(currentData, setDisplayedMatches);
-	}, [unsavedLogsState]);
+		setLocalData(localDispatchState)
+	}, [localDispatchState]);
 
 	useEffect(() => {
 		generateMatches(currentData, setDisplayedMatches);
@@ -166,26 +169,26 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
 	const saveLogs = () => {
 		var newLogs: any = localData;
 		console.log('-------------------------');
-		unsavedLogsState.map((val: any) => {
-			if (localData.some((ele: any) => ele.id === val.id) !== true) {
-				console.log(`adding log ${val.info.match}, ${val.info.team}, ${val.id}`);
-				newLogs = [...newLogs, val];
-				unsavedDispatch({ type: REDUCER_ACTION_TYPE.REMOVED_LOG, payload: val });
-				console.log(newLogs);
-				setLocalData(newLogs);
-			} else {
-				setLocalData(
-					localData.map((item: any) => {
-						if (item.id == val.id) {
-							unsavedDispatch({ type: REDUCER_ACTION_TYPE.REMOVED_LOG, payload: val });
-							return val;
-						} else {
-							return item;
-						}
-					})
-				);
-			}
-		});
+		localDispatchState.map((val: any) => {
+		if (localData.some((ele: any) => ele.id === val.id) !== true) {
+			console.log(`adding log ${val.info.match}, ${val.info.team}, ${val.id}`);
+			newLogs = [...newLogs, val];
+			localDispatch({ type: REDUCER_ACTION_TYPE.REMOVED_LOG, payload: val });
+			console.log(newLogs);
+			setLocalData(newLogs);
+		} else {
+			setLocalData(
+				localData.map((item: any) => {
+					if (item.id == val.id) {
+						localDispatch({ type: REDUCER_ACTION_TYPE.REMOVED_LOG, payload: val });
+						return val;
+					} else {
+						return item;
+					}
+				})
+			);
+		}
+	});
 
 		console.log('-------------------------');
 
@@ -208,16 +211,15 @@ const LogsDashboard: FC<LogsDashboardProps> = ({}) => {
 			{displayedLogs.map((val: any, i: number) => {
 				return <div key={i}>{JSON.stringify(val)}</div>;
 			})}
-			<FormTest modalState={formState} closeModal={setClose} />
-			<TopCards localData={1} remoteData={2} />
+			<FormTest dispatch={localDispatch} modalState={formState} closeModal={setClose} />
+			<TopCards localData={localData != undefined ? localData.length : 0} remoteData={2} />
 
 			<div className="flex items-center justify-center">
 				<Button size="icon" onClick={() => setOpen()}>
 					<GrFormAdd className="w-5 h-5" />
 				</Button>
-				{formState}
-				<Button size="lg" onClick={() => saveLogs()}>
-					Save Local Logs
+				<Button onClick={() => saveLogs()}>
+
 				</Button>
 				<Button size="lg" onClick={() => handleExportLog(localData, setLoading)} isLoading={loading}>
 					Export Local Logs

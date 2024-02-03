@@ -34,7 +34,6 @@ const Auto = ({ updateForm, auto }: stepItems) => {
 				}),
 			toggled: auto.scored,
 			description: 'Did the robot score during auto?',
-			showChildren: auto.scored === true,
 			children: [
 				{
 					type: 'number',

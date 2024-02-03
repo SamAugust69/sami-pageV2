@@ -1,3 +1,5 @@
+import { FormItems } from "./formTypes";
+
 const initState: any = [];
 
 const enum REDUCER_ACTION_TYPE {
@@ -7,8 +9,8 @@ const enum REDUCER_ACTION_TYPE {
 }
 
 type ReducerAction = {
-	type: REDUCER_ACTION_TYPE;
-	payload?: any;
+	type: REDUCER_ACTION_TYPE | string;
+	payload: FormItems;
 };
 
 const unsavedReducer = (
@@ -16,7 +18,7 @@ const unsavedReducer = (
 	action: ReducerAction
 ): typeof initState => {
 	switch (action.type) {
-		case REDUCER_ACTION_TYPE.ADDED_LOG:
+		case REDUCER_ACTION_TYPE.ADDED_LOG || "added":
 			console.log("ADDED_LOG");
 			return [...state, action.payload];
 

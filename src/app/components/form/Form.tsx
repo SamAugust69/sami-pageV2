@@ -1,22 +1,26 @@
 'use client';
-import { FC, useState } from 'react';
+import { Dispatch, FC, useState } from 'react';
 import Modal from '@/ui/Modal';
 import { Button } from '../ui/Button';
 import { FormItems } from '@/lib/formTypes';
 import { initialValues } from '@/lib/formTypes';
+import { v4 } from 'uuid';
 
 import Auto from '@/components/form/Auto';
 import useMultiForm from '@/lib/useMultiForm';
 import Teleop from '@/components/form/Teleop';
 import Finishing from '@/components/form/Finishing';
 import Beginning from './Beginning';
+import Example from './Example';
+import { REDUCER_ACTION_TYPE } from '@/lib/unsavedReducer';
 
 interface FormTestProps {
 	modalState: boolean;
+	dispatch: any;
 	closeModal: () => void;
 }
 
-const FormTest: FC<FormTestProps> = ({ modalState, closeModal }) => {
+const FormTest: FC<FormTestProps> = ({ modalState, closeModal, dispatch }) => {
 	const [formData, setFormData] = useState(initialValues);
 	const [formVisible, setFormVisible] = useState(true);
 
@@ -30,22 +34,25 @@ const FormTest: FC<FormTestProps> = ({ modalState, closeModal }) => {
 		if (event.key == 'ArrowUp' || event.key == 'ArrowLeft') backwards();
 	};
 
-	const MultiFormSteps = ['Beginning', 'Auto', 'Teleop', 'Finishing-Up'];
-
-	const handleSubmit = (e: any) => {
-		e.preventDefault();
-		console.log('submitted');
-		console.log(formData);
-		setFormData(initialValues);
-		closeModal();
-	};
+	const MultiFormSteps = ['Example', 'Beginning', 'Auto', 'Teleop', 'Finishing-Up'];
 
 	const { currentStep, forwards, backwards, goToStep, currentStepNumber, isFirstStep, isLastStep } = useMultiForm([
+		<Example key={-1} {...formData} updateForm={updateForm}/>,
 		<Beginning key={0} {...formData} updateForm={updateForm} />,
 		<Auto key={1} {...formData} updateForm={updateForm} />,
 		<Teleop key={2} {...formData} updateForm={updateForm} />,
 		<Finishing key={3} {...formData} updateForm={updateForm} />,
 	]);
+
+	const handleSubmit = (e: any) => {
+		e.preventDefault();
+		dispatch({ type: "added", payload: formData });
+		goToStep(0);
+		console.log('submitted');
+		setFormData(initialValues);
+		updateForm({ id: v4(), dateAdded: new Date()})
+		closeModal();
+	};
 
 	return (
 		<>

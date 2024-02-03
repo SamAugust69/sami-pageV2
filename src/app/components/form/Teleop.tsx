@@ -13,70 +13,55 @@ type stepItems = FormItems & {
 // 	onClick: () => setTest(!test),
 // 	placeholder: 'text',
 // },
+// (parameter) teleop: {
+//     scoredAmp: boolean;
+//     ampActivatedAmount: number;
+//     ampScore: number;
+//     scoredSpeaker: boolean;
+//     speakerScore: number;
+//     amplifiedSpeakerScore: number;
+//     hangOnChain: boolean;
+//     hangInHarmony: boolean;
+//     scoredTrap: boolean;
+//     thrownNoteScore: boolean;
+//     thrownNoteAmount: number;
+// }
 
 const Teleop = ({ updateForm, teleop }: stepItems) => {
 	const formInputs: Array<FormInputType> = [
 		{
-			type: 'text',
-			onChange: (e: any) =>
-				updateForm({
-					teleop: { ...teleop, cones_attempted: Number.isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value) },
-				}),
-			title: 'Cones Attempted',
-			placeholder: teleop.cones_attempted.toString(),
-		},
-		{
-			type: 'text',
-			onChange: (e: any) =>
-				updateForm({
-					teleop: { ...teleop, cones_scored: Number.isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value) },
-				}),
-			title: 'Cones Scored',
-			placeholder: teleop.cones_scored.toString(),
-		},
-		{
-			type: 'text',
-			onChange: (e: any) =>
-				updateForm({
-					teleop: { ...teleop, cubes_attempted: Number.isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value) },
-				}),
-			title: 'Cubes Attempted',
-			placeholder: teleop.cubes_attempted.toString(),
-		},
-		{
-			type: 'text',
-			onChange: (e: any) =>
-				updateForm({
-					teleop: { ...teleop, cubes_scored: Number.isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value) },
-				}),
-			title: 'Cones Scored',
-			placeholder: teleop.cubes_scored.toString(),
-		},
-		{
-			type: 'toggle',
-			onClick: (e: any) =>
-				updateForm({
-					teleop: { ...teleop, docked: !teleop.docked },
-				}),
-			toggled: teleop.docked,
-			title: 'Docked',
-			description: 'Did the robot attempt to dock at the charging station?',
+			type: "toggle",
+			title: "Scored Amp?",
+			description: "Did the robot score during auto?",
+			toggled: teleop.scoredAmp,
+			onClick: () => updateForm({teleop: {...teleop, scoredAmp: !teleop.scoredAmp}}),
 			children: [
 				{
-					type: 'toggle',
-					onClick: (e: any) => {
-						e.stopPropagation(),
-							updateForm({
-								teleop: { ...teleop, engaged_station: !teleop.engaged_station },
-							});
-					},
-					checkbox: true,
-					toggled: teleop.engaged_station,
-					title: 'Engaged',
-					description: 'Did the robot engage the charging station?',
-				},
-			],
+					type: "number",
+					title: "How much?",
+					placeholder: teleop.ampScore.toString(),
+					onChange: (e: any) => updateForm({teleop: {...teleop, ampScore: e.target.value}}) 
+				}
+			]
 		},
+		{
+			type: "toggle",
+			title: "Scored Speaker?",
+			description: "Did the robot score during auto?",
+			toggled: teleop.scoredSpeaker,
+			onClick: () => updateForm({teleop: {...teleop, scoredSpeaker: !teleop.scoredSpeaker}}),
+			children: [
+				{
+					type: "number",
+					title: "How much?",
+					placeholder: teleop.speakerScore.toString(),
+					onChange: (e: any) => updateForm({teleop: {...teleop, speakerScore: e.target.value}}) 
+				}
+			]
+		},
+		{
+			type: "carousel",
+		}
 	];
 	return (
 		<div>
