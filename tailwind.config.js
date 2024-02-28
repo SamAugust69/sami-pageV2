@@ -10,14 +10,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-      },
-      fontFamily: {
-        sans: ["var(--font-inter)", ...fontFamily.sans]
-      },
 			colors: {
 				...colors,
 				g: {
@@ -51,10 +43,6 @@ module.exports = {
 					100: '#3A2C27',
 				},
       },
-      height: {
-        "112": "25rem",
-        '128': '32rem',
-      }
     },
   },
   plugins: [
