@@ -19,11 +19,6 @@ const Summary: FC<SummaryProps> = ({ data, allData, toDisplay }) => {
 	var averageScore = 0;
 
 
-	const calcAverageScore = () => {
-		
-	}
-
-
 	return (
 		<div className="flex gap-2 flex-wrap">
 			{toDisplay.map((val: any, i: number) => {
@@ -41,12 +36,12 @@ const Summary: FC<SummaryProps> = ({ data, allData, toDisplay }) => {
 											const type = val2[1][0];
 											const value = val2[1][1];
 											const points = value * val2[1][2];
-											useEffect(() => {
-												setScore(score + total);
-												getTeamAverageScore(allData, data.team).map((val: FormItems) => {
-													averageScore += score / allData.length
-												})
-											}, [])
+											// useEffect(() => {
+											// 	setScore(score + total);
+											// 	getTeamAverageScore(allData, data.team).map((val: FormItems) => {
+											// 		averageScore += score / allData.length
+											// 	})
+											// }, [])
 									
 
 											switch (type) {
