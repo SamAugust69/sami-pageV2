@@ -1,7 +1,6 @@
 import { FormItems } from '@/lib/formTypes';
 import FormInput from '@/ui/FormInput';
 import { Button } from '../ui/Button';
-import LogOverview from '../log-design/LogOverview';
 import Heading from '../ui/Heading';
 import Paragraph from '../ui/Paragraph';
 import { useState } from 'react';
@@ -74,9 +73,10 @@ const Finishing = ({ updateForm, bot_preformed, match, team, scout, auto, teleop
 
 	return (
 		<div>
-			<Heading size={'xs'}>Finishing Up</Heading>
-			<Paragraph>Howd your robot do overall?</Paragraph>
-			<div className="py-2">
+			<Heading size={'uberSmall'} className="text-t-100 my-1">
+				Finishing
+			</Heading>
+			<div className="py-2 flex flex-col gap-2">
 				{formInputs.map((input: any, i) => {
 					return (
 						<FormInput key={i} {...input}>
@@ -84,7 +84,6 @@ const Finishing = ({ updateForm, bot_preformed, match, team, scout, auto, teleop
 						</FormInput>
 					);
 				})}
-				<LogOverview {...overviewProps} />
 			</div>
 		</div>
 	);

@@ -1,7 +1,7 @@
 import { v4 } from 'uuid';
 
-// objective data, take data and 
-export type FormItems = {
+// objective data, take data and
+export type FormItems  = {
 	id: string;
 	completed: boolean;
 	match: number;
@@ -13,25 +13,22 @@ export type FormItems = {
 	// offensive vs defensive
 	auto: {
 		leftStartingZone: boolean;
+
 		scored: boolean;
-		totalScored: number;
-		scoredSpeaker: boolean;
 		speakerScore: number;
-		scoredAmp: boolean;
 		ampScore: number;
 	};
 	teleop: {
-		scoredAmp: boolean;
 		ampActivatedAmount: number;
 		ampScore: number;
 
-		scoredSpeaker: boolean;
 		speakerScore: number;
 		amplifiedSpeakerScore: number;
 
 		hangOnChain: boolean;
 		hangInHarmony: boolean; // is big bulky, or bad at coordination
 		scoredTrap: boolean;
+		trapScore: number;
 
 		thrownNoteScore: boolean;
 		thrownNoteAmount: number;
@@ -48,26 +45,22 @@ export const initialValues: FormItems = {
 	notes: '',
 	bot_preformed: 'well',
 	auto: {
-		leftStartingZone: false,
 		scored: false,
-		totalScored: 0,
-		scoredSpeaker: false,
+		leftStartingZone: false,
 		speakerScore: 0,
-		scoredAmp: false,
 		ampScore: 0,
 	},
 	teleop: {
-		scoredAmp: false,
 		ampActivatedAmount: 0,
 		ampScore: 0,
 
-		scoredSpeaker: false,
 		speakerScore: 0,
 		amplifiedSpeakerScore: 0,
 
 		hangOnChain: false,
 		hangInHarmony: false,
 		scoredTrap: false,
+		trapScore: 0,
 
 		thrownNoteScore: false,
 		thrownNoteAmount: 0,

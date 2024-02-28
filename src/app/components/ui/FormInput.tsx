@@ -1,27 +1,30 @@
-import { cn } from '@/app/lib/utils';
+import { cn } from '@/lib/utils';
 import { HTMLAttributes, Ref, forwardRef, useState } from 'react';
 import { Check } from 'lucide-react';
 import { VariantProps, cva } from 'class-variance-authority';
 import { FC } from 'react';
 import Paragraph from './Paragraph';
-import useMultiForm from '@/app/lib/useMultiForm';
+import useMultiForm from '@/lib/useMultiForm';
 
-const InputVariants = cva('peer flex bg-slate-200 disabled:pointer-events-none outline-none rounded-none', {
-	variants: {
-		variant: {
-			default: '',
-			purple_ish: 'bg-indigo-100',
-			purpler: 'bg-indigo-200',
+const InputVariants = cva(
+	'peer flex disabled:pointer-events-none outline-none rounded-none border-2 border-t-100 rounded',
+	{
+		variants: {
+			variant: {
+				default: 'bg-transparent text-t-100 placeholder-t-100',
+				purple_ish: '',
+				purpler: '',
+			},
+			size: {
+				default: 'h-10 px-2 w-full',
+			},
 		},
-		size: {
-			default: 'h-8 px-1 w-full',
+		defaultVariants: {
+			size: 'default',
+			variant: 'default',
 		},
-	},
-	defaultVariants: {
-		size: 'default',
-		variant: 'default',
-	},
-});
+	}
+);
 
 interface InputProps extends HTMLAttributes<HTMLInputElement>, VariantProps<typeof InputVariants> {
 	disabled?: boolean;
@@ -30,47 +33,60 @@ interface InputProps extends HTMLAttributes<HTMLInputElement>, VariantProps<type
 	title?: string;
 }
 
-const TextInput: FC<InputProps> = ({ size, variant, visible, className, title, children, disabled, type, ...props }) => {
+const TextInput: FC<InputProps> = ({
+	size,
+	variant,
+	visible,
+	className,
+	title,
+	children,
+	disabled,
+	type,
+	...props
+}) => {
 	return (
-		<div
-			className={cn(
-				`${
-					visible === false ? 'hidden' : 'block'
-				} mx-3 my-4 relative bg-gradient-to-r from-slate-400 to-slate-300 dark:from-slate-400 dark:to-slate-500 pb-0.5 `,
-				className
-			)}
-		>
-			<input required disabled={disabled} className={cn(InputVariants({ size, variant }))} onClick={(e: any) => e.stopPropagation()} {...props} />
-			<span
-				className=" absolute top-0 left-0 peer-focus:text-xs peer-focus:text-slate-500 dark:peer-focus:text-slate-200 peer-focus:-top-2.5 peer-valid:text-xs peer-valid:text-slate-500 dark:peer-valid:text-slate-200 peer-valid:-top-2.5 transition-all peer-placeholder-shown:text-xs peer-placeholder-shown:text-slate-500 dark:peer-placeholder-shown:text-slate-200 peer-placeholder-shown:-top-2.5"
-			>
+		<div className={cn(`${visible === false ? 'hidden' : 'block'} relative bg-gradient-to-r 500 pb-0.5 `, className)}>
+			<input
+				required
+				disabled={disabled}
+				className={cn(InputVariants({ size, variant }))}
+				onClick={(e: any) => e.stopPropagation()}
+				{...props}
+			/>
+			<span className="text-t-100 disabled:pointer-events-none outline-none text-sm absolute top-0 left-2 peer-focus:text-xs peer-focus:bg-g-200 peer-focus:-top-2 peer-valid:text-xs peer-valid:bg-g-200 peer-valid:-top-2 transition-all peer-placeholder-shown:text-xs  peer-placeholder-shown:-top-2 peer-placeholder-shown:bg-g-200 px-1">
 				{title}
 			</span>
 		</div>
 	);
 };
 
-const NumberInput: FC<InputProps> = ({ size, variant, visible, className, title, children, disabled, type, ...props }) => {
+const NumberInput: FC<InputProps> = ({
+	size,
+	variant,
+	visible,
+	className,
+	title,
+	children,
+	disabled,
+	type,
+	...props
+}) => {
 	return (
-		<div
-			className={cn(
-				`${
-					visible === false ? 'hidden' : 'block'
-				} mx-3 my-4 relative bg-gradient-to-r from-slate-400 to-slate-300 dark:from-slate-400 dark:to-slate-500 pb-0.5`,
-				className
-			)}
-		>
-			<input required disabled={disabled} pattern="[0-9]*" className={cn(InputVariants({ size, variant }))} onClick={(e: any) => e.stopPropagation()} {...props} />
-			<span
-				className=" absolute top-0 left-0 peer-focus:text-xs peer-focus:text-slate-500 dark:peer-focus:text-slate-200 peer-focus:-top-2.5 peer-valid:text-xs peer-valid:text-slate-500 dark:peer-valid:text-slate-200 peer-valid:-top-2.5 transition-all peer-placeholder-shown:text-xs peer-placeholder-shown:text-slate-500 dark:peer-placeholder-shown:text-slate-200 peer-placeholder-shown:-top-2.5 "
-			>
+		<div className={cn(`${visible === false ? 'hidden' : 'block'}  relative  pb-0.5`, className)}>
+			<input
+				required
+				disabled={disabled}
+				pattern="[0-9]*"
+				className={cn(InputVariants({ size, variant }))}
+				onClick={(e: any) => e.stopPropagation()}
+				{...props}
+			/>
+			<span className="text-t-100 disabled:pointer-events-none outline-none text-sm absolute top-0 left-2 peer-focus:text-xs peer-focus:bg-g-200 peer-focus:-top-2 peer-valid:text-xs peer-valid:bg-g-200 peer-valid:-top-2 transition-all peer-placeholder-shown:text-xs  peer-placeholder-shown:-top-2 peer-placeholder-shown:bg-g-200 px-1">
 				{title}
 			</span>
 		</div>
 	);
 };
-
-
 
 interface ToggleProps extends HTMLAttributes<HTMLDivElement> {
 	toggled: boolean;
@@ -98,33 +114,36 @@ const Toggle: FC<ToggleProps> = ({
 	return (
 		<div
 			className={cn(
-				`mx-3 border mb-2 ${
-					toggled ? `border-indigo-600 ${hoverColor ? hoverColor : 'bg-indigo-100'}` : 'border-slate-400'
+				`border-2 ${
+					toggled ? `border-t-100 bg-t-100/15` : 'border-slate-400'
 				} rounded p-2 transition-all cursor-pointer ${className}`
 			)}
 			{...props}
 		>
 			<div className="flex items-center justify-between">
 				{checkbox && (
-					<div className="rounded border-2 border-indigo-400 p-1 bg-indigo-300">
-						<Check className={`w-5 h-5 text-indigo-800 ${toggled ? 'scale-100' : 'scale-0'}`} />
+					<div className="rounded border-2 p-1 border-t-100 bg-t-100/5">
+						<Check className={`w-5 h-5 text-t-100 ${toggled ? 'scale-100' : 'scale-0'}`} />
 					</div>
 				)}
 				<div className="p-1">
-					<Paragraph className={`px-0 select-none text-slate-700 font-bold ${checkbox ? 'text-right' : 'text-left'} mb-0`}>
+					<Paragraph className={`px-0 select-none text-t-100 font-bold ${checkbox ? 'text-right' : 'text-left'} mb-0`}>
 						{title}
 					</Paragraph>
-					<Paragraph size={"sm"} className={`px-0 select-none leading-normal ${checkbox ? 'text-right' : 'text-left'} mb-0`}>
+					<Paragraph
+						size={'sm'}
+						className={`px-0 select-none text-t-200 leading-normal ${checkbox ? 'text-right' : 'text-left'} mb-0`}
+					>
 						{description}
 					</Paragraph>
 				</div>
 			</div>
 
 			{children !== undefined && toggled && (
-				<div className=" border-black py-2 px-1 my-2 bg-indigo-200 rounded">
+				<div className="p-3 my-1 bg-g-200 rounded flex gap-2 flex-col">
 					{children.map((input, i) => {
 						return (
-							<FormInput key={i} className='mx-1 border-0 mb-0' variant={"purpler"} hoverColor={"bg-indigo-200"}  {...input}>
+							<FormInput key={i} className="mx-1 border-0 mb-0" {...input}>
 								{input.children}
 							</FormInput>
 						);
@@ -135,17 +154,11 @@ const Toggle: FC<ToggleProps> = ({
 	);
 };
 
-interface CarouselProps extends HTMLAttributes<HTMLDivElement> {
-}
+interface CarouselProps extends HTMLAttributes<HTMLDivElement> {}
 
 const CarouselSelector: FC<CarouselProps> = ({ className }) => {
-
-	return (
-		<div className={`bg-indigo-100 ${className}`}>
-			s
-		</div>
-	)
-}
+	return <div className={`bg-indigo-100 ${className}`}>s</div>;
+};
 
 // lets make a selector, left and right thingy.
 const formInputSwitch = (type: string, children: any, props: any) => {
@@ -155,9 +168,9 @@ const formInputSwitch = (type: string, children: any, props: any) => {
 		case 'toggle':
 			return <Toggle {...props}>{children}</Toggle>;
 		case 'number':
-			return <NumberInput {...props}>{children}</NumberInput>
-		case "carousel":
-			return <CarouselSelector {...props}></CarouselSelector>
+			return <NumberInput {...props}>{children}</NumberInput>;
+		case 'carousel':
+			return <CarouselSelector {...props}></CarouselSelector>;
 		default:
 			return <TextInput {...props}>{children}</TextInput>;
 	}

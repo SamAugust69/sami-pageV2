@@ -1,35 +1,17 @@
-import { FC, HtmlHTMLAttributes, useEffect, useRef } from 'react';
+import { FC } from 'react';
+import { Button } from './Button';
 
-interface DialogProps extends HtmlHTMLAttributes<HTMLDialogElement> {
-	visible: boolean;
-	setVisible: Function;
+interface DialogProps {
+	message: string;
+	name: string;
+	onDialog: Function;
 }
 
-const Dialog: FC<DialogProps> = ({ children, visible, setVisible }) => {
-	const dialogRef = useRef<HTMLDivElement>(null);
-
-	const handleDialogClick = (e: any) => {
-		if (visible && !dialogRef.current?.contains(e.target) && !dialogRef.current?.contains(e.target)) {
-			setVisible(false);
-		}
-	};
-
-	useEffect(() => {
-		document.addEventListener('mouseup', handleDialogClick);
-	});
-
+const Dialog: FC<DialogProps> = ({ message, name, onDialog }) => {
 	return (
-		<div
-			className={`${
-				visible ? 'visible' : 'invisible'
-			} w-full h-full fixed top-0 left-0 z-20 bg-slate-600/30 flex items-center justify-center overflow-hidden`}
-		>
-			<div
-				ref={dialogRef}
-				className="bg-slate-200 dark:bg-slate-600 border-slate-400 dark:border-slate-800 border-2 rounded p-4"
-			>
-				{children}
-			</div>
+		<div>
+			<Button onClick={() => onDialog(false)}>Close</Button>
+			<Button onClick={() => onDialog(true)}>Yuh</Button>
 		</div>
 	);
 };
