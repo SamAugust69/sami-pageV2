@@ -8,7 +8,7 @@ import useMultiForm from '@/lib/useMultiForm';
 import { Button } from './Button';
 
 const InputVariants = cva(
-	'peer flex disabled:pointer-events-none outline-none rounded-none border-2 border-t-100 rounded',
+	'peer flex disabled:pointer-events-none outline-none rounded-none border-2 border-t-100 rounded relative',
 	{
 		variants: {
 			variant: {
@@ -83,26 +83,20 @@ const NumberInput: FC<InputProps> = ({
 	const [thing, setThing] = useState<number>(parseInt(placeholder!) ?? 0);
 	{console.log(thing > 0)}
 	return (
-		<div className={cn(`${visible === false ? 'hidden' : 'block'}  relative  pb-0.5`, className)}>
+		<div className={cn(`${visible === false ? 'hidden' : 'block'} relative pb-0.5 flex`, className)}>
+			{incrementButtons ? <Button onClick={() => increment?.(setThing)} className='px-8 h-full rounded-r-none'>+</Button> : null}
 			<input
 				required
 				disabled={disabled}
 				pattern="[0-9]*"
-				className={cn(InputVariants({ size, variant }))}
+				className={cn(InputVariants({ size, variant }), `${incrementButtons ? "rounded-none" : ""}`)}
 				placeholder={thing.toString()}
 				{...props}
 			/>
-			<span className="text-t-100 disabled:pointer-events-none outline-none text-sm absolute top-0 left-2 peer-focus:text-xs peer-focus:bg-g-200 peer-focus:-top-2 peer-valid:text-xs peer-valid:bg-g-200 peer-valid:-top-2 transition-all peer-placeholder-shown:text-xs  peer-placeholder-shown:-top-2 peer-placeholder-shown:bg-g-200 px-1">
+			<span className={`text-t-100 disabled:pointer-events-none outline-none text-sm absolute top-0 ${incrementButtons ? "left-20" : "left-2"} peer-focus:text-xs peer-focus:bg-g-200 peer-focus:-top-2 peer-valid:text-xs peer-valid:bg-g-200 peer-valid:-top-2 transition-all peer-placeholder-shown:text-xs  peer-placeholder-shown:-top-2 peer-placeholder-shown:bg-g-200 px-1`}>
 				{title}
 			</span>
-			
-			
-			{incrementButtons == true ? (
-				<div>
-					<Button onClick={() => increment?.(setThing)}>+</Button>
-					<Button onClick={() => (thing > 0 ? decrease?.(setThing) : thing)}>-</Button>
-				</div>
-			) : null}
+			{incrementButtons ? <Button onClick={() => thing > 0 ? decrease?.(setThing) : 0} className='px-8 h-full rounded-l-none'>-</Button> : null}
 
 		</div>
 	);
@@ -135,7 +129,7 @@ const Toggle: FC<ToggleProps> = ({
 		<div
 			className={cn(
 				`border-2 ${
-					toggled ? `border-t-100 bg-t-100/10` : 'border-slate-400'
+					toggled ? `border-t-100 bg-t-100/20` : 'border-slate-400'
 				} rounded transition-all cursor-pointer ${className}`
 			)}
 		>

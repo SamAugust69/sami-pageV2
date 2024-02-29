@@ -80,26 +80,30 @@ const Form: FC<FormTestProps> = ({ modalState, closeModal, dispatch }) => {
 					onKeyUp={handleKey}
 					className="flex flex-col sm:flex-row p-4 h-full overflow-scroll w-full max-h-fit"
 				>
-					<div className="flex flex-row pb-2 sm:flex-col sm:justify-normal justify-center mr-0 sm:mr-4 px-4 py-4 relative bg-g-200 sm:border-2 border-0 border-t-100 rounded">
+					<div className="flex flex-col pb-2 sm:flex-col sm:justify-normal justify-center mr-0 sm:mr-4 px-4 py-4 relative bg-g-200 sm:border-2 border-0 border-t-100 rounded">
+		
+						<div className='flex justify-center sm:flex-col'>
 						{MultiFormSteps.map((step, i) => {
-							return (
-								<button key={i} onClick={() => goToStep(i)} className="flex p-4 z-10">
-									<div
-										className={`rounded-full border-2 w-10 h-10 flex items-center justify-center font-semibold text-center transition-colors ${
-											currentStepNumber == i
-												? 'text-t-100 border-r-200 bg-r-400'
-												: 'text-b-100 bg-t-300 border-t-400'
-										}`}
-									>
-										<p className="w-full">{i + 1}</p>
-									</div>
-									<div className="flex-col pl-3 hidden sm:flex w-44">
-										<p className="text-left font-semibold leading-tight text-sm text-t-300">Step {i + 1}</p>
-										<p className="text-left font-semibold leading-tight uppercase text-t-100 tracking-wide">{step}</p>
-									</div>
-								</button>
-							);
-						})}
+								return (
+									<button key={i} onClick={() => goToStep(i)} className="flex p-4 z-10">
+										<div
+											className={`rounded-full border-2 w-10 h-10 flex items-center justify-center font-semibold text-center transition-colors ${
+												currentStepNumber == i
+													? 'text-t-100 border-r-200 bg-r-400'
+													: 'text-b-100 bg-t-300 border-t-400'
+											}`}
+										>
+											<p className="w-full">{i + 1}</p>
+										</div>
+										<div className="flex-col pl-3 hidden sm:flex w-44">
+											<p className="text-left font-semibold leading-tight text-sm text-t-300">Step {i + 1}</p>
+											<p className="text-left font-semibold leading-tight uppercase text-t-100 tracking-wide">{step}</p>
+										</div>
+									</button>
+								);
+							})}
+						</div>
+						<Button variant={"hidden"} className='text-t-100' onClick={() => closeModal()}>Close</Button>
 						{/* <div className="bg-indigo-700 box-border w-full rounded h-full absolute z-0 left-0"></div> */}
 					</div>
 					<div className="flex-col justify-between flex w-full">

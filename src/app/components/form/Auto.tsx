@@ -4,7 +4,7 @@ import Heading from '@/ui/Heading';
 import Paragraph from '../ui/Paragraph';
 
 type stepItems = FormItems & {
-	updateForm: (item: Partial<FormItems>) => void;
+	updateForm: (item: Partial<FormItems>) => Promise<void>;
 };
 
 // {
@@ -42,21 +42,15 @@ const Auto = ({ updateForm, auto }: stepItems) => {
 							auto: { ...auto, speakerScore: Number.isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value) },
 						});
 					},
-					incrementButtons: true,
-					increment: () => {
-						console.log("yeah	", auto.speakerScore)
-						updateForm({
-							auto: { ...auto, speakerScore: auto.speakerScore < 0 ? 0 : (auto.speakerScore + 1) },
-						});
-					},
-					decrease: () => {
-						updateForm({
-							auto: { ...auto, speakerScore: auto.speakerScore < 0 ? 0 : (auto.speakerScore - 1) },
-						});
-						return auto.speakerScore
-					},
 					title: 'Speaker Score',
 					placeholder: auto.ampScore.toString(),
+					incrementButtons: true,
+					increment: (setThing: Function) => {
+						updateForm({ auto: { ...auto, speakerScore: (auto.speakerScore + 1)}}).then(setThing(auto.speakerScore + 1))
+					},
+					decrease: (setThing: Function) => {
+						updateForm({ auto: { ...auto, speakerScore: (auto.speakerScore - 1)}}).then(setThing(auto.speakerScore - 1))
+					}
 					
 				},
 				{
@@ -67,6 +61,13 @@ const Auto = ({ updateForm, auto }: stepItems) => {
 						}),
 					title: 'Amp Score',
 					placeholder: auto.ampScore.toString(),
+					incrementButtons: true,
+					increment: (setThing: Function) => {
+						updateForm({ auto: { ...auto, ampScore: (auto.ampScore + 1)}}).then(setThing(auto.ampScore + 1))
+					},
+					decrease: (setThing: Function) => {
+						updateForm({ auto: { ...auto, ampScore: (auto.ampScore - 1)}}).then(setThing(auto.ampScore - 1))
+					}
 				},
 			],
 			title: 'Scored',
