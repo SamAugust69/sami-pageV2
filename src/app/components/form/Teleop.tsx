@@ -104,7 +104,14 @@ const Teleop = ({ updateForm, teleop }: stepItems) => {
 					onChange: (e: any) => {e.stopPropagation(); updateForm({ teleop: { ...teleop, trapScore: e.target.value}})},
 					title: "Trap Score",
 					description: "How many times did they score trap?",
-					placeholder: (teleop.trapScore).toString()
+					placeholder: teleop.trapScore.toString(),
+					incrementButtons: true,
+					increment: (setThing: Function) => {
+						updateForm({ teleop: { ...teleop, trapScore: (teleop.trapScore + 1)}}).then(setThing(teleop.trapScore + 1))
+					},
+					decrease: (setThing: Function) => {
+						updateForm({ teleop: { ...teleop, trapScore: (teleop.trapScore - 1)}}).then(setThing(teleop.trapScore - 1))
+					}
 				}
 			],
 		},
