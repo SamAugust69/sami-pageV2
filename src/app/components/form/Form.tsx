@@ -23,10 +23,15 @@ interface FormTestProps {
 const Form: FC<FormTestProps> = ({ modalState, closeModal, dispatch }) => {
 	const [formData, setFormData] = useState(initialValues);
 
-	const updateForm = (fieldsToUpdate: Partial<FormItems>) => {
-		console.log({ ...fieldsToUpdate });
-		setFormData({ ...formData, ...fieldsToUpdate });
+	const updateForm = async (fieldsToUpdate: Partial<FormItems>) => {
+		new Promise((resolve, reject) => {
+			setFormData({ ...formData, ...fieldsToUpdate });
+			console.log({...fieldsToUpdate})
+			Promise.resolve({...fieldsToUpdate})
+		})
 	};
+
+	
 
 	const handleKey = (event: any) => {
 		if (event.key == 'ArrowDown' || event.key == 'ArrowRight') forwards();

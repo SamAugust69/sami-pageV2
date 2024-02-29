@@ -4,7 +4,7 @@ import Heading from '../ui/Heading';
 import Paragraph from '../ui/Paragraph';
 
 type stepItems = FormItems & {
-	updateForm: (item: Partial<FormItems>) => void;
+	updateForm: (item: Partial<FormItems>) => Promise<void>;
 };
 
 // {
@@ -33,27 +33,56 @@ const Teleop = ({ updateForm, teleop }: stepItems) => {
 			type: 'number',
 			title: 'Amp Score?',
 			placeholder: teleop.ampScore.toString(),
-			onChange: (e: any) => updateForm({ teleop: { ...teleop, ampScore: e.target.value } }),
+			onChange: (e: any) => updateForm({ teleop: { ...teleop, ampScore: parseInt(e.target.value) } }),
+			incrementButtons: true,
+			increment: (setThing: Function) => {
+				updateForm({ teleop: { ...teleop, ampScore: (teleop.ampScore + 1)}}).then(setThing(teleop.ampScore + 1))
+			},
+			decrease: (setThing: Function) => {
+				updateForm({ teleop: { ...teleop, ampScore: (teleop.ampScore - 1)}}).then(setThing(teleop.ampScore - 1))
+			}
+			
 		},
 		{
 			type: "number",
 			title: "Amplification Amount",
 			placeholder: teleop.ampActivatedAmount.toString(),
-			onChange: (e: any) => updateForm({ teleop: { ...teleop, ampActivatedAmount: e.target.value } }),
+			onChange: (e: any) => updateForm({ teleop: { ...teleop, ampActivatedAmount: parseInt(e.target.value) } }),
+			incrementButtons: true,
+			increment: (setThing: Function) => {
+				updateForm({ teleop: { ...teleop, ampActivatedAmount: (teleop.ampActivatedAmount + 1)}}).then(setThing(teleop.ampActivatedAmount + 1))
+			},
+			decrease: (setThing: Function) => {
+				updateForm({ teleop: { ...teleop, ampActivatedAmount: (teleop.ampActivatedAmount - 1)}}).then(setThing(teleop.ampActivatedAmount - 1))
+			}
 		},
 
 		
 		{
-			type: 'Scored Speaker',
+			type: 'number',
 			title: 'Speaker Score',
 			placeholder: teleop.speakerScore.toString(),
-			onChange: (e: any) => updateForm({ teleop: { ...teleop, speakerScore: e.target.value } }),
+			onChange: (e: any) => updateForm({ teleop: { ...teleop, speakerScore: parseInt(e.target.value) } }),
+			incrementButtons: true,
+			increment: (setThing: Function) => {
+				updateForm({ teleop: { ...teleop, speakerScore: (teleop.speakerScore + 1)}}).then(setThing(teleop.speakerScore + 1))
+			},
+			decrease: (setThing: Function) => {
+				updateForm({ teleop: { ...teleop, speakerScore: (teleop.speakerScore - 1)}}).then(setThing(teleop.speakerScore - 1))
+			}
 		},
 		{
 			type: "number",
 			title: "Amplified Speaker Score",
 			placeholder: teleop.amplifiedSpeakerScore.toString(),
-			onChange: (e: any) => updateForm({ teleop: { ...teleop, amplifiedSpeakerScore: e.target.value } }),
+			onChange: (e: any) => updateForm({ teleop: { ...teleop, amplifiedSpeakerScore: parseInt(e.target.value) } }),
+			incrementButtons: true,
+			increment: (setThing: Function) => {
+				updateForm({ teleop: { ...teleop, amplifiedSpeakerScore: (teleop.amplifiedSpeakerScore + 1)}}).then(setThing(teleop.amplifiedSpeakerScore + 1))
+			},
+			decrease: (setThing: Function) => {
+				updateForm({ teleop: { ...teleop, amplifiedSpeakerScore: (teleop.amplifiedSpeakerScore - 1)}}).then(setThing(teleop.amplifiedSpeakerScore - 1))
+			}
 		},
 
 		{

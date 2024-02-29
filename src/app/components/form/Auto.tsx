@@ -24,6 +24,7 @@ const Auto = ({ updateForm, auto }: stepItems) => {
 				}),
 			toggled: auto.leftStartingZone,
 			title: 'Left Starting Zone',
+			description: "Did the robot leave the starting area?"
 		},
 		{
 			type: 'toggle',
@@ -37,13 +38,26 @@ const Auto = ({ updateForm, auto }: stepItems) => {
 				{
 					type: 'number',
 					onChange: (e: any) => {
-						e.stopPropagation();
 						updateForm({
 							auto: { ...auto, speakerScore: Number.isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value) },
 						});
 					},
+					incrementButtons: true,
+					increment: () => {
+						console.log("yeah	", auto.speakerScore)
+						updateForm({
+							auto: { ...auto, speakerScore: auto.speakerScore < 0 ? 0 : (auto.speakerScore + 1) },
+						});
+					},
+					decrease: () => {
+						updateForm({
+							auto: { ...auto, speakerScore: auto.speakerScore < 0 ? 0 : (auto.speakerScore - 1) },
+						});
+						return auto.speakerScore
+					},
 					title: 'Speaker Score',
 					placeholder: auto.ampScore.toString(),
+					
 				},
 				{
 					type: 'number',

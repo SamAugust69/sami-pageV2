@@ -5,6 +5,7 @@ import { VariantProps, cva } from 'class-variance-authority';
 import { FC } from 'react';
 import Paragraph from './Paragraph';
 import useMultiForm from '@/lib/useMultiForm';
+import { Button } from './Button';
 
 const InputVariants = cva(
 	'peer flex disabled:pointer-events-none outline-none rounded-none border-2 border-t-100 rounded',
@@ -29,6 +30,9 @@ const InputVariants = cva(
 interface InputProps extends HTMLAttributes<HTMLInputElement>, VariantProps<typeof InputVariants> {
 	disabled?: boolean;
 	type: string;
+	incrementButtons?: boolean;
+	increment?: (setThing: Function) => number;
+	decrease?: (setThing: Function) => number;
 	visible?: boolean;
 	title?: string;
 }
@@ -68,9 +72,16 @@ const NumberInput: FC<InputProps> = ({
 	title,
 	children,
 	disabled,
+	incrementButtons,
+	increment,
+	decrease,
 	type,
+	placeholder,
 	...props
 }) => {
+
+	const [thing, setThing] = useState<number>(parseInt(placeholder!) ?? 0);
+	{console.log(thing > 0)}
 	return (
 		<div className={cn(`${visible === false ? 'hidden' : 'block'}  relative  pb-0.5`, className)}>
 			<input
@@ -78,12 +89,21 @@ const NumberInput: FC<InputProps> = ({
 				disabled={disabled}
 				pattern="[0-9]*"
 				className={cn(InputVariants({ size, variant }))}
-				onClick={(e: any) => e.stopPropagation()}
+				placeholder={thing.toString()}
 				{...props}
 			/>
 			<span className="text-t-100 disabled:pointer-events-none outline-none text-sm absolute top-0 left-2 peer-focus:text-xs peer-focus:bg-g-200 peer-focus:-top-2 peer-valid:text-xs peer-valid:bg-g-200 peer-valid:-top-2 transition-all peer-placeholder-shown:text-xs  peer-placeholder-shown:-top-2 peer-placeholder-shown:bg-g-200 px-1">
 				{title}
 			</span>
+			
+			
+			{incrementButtons == true ? (
+				<div>
+					<Button onClick={() => increment?.(setThing)}>+</Button>
+					<Button onClick={() => (thing > 0 ? decrease?.(setThing) : thing)}>-</Button>
+				</div>
+			) : null}
+
 		</div>
 	);
 };
@@ -115,12 +135,11 @@ const Toggle: FC<ToggleProps> = ({
 		<div
 			className={cn(
 				`border-2 ${
-					toggled ? `border-t-100 bg-t-100/15` : 'border-slate-400'
-				} rounded p-2 transition-all cursor-pointer ${className}`
+					toggled ? `border-t-100 bg-t-100/10` : 'border-slate-400'
+				} rounded transition-all cursor-pointer ${className}`
 			)}
-			{...props}
 		>
-			<div className="flex items-center justify-between">
+			<div className="flex items-center justify-between p-2 " {...props}>
 				{checkbox && (
 					<div className="rounded border-2 p-1 border-t-100 bg-t-100/5">
 						<Check className={`w-5 h-5 text-t-100 ${toggled ? 'scale-100' : 'scale-0'}`} />
@@ -140,7 +159,7 @@ const Toggle: FC<ToggleProps> = ({
 			</div>
 
 			{children !== undefined && toggled && (
-				<div className="p-3 my-1 bg-g-200 rounded flex gap-2 flex-col">
+				<div className="px-3 py-4 bg-g-200 flex gap-2 flex-col border-t-2 border-t-200">
 					{children.map((input, i) => {
 						return (
 							<FormInput key={i} className="mx-1 border-0 mb-0" {...input}>

@@ -41,7 +41,7 @@ export const initialValues: FormItems = {
 	match: 0,
 	team: 0,
 	dateAdded: new Date(),
-	scout: 'Sam',
+	scout: '',
 	notes: '',
 	bot_preformed: 'well',
 	auto: {
@@ -74,6 +74,9 @@ export type FormInputType = {
 	description?: string;
 	onClick?: (e: any) => void;
 	checkbox?: boolean;
+	incrementButtons?: boolean;
+	increment?: Function;
+	decrease?: Function;
 	className?: string;
 	showChildren?: boolean;
 	children?: Array<FormInputType>;
