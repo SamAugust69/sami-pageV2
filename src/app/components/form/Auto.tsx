@@ -42,7 +42,7 @@ const Auto = ({ updateForm, auto }: stepItems) => {
 							auto: { ...auto, speakerScore: Number.isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value) },
 						});
 					},
-					title: 'Speaker Score',
+					title: 'Speaker Notes Scored',
 					placeholder: auto.ampScore.toString(),
 					incrementButtons: true,
 					increment: (setThing: Function) => {
@@ -59,7 +59,7 @@ const Auto = ({ updateForm, auto }: stepItems) => {
 						updateForm({
 							auto: { ...auto, ampScore: Number.isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value) },
 						}),
-					title: 'Amp Score',
+					title: 'Amp notes Scored',
 					placeholder: auto.ampScore.toString(),
 					incrementButtons: true,
 					increment: (setThing: Function) => {
