@@ -31,7 +31,7 @@ const Teleop = ({ updateForm, teleop }: stepItems) => {
 	const formInputs: Array<FormInputType> = [
 		{
 			type: 'number',
-			title: 'Speaker Score',
+			title: 'Speaker Notes Scored',
 			placeholder: teleop.speakerScore.toString(),
 			onChange: (e: any) => updateForm({ teleop: { ...teleop, speakerScore: parseInt(e.target.value) } }),
 			incrementButtons: true,
@@ -44,7 +44,7 @@ const Teleop = ({ updateForm, teleop }: stepItems) => {
 		},
 		{
 			type: "number",
-			title: "Amplified Speaker Score",
+			title: "Speaker (Amplified) Notes Scored",
 			placeholder: teleop.amplifiedSpeakerScore.toString(),
 			onChange: (e: any) => updateForm({ teleop: { ...teleop, amplifiedSpeakerScore: parseInt(e.target.value) } }),
 			incrementButtons: true,
@@ -58,7 +58,7 @@ const Teleop = ({ updateForm, teleop }: stepItems) => {
 		
 		{
 			type: 'number',
-			title: 'Amp ',
+			title: 'Amp Notes Scored',
 			placeholder: teleop.ampScore.toString(),
 			onChange: (e: any) => updateForm({ teleop: { ...teleop, ampScore: parseInt(e.target.value) } }),
 			incrementButtons: true,
@@ -72,7 +72,7 @@ const Teleop = ({ updateForm, teleop }: stepItems) => {
 		},
 		{
 			type: "number",
-			title: "Amplification Amount",
+			title: "Amp (Amplified) Score",
 			placeholder: teleop.ampActivatedAmount.toString(),
 			onChange: (e: any) => updateForm({ teleop: { ...teleop, ampActivatedAmount: parseInt(e.target.value) } }),
 			incrementButtons: true,
