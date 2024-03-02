@@ -37,10 +37,6 @@ const LogView: FC<LogViewProps> = ({ toDisplay, averageScore, setAverageScore, d
 		})
 		console.log(averageScore)
 	}
-	
-	useEffect(() => {
-		calcScore()
-	}, [])
 
 	return (
 		<div className={cn(`bg-t-100 rounded flex flex-col ${className}`)}>

@@ -91,8 +91,8 @@ const Logdash: FC<LogdashProps> = ({}) => {
 	const Normal: any = () => {
 		setFilteredData(
 			filteredData.sort((a, b) => {
-				if (new Date(a.dateAdded).getTime() > new Date(b.dateAdded).getTime()) return -1;
-				else if (new Date(a.dateAdded).getTime() < new Date(b.dateAdded).getTime()) return 1;
+				if (new Date(a.dateSubmitted).getTime() > new Date(b.dateSubmitted).getTime()) return -1;
+				else if (new Date(a.dateSubmitted).getTime() < new Date(b.dateSubmitted).getTime()) return 1;
 				return 0;
 			})
 		);

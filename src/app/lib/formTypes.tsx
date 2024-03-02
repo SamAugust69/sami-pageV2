@@ -7,7 +7,7 @@ export type FormItems  = {
 	match: number;
 	team: number;
 	scout: string;
-	dateAdded: Date;
+	dateSubmitted: Date;
 	notes: string;
 	bot_preformed: string;
 	// offensive vs defensive
@@ -40,7 +40,7 @@ export const initialValues: FormItems = {
 	completed: false,
 	match: 0,
 	team: 0,
-	dateAdded: new Date(),
+	dateSubmitted: new Date(),
 	scout: '',
 	notes: '',
 	bot_preformed: 'well',

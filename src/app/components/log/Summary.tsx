@@ -23,7 +23,7 @@ const Summary: FC<SummaryProps> = ({ data, allData, toDisplay }) => {
 		<div className="flex gap-2 flex-wrap">
 			{toDisplay.map((val: any, i: number) => {
 				return (
-					<div key={i} className="bg-t-100 min-w-[18rem] rounded flex flex-col">
+					<div key={i} className="bg-t-100 w-[18rem] rounded flex flex-col">
 						<Paragraph size="sm" className="text-t-100 font-medium bg-b-100 p-2 rounded-t">
 							{val.title}
 						</Paragraph>
@@ -89,22 +89,29 @@ const Summary: FC<SummaryProps> = ({ data, allData, toDisplay }) => {
 					</div>
 				);
 			})}
-			{/* <div className="bg-t-100 min-w-72 rounded flex flex-col">
+			<div className="bg-t-100 w-[18rem] rounded flex flex-col">
 				<Paragraph size="sm" className="text-t-100 font-medium bg-b-100 p-2 rounded-t">
 					Summary
 				</Paragraph>
 				<div className="bg-t-100 p-2 flex flex-col gap-2">
 					<div className='bg-t-200 rounded p-2 flex flex-col gap-2'>
-						<Paragraph size={"sm"}><span className='text-r-100'>{score}</span>pts Scored</Paragraph>
+						<Paragraph size={"sm"}><span className='text-r-100'>{score}</span> Total Points Scored</Paragraph>
 					</div>
-					<div className="bg-t-200 rounded h-10 flex justify-between items-center relative" ref={averageScoreWidth}>
+					{/* <div className="bg-t-200 rounded h-10 flex justify-between items-center relative" ref={averageScoreWidth}>
 						<div style={{width: `${Math.floor((score / (averageScore)) * averageScoreWidth.current.clientWidth)}px`}} className={`h-full bg-t-300 rounded-l flex items-center`}>
 							<Paragraph className='px-2 text-b-100 font-medium' size="sm">{score}</Paragraph>
 						</div>
 						<Paragraph className='px-2 text-b-100 font-medium absolute right-1' size="sm">avg {averageScore}</Paragraph>
+					</div> */}
+					<div className='bg-t-200 rounded p-2 flex flex-col gap-2'>
+						<Paragraph className='text-b-100 font-semibold m-0'>Notes</Paragraph>
+						<Paragraph className='text-b-100 font-normal'>
+							{data.notes}
+						</Paragraph>
 					</div>
 				</div>
-			</div> */}
+
+			</div>
 
 		</div>
 	);

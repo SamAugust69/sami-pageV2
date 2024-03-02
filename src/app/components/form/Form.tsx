@@ -13,6 +13,7 @@ import Finishing from '@/components/form/Finishing';
 import Beginning from './Beginning';
 import Example from './Example';
 import { REDUCER_ACTION_TYPE } from '@/lib/unsavedReducer';
+import Notes from './Notes';
 
 interface FormTestProps {
 	modalState: boolean;
@@ -38,18 +39,19 @@ const Form: FC<FormTestProps> = ({ modalState, closeModal, dispatch }) => {
 		if (event.key == 'ArrowUp' || event.key == 'ArrowLeft') backwards();
 	};
 
-	const MultiFormSteps = [ 'Beginning', 'Auto', 'Teleop', ];
+	const MultiFormSteps = [ 'Beginning', 'Auto', 'Teleop', "Notes"];
 
 	const { currentStep, forwards, backwards, goToStep, currentStepNumber, isFirstStep, isLastStep } = useMultiForm([
 		//<Example key={-1} {...formData} updateForm={updateForm} />,
 		<Beginning key={0} {...formData} updateForm={updateForm} />,
 		<Auto key={1} {...formData} updateForm={updateForm} />,
 		<Teleop key={2} {...formData} updateForm={updateForm} />,
+		<Notes key={3} {...formData} updateForm={updateForm} />,
 		//<Finishing key={3} {...formData} updateForm={updateForm} />,
 	]);
 
 	useEffect(() => {
-		updateForm({ dateAdded: new Date() });
+		updateForm({ dateSubmitted: new Date() });
 	}, []);
 
 	const handleSubmit = (e: any) => {
@@ -58,10 +60,10 @@ const Form: FC<FormTestProps> = ({ modalState, closeModal, dispatch }) => {
 
 		console.log('submitted log', formData);
 
-		dispatch({ type: 'added', payload: formData });
+		updateForm({ id: v4(), dateSubmitted: new Date() }); // 
+		dispatch({ type: 'added', payload: formData }); // add to localData
 
 		setFormData(initialValues);
-		updateForm({ id: v4(), dateAdded: new Date() });
 
 		closeModal();
 	};
@@ -80,7 +82,7 @@ const Form: FC<FormTestProps> = ({ modalState, closeModal, dispatch }) => {
 					onKeyUp={handleKey}
 					className="flex flex-col sm:flex-row p-4 h-full overflow-scroll w-full max-h-fit"
 				>
-					<div className="flex flex-col pb-2 sm:flex-col sm:justify-normal justify-center mr-0 sm:mr-4 px-4 py-4 relative bg-g-200 sm:border-2 border-0 border-t-100 rounded">
+					<div className="flex pb-2 items-center flex-col sm:flex-col mr-0 sm:mr-4 px-4 py-4 relative bg-g-200 sm:border-2 border-0 border-t-100 rounded">
 		
 						<div className='flex justify-center sm:flex-col'>
 						{MultiFormSteps.map((step, i) => {
@@ -92,6 +94,7 @@ const Form: FC<FormTestProps> = ({ modalState, closeModal, dispatch }) => {
 													? 'text-t-100 border-r-200 bg-r-400'
 													: 'text-b-100 bg-t-300 border-t-400'
 											}`}
+
 										>
 											<p className="w-full">{i + 1}</p>
 										</div>
@@ -103,7 +106,7 @@ const Form: FC<FormTestProps> = ({ modalState, closeModal, dispatch }) => {
 								);
 							})}
 						</div>
-						<Button variant={"hidden"} className='text-t-100' onClick={() => closeModal()}>Close</Button>
+						<Button variant={"hidden"} className={`text-t-100 w-20 sm:scale-0 scale-100`} onClick={() => closeModal()}>Close</Button>
 						{/* <div className="bg-indigo-700 box-border w-full rounded h-full absolute z-0 left-0"></div> */}
 					</div>
 					<div className="flex-col justify-between flex w-full">
