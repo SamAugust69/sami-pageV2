@@ -6,18 +6,16 @@ import { getTeamAverageScore } from '../LLogdash';
 interface SummaryProps {
 	data: FormItems;
 	allData: Array<FormItems>;
-	toDisplay: any
+	autoScore: number;
+	teleopScore: number;
+	toDisplay: any;
 }
 
-const Summary: FC<SummaryProps> = ({ data, allData, toDisplay }) => {
-	const [score, setScore] = useState(0);
-
-	var total = 0; // dont usestate this. I want it to be different for each instance.
-	const averageScoreWidth = useRef<any>(<div></div>)
-	console.log(averageScoreWidth.current.clientWidth)
+const Summary: FC<SummaryProps> = ({ data, autoScore, teleopScore, toDisplay }) => {
+	const averageScoreWidth = useRef<any>(<div></div>);
+	console.log(averageScoreWidth.current.clientWidth);
 
 	var averageScore = 0;
-
 
 	return (
 		<div className="flex gap-2 flex-wrap">
@@ -46,7 +44,6 @@ const Summary: FC<SummaryProps> = ({ data, allData, toDisplay }) => {
 
 											switch (type) {
 												case 'number':
-													total += points;
 													return (
 														<div key={i} className="flex justify-between font-medium text-b-100 items-center">
 															<Paragraph size={'sm'} className="">
@@ -62,11 +59,10 @@ const Summary: FC<SummaryProps> = ({ data, allData, toDisplay }) => {
 															<Paragraph size={'sm'} className="">
 																{value ? val2[0] : val2[1][2]}
 															</Paragraph>
-															<Paragraph size={'sm'}>{points > 0 ? '+ ' + points + 'pt' : null}</Paragraph>
+															<Paragraph size={'sm'}>{value == true ? '+ ' + val2[1][3] + 'pt' : null}</Paragraph>
 														</div>
 													);
 												default:
-													total += points;
 													return (
 														<div key={i} className="flex justify-between font-medium text-b-100 items-center">
 															<Paragraph size={'sm'} className="">
@@ -79,11 +75,13 @@ const Summary: FC<SummaryProps> = ({ data, allData, toDisplay }) => {
 											}
 										})}
 									</div>
-									
 								);
 							})}
 							<Paragraph className="text-b-100 font-medium text-right px-2" size={'sm'}>
-								{total}pt
+								{i == 0 ? autoScore : null}
+								{i == 1 ? teleopScore : null}
+								{i == 2 ? autoScore + teleopScore : null}
+								pt
 							</Paragraph>
 						</div>
 					</div>
@@ -94,8 +92,10 @@ const Summary: FC<SummaryProps> = ({ data, allData, toDisplay }) => {
 					Summary
 				</Paragraph>
 				<div className="bg-t-100 p-2 flex flex-col gap-2">
-					<div className='bg-t-200 rounded p-2 flex flex-col gap-2'>
-						<Paragraph size={"sm"}><span className='text-r-100'>{total}</span> Total Points Scored</Paragraph>
+					<div className="bg-t-200 rounded p-2 flex flex-col gap-2">
+						<Paragraph size={'sm'}>
+							<span className="text-r-100">{autoScore + teleopScore}</span> Total Points
+						</Paragraph>
 					</div>
 					{/* <div className="bg-t-200 rounded h-10 flex justify-between items-center relative" ref={averageScoreWidth}>
 						<div style={{width: `${Math.floor((score / (averageScore)) * averageScoreWidth.current.clientWidth)}px`}} className={`h-full bg-t-300 rounded-l flex items-center`}>
@@ -103,16 +103,18 @@ const Summary: FC<SummaryProps> = ({ data, allData, toDisplay }) => {
 						</div>
 						<Paragraph className='px-2 text-b-100 font-medium absolute right-1' size="sm">avg {averageScore}</Paragraph>
 					</div> */}
-					<div className='bg-t-200 rounded p-2 flex flex-col gap-2'>
-						<Paragraph className='text-b-100 font-semibold m-0'>Notes</Paragraph>
-						<Paragraph className='text-b-100 font-normal'>
-							{data.notes}
-						</Paragraph>
-					</div>
+					{data.notes.length > 0 ? (
+						<div className="bg-t-200 rounded p-2 flex flex-col gap-2">
+							<Paragraph className="text-b-100 font-semibold m-0">Notes</Paragraph>
+							<Paragraph className="text-b-100 font-normal">{data.notes}</Paragraph>
+						</div>
+					) : (
+						<div className="bg-t-200 rounded p-2 flex flex-col gap-2">
+							<Paragraph className="text-b-100 font-semibold m-0">No Notes</Paragraph>
+						</div>
+					)}
 				</div>
-
 			</div>
-
 		</div>
 	);
 };

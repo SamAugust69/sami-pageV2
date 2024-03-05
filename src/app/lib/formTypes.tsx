@@ -1,7 +1,7 @@
 import { v4 } from 'uuid';
 
 // objective data, take data and
-export type FormItems  = {
+export type FormItems = {
 	id: string;
 	completed: boolean;
 	match: number;
@@ -69,10 +69,12 @@ export const initialValues: FormItems = {
 
 export type DisplayedLogsType = {
 	score: number;
+	autoScore: number;
+	teleopScore: number;
 	rankingPoints: number;
 	dateSubmitted: Date;
 	id: string;
-}
+};
 
 export type FormInputType = {
 	type: string;

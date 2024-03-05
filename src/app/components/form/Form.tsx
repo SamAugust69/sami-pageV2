@@ -23,24 +23,28 @@ interface FormTestProps {
 
 const Form: FC<FormTestProps> = ({ modalState, closeModal, dispatch }) => {
 	const [formData, setFormData] = useState(structuredClone(initialValues));
-	const [submitted, setSubmitted] = useState(false)
+	const [submitted, setSubmitted] = useState(false);
 
 	const updateForm = async (fieldsToUpdate: Partial<FormItems>) => {
 		new Promise((resolve) => {
-
-			const updatedForm = { ...formData, ...fieldsToUpdate}
-			console.log(updatedForm)
-			setFormData(updatedForm);	
-			resolve({ ...formData, ...fieldsToUpdate})	
-		})
+			const updatedForm = { ...formData, ...fieldsToUpdate };
+			console.log({ ...fieldsToUpdate });
+			setFormData(updatedForm);
+			resolve({ ...formData, ...fieldsToUpdate });
+		});
 	};
+
+	useEffect(() => {
+		updateForm({ id: uuidv4() });
+		setSubmitted(false);
+	}, [submitted]);
 
 	const handleKey = (event: any) => {
 		if (event.key == 'ArrowDown' || event.key == 'ArrowRight') forwards();
 		if (event.key == 'ArrowUp' || event.key == 'ArrowLeft') backwards();
 	};
 
-	const MultiFormSteps = [ 'Beginning', 'Auto', 'Teleop', "Notes"];
+	const MultiFormSteps = ['Beginning', 'Auto', 'Teleop', 'Notes'];
 
 	const { currentStep, forwards, backwards, goToStep, currentStepNumber, isFirstStep, isLastStep } = useMultiForm([
 		//<Example key={-1} {...formData} updateForm={updateForm} />,
@@ -56,9 +60,8 @@ const Form: FC<FormTestProps> = ({ modalState, closeModal, dispatch }) => {
 		goToStep(0);
 
 		console.log('submitted log', formData);
-		setSubmitted(true)
-		updateForm({ id: uuidv4() })
-		
+		dispatch({ type: 'added', payload: formData });
+		setSubmitted(true);
 
 		closeModal();
 		setFormData(structuredClone(initialValues));
@@ -69,7 +72,7 @@ const Form: FC<FormTestProps> = ({ modalState, closeModal, dispatch }) => {
 			<Modal
 				visible={modalState}
 				closeModal={closeModal}
-				clickOut={true}
+				clickOut={false}
 				className="bg-g-100 sm:bg-g-100 flex flex-col sm:flex-row p-0 relative border-0 max-w-4xl sm:h-5/6 h-full w-full sm:w-11/12"
 			>
 				<div className="bg-g-200 border-b-2 border-t-100 w-full rounded-t sm:rounded h-40 sm:h-full absolute z-0 left-0 top-0 visible sm:invisible"></div>
@@ -79,18 +82,14 @@ const Form: FC<FormTestProps> = ({ modalState, closeModal, dispatch }) => {
 					className="flex flex-col sm:flex-row p-4 h-full overflow-scroll w-full max-h-fit"
 				>
 					<div className="flex pb-2 items-center flex-col sm:flex-col mr-0 sm:mr-4 px-4 py-4 relative bg-g-200 sm:border-2 border-0 border-t-100 rounded">
-		
-						<div className='flex justify-center sm:flex-col'>
-						{MultiFormSteps.map((step, i) => {
+						<div className="flex justify-center sm:flex-col">
+							{MultiFormSteps.map((step, i) => {
 								return (
 									<button key={i} onClick={() => goToStep(i)} className="flex p-4 z-10">
 										<div
 											className={`rounded-full border-2 w-10 h-10 flex items-center justify-center font-semibold text-center transition-colors ${
-												currentStepNumber == i
-													? 'text-t-100 border-r-200 bg-r-400'
-													: 'text-b-100 bg-t-300 border-t-400'
+												currentStepNumber == i ? 'text-t-100 border-r-200 bg-r-400' : 'text-b-100 bg-t-300 border-t-400'
 											}`}
-
 										>
 											<p className="w-full">{i + 1}</p>
 										</div>
@@ -102,7 +101,9 @@ const Form: FC<FormTestProps> = ({ modalState, closeModal, dispatch }) => {
 								);
 							})}
 						</div>
-						<Button variant={"hidden"} className={`text-t-100 w-20 sm:scale-0 scale-100`} onClick={() => closeModal()}>Close</Button>
+						<Button variant={'hidden'} className={`text-t-100 w-20 sm:scale-0 scale-100`} onClick={() => closeModal()}>
+							Close
+						</Button>
 						{/* <div className="bg-indigo-700 box-border w-full rounded h-full absolute z-0 left-0"></div> */}
 					</div>
 					<div className="flex-col justify-between flex w-full">

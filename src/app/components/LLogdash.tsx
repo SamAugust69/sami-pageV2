@@ -23,78 +23,92 @@ const listLogsWithTeam = (data: Array<FormItems>, team: number) => {
 };
 
 export const getTeamAverageScore = (data: Array<FormItems>, team: number) => {
-	return (listLogsWithTeam(data, team))
-}
+	return listLogsWithTeam(data, team);
+};
 
 const calculateScore = (log: FormItems) => {
-	var score = 0;
-	const pointScoring: Array<any> = [
-		{type: "boolean", amount: log.auto.leftStartingZone, points: 2},
-		{type: "number", amount: log.auto.speakerScore, points: 5},
-		{type: "number", amount: log.auto.ampScore, points: 2},
-		{type: "number", amount: log.teleop.ampScore, points: 1},
-		{type: "number", amount: log.teleop.speakerScore, points: 2},
-		{type: "number", amount: log.teleop.amplifiedSpeakerScore, points: 5},
-		{type: "boolean", amount: log.teleop.parkOnStage, points: 1},
-		{type: "boolean", amount: log.teleop.hangOnChain, points: 3},
-		{type: "boolean", amount: log.teleop.scoredTrap, points: 5},
-	]
+	var teleopScore = 0;
+	var autoScore = 0;
+	const pointScoring: Array<Array<any>> = [
+		[
+			{ type: 'boolean', amount: log.auto.leftStartingZone, points: 2 },
+			{ type: 'number', amount: log.auto.speakerScore, points: 5 },
+			{ type: 'number', amount: log.auto.ampScore, points: 2 },
+		],
+		[
+			{ type: 'number', amount: log.teleop.ampScore, points: 1 },
+			{ type: 'number', amount: log.teleop.speakerScore, points: 2 },
+			{ type: 'number', amount: log.teleop.amplifiedSpeakerScore, points: 5 },
+			{ type: 'boolean', amount: log.teleop.parkOnStage, points: 1 },
+			{ type: 'boolean', amount: log.teleop.hangOnChain, points: 3 },
+			{ type: 'boolean', amount: log.teleop.hangInHarmony, points: 2 },
+			{ type: 'boolean', amount: log.teleop.scoredTrap, points: 5 },
+		],
+	];
 
-	pointScoring.map((val) => {
-
-		switch(val.type) {
-			case "boolean":
-				val.amount == true ? score += val.points : null
+	pointScoring[0].map((val) => {
+		switch (val.type) {
+			case 'boolean':
+				val.amount == true ? (autoScore += val.points) : null;
 				break;
-			case "number":
-				score += (val.amount * val.points)
+			case 'number':
+				autoScore += val.amount * val.points;
 				break;
 		}
-			
-	})
+	});
 
-	return score
-}
+	pointScoring[1].map((val) => {
+		switch (val.type) {
+			case 'boolean':
+				val.amount == true ? (teleopScore += val.points) : null;
+				break;
+			case 'number':
+				teleopScore += val.amount * val.points;
+				break;
+		}
+	});
 
-
+	return { autoScore, teleopScore, total: autoScore + teleopScore };
+};
 
 const Logdash: FC<LogdashProps> = ({}) => {
 	const [localData, setLocalData] = useLocalStorage<Array<FormItems>>('local-data', []); // stores local match information from scout
 	const [localDispatchState, localDispatch] = useReducer(unsavedReducer, localData);
-	const [displayedLogs, setDisplayedLogs] = useState<Array<DisplayedLogsType>>([])
+	const [displayedLogs, setDisplayedLogs] = useState<Array<DisplayedLogsType>>([]);
 
 	const [filteredData, setFilteredData] = useState<Array<FormItems>>(localData);
 
 	const [isRendered, setIsRendered] = useState(false); // fixes hydration errors
 
 	const findLogFromId = (id: string): FormItems => {
-		
-		var locatedLog = initialValues
+		var locatedLog = initialValues;
 		localData.map((log) => {
 			if (log.id == id) {
-				locatedLog = log
+				locatedLog = log;
 			}
-		})
-		return locatedLog
-	}
+		});
+		return locatedLog;
+	};
 
 	const generateDisplayedLogs = () => {
-		
-		var toSet: Array<DisplayedLogsType> = []
+		var toSet: Array<DisplayedLogsType> = [];
 		localData.map((log: FormItems, i: number) => {
+			const { autoScore, teleopScore, total } = calculateScore(log);
 			toSet = [
 				...toSet,
 				{
-					score: calculateScore(log),
+					score: total,
+					autoScore: autoScore,
+					teleopScore: teleopScore,
 					rankingPoints: 0,
 					dateSubmitted: log.dateSubmitted,
-					id: log.id
-				}
-			]
-		})
-		setDisplayedLogs(toSet)
-		console.log(toSet)
-	}
+					id: log.id,
+				},
+			];
+		});
+		setDisplayedLogs(toSet);
+		console.log(toSet);
+	};
 
 	useEffect(() => {
 		console.log('Rendered!');
@@ -102,11 +116,9 @@ const Logdash: FC<LogdashProps> = ({}) => {
 	}, []);
 
 	useEffect(() => {
-		generateDisplayedLogs()
-	}, [localData])
+		generateDisplayedLogs();
+	}, [localData]);
 
-
-	
 	const listMatches = () => {
 		var final: Array<number> = [];
 		localData.map((val: FormItems) => {
@@ -155,7 +167,6 @@ const Logdash: FC<LogdashProps> = ({}) => {
 	};
 
 	const Normal: any = () => {
-
 		setDisplayedLogs(
 			displayedLogs.sort((a, b) => {
 				if (new Date(a.dateSubmitted).getTime() > new Date(b.dateSubmitted).getTime()) return -1;
@@ -163,8 +174,8 @@ const Logdash: FC<LogdashProps> = ({}) => {
 				return 0;
 			})
 		);
-		return (displayedLogs.map((log: DisplayedLogsType, i: number) => {
-			const test: FormItems = findLogFromId(log.id)
+		return displayedLogs.map((log: DisplayedLogsType, i: number) => {
+			const test: FormItems = findLogFromId(log.id);
 
 			const toDisplay: Array<any> = [
 				{
@@ -191,24 +202,38 @@ const Logdash: FC<LogdashProps> = ({}) => {
 							'Amplified Speaker Score': ['number', test.teleop.amplifiedSpeakerScore, 5],
 						},
 						{
-							Hung: ['boolean', test.teleop.hangOnChain, 'Did Not Hang'],
+							Hung: ['boolean', test.teleop.hangOnChain, 'Did Not Hang', 3],
+							Harmonize: ['boolean', test.teleop.hangInHarmony, 'No Harmony', 2],
+							'Scored Trap': ['boolean', test.teleop.scoredTrap, 'No Trap', 5],
 						},
 					],
 				},
 			];
 
-			return <LogView localDispatch={localDispatch} toDisplay={toDisplay} averageScore={averageScore} setAverageScore={setAverageScore} key={i} data={findLogFromId(log.id)} allData={localData} />
+			return (
+				<>
+					Total: {log.score} <br />
+					Auto: {log.autoScore} <br />
+					Teleop: {log.teleopScore}
+					<LogView
+						localDispatch={localDispatch}
+						toDisplay={toDisplay}
+						autoScore={log.autoScore}
+						teleopScore={log.teleopScore}
+						key={i}
+						data={findLogFromId(log.id)}
+						allData={localData}
+					/>
+				</>
+			);
 			// return (
 			// 	<LogView localDispatch={localDispatch} toDisplay={toDisplay} averageScore={averageScore} setAverageScore={setAverageScore} key={i} data={findLogFromId(log.id)} allData={localData} />;
 			// )
-		}))
+		});
 	};
 
 	const [averageScore, setAverageScore] = useState(0);
 	const [searchState, setSearchState] = useState<string>();
-
-
-	
 
 	const filterSwitch = (prop: number) => {
 		switch (prop) {
@@ -257,7 +282,18 @@ const Logdash: FC<LogdashProps> = ({}) => {
 												],
 											},
 										];
-										return <LogView localDispatch={localDispatch} toDisplay={toDisplay} averageScore={averageScore} setAverageScore={setAverageScore} key={i} data={log} allData={localData} className="bg-t-200" />;
+										return (
+											<>
+												<LogView
+													localDispatch={localDispatch}
+													toDisplay={toDisplay}
+													key={i}
+													data={log}
+													allData={localData}
+													className="bg-t-200"
+												/>{' '}
+											</>
+										);
 									})}
 								</div>
 							);
@@ -276,37 +312,46 @@ const Logdash: FC<LogdashProps> = ({}) => {
 								{averageScore}
 							</div>
 							{listLogsWithMatch(match).map((log: FormItems, i: number) => {
-									const toDisplay: Array<any> = [
-										{
-											title: 'Auto Summary',
-											display: [
-												{
-													'Left Starting Zone': ['number', log.auto.leftStartingZone, 2],
-												},
-												{
-													"Speaker Note's Scored": ['number', log.auto.speakerScore, 5],
-													"Amp Note's Scored": ['number', log.auto.ampScore, 2],
-												},
-											],
-										},
-										{
-											title: 'Teleop Summary',
-											display: [
-												{
-													"Amp Note's Scored": ['number', log.teleop.ampScore, 1],
-													'Amp Activations': ['number', log.teleop.ampActivatedAmount, 0],
-												},
-												{
-													'Speaker Score': ['number', log.teleop.speakerScore, 2],
-													'Amplified Speaker Score': ['number', log.teleop.amplifiedSpeakerScore, 5],
-												},
-												{
-													Hung: ['boolean', log.teleop.hangOnChain, 'Did Not Hang'],
-												},
-											],
-										},
-									];
-								return <LogView localDispatch={localDispatch} toDisplay={toDisplay} averageScore={averageScore} setAverageScore={setAverageScore} key={i} data={log} allData={localData} className="bg-t-200" />;
+								const toDisplay: Array<any> = [
+									{
+										title: 'Auto Summary',
+										display: [
+											{
+												'Left Starting Zone': ['number', log.auto.leftStartingZone, 2],
+											},
+											{
+												"Speaker Note's Scored": ['number', log.auto.speakerScore, 5],
+												"Amp Note's Scored": ['number', log.auto.ampScore, 2],
+											},
+										],
+									},
+									{
+										title: 'Teleop Summary',
+										display: [
+											{
+												"Amp Note's Scored": ['number', log.teleop.ampScore, 1],
+												'Amp Activations': ['number', log.teleop.ampActivatedAmount, 0],
+											},
+											{
+												'Speaker Score': ['number', log.teleop.speakerScore, 2],
+												'Amplified Speaker Score': ['number', log.teleop.amplifiedSpeakerScore, 5],
+											},
+											{
+												Hung: ['boolean', log.teleop.hangOnChain, 'Did Not Hang'],
+											},
+										],
+									},
+								];
+								return (
+									<LogView
+										localDispatch={localDispatch}
+										toDisplay={toDisplay}
+										key={i}
+										data={log}
+										allData={localData}
+										className="bg-t-200"
+									/>
+								);
 							})}
 						</div>
 					);
