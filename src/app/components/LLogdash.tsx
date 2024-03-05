@@ -212,9 +212,6 @@ const Logdash: FC<LogdashProps> = ({}) => {
 
 			return (
 				<>
-					Total: {log.score} <br />
-					Auto: {log.autoScore} <br />
-					Teleop: {log.teleopScore}
 					<LogView
 						localDispatch={localDispatch}
 						toDisplay={toDisplay}
