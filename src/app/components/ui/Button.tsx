@@ -11,6 +11,7 @@ export const buttonVariants = cva(
 				default: 'bg-b-100 text-t-100',
 				link: 'bg-transparent underline-offset-4 hover:underline text-slate-900 hover:bg-transparent',
 				hidden: 'bg-transparent',
+				options: "border-2 border-b-100 bg-t-200",
 				unstyled: '',
 			},
 			size: {

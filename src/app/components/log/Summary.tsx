@@ -42,7 +42,7 @@ const Summary: FC<SummaryProps> = ({ data, allData, toDisplay }) => {
 											// 		averageScore += score / allData.length
 											// 	})
 											// }, [])
-									
+											//setScore(score + total)  // this causes too many rerenders333
 
 											switch (type) {
 												case 'number':
@@ -95,7 +95,7 @@ const Summary: FC<SummaryProps> = ({ data, allData, toDisplay }) => {
 				</Paragraph>
 				<div className="bg-t-100 p-2 flex flex-col gap-2">
 					<div className='bg-t-200 rounded p-2 flex flex-col gap-2'>
-						<Paragraph size={"sm"}><span className='text-r-100'>{score}</span> Total Points Scored</Paragraph>
+						<Paragraph size={"sm"}><span className='text-r-100'>{total}</span> Total Points Scored</Paragraph>
 					</div>
 					{/* <div className="bg-t-200 rounded h-10 flex justify-between items-center relative" ref={averageScoreWidth}>
 						<div style={{width: `${Math.floor((score / (averageScore)) * averageScoreWidth.current.clientWidth)}px`}} className={`h-full bg-t-300 rounded-l flex items-center`}>

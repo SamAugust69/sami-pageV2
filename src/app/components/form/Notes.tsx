@@ -32,7 +32,7 @@ const Notes = ({ updateForm, notes }: stepItems) => {
 	return (
 		<div>
 			<Heading size={'uberSmall'} className="text-t-100 my-1">
-				Notes
+				Notes About Robot (Optional)
 			</Heading>
 			<div className="py-2 flex flex-col gap-2">
                 <textarea onChange={(e: any) => updateForm({notes: e.target.value})} className='p-2 bg-transparent border-2 border-t-100 focus:ring-0 rounded text-t-100' />

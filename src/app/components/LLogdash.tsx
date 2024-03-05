@@ -3,8 +3,8 @@ import { ChevronDown, Plus, SearchIcon } from 'lucide-react';
 import { FC, useEffect, useReducer, useState } from 'react';
 import { Button } from '@/ui/Button';
 import useLocalStorage from '@rehooks/local-storage';
-import { unsavedReducer } from '@/lib/unsavedReducer';
-import { FormItems } from '@/lib/formTypes';
+import { REDUCER_ACTION_TYPE, unsavedReducer } from '@/lib/unsavedReducer';
+import { DisplayedLogsType, FormItems, initialValues } from '@/lib/formTypes';
 import Paragraph from './ui/Paragraph';
 import Form from './form/Form';
 import useForm from '@/lib/useForm';
@@ -26,18 +26,84 @@ export const getTeamAverageScore = (data: Array<FormItems>, team: number) => {
 	return (listLogsWithTeam(data, team))
 }
 
+const calculateScore = (log: FormItems) => {
+	var score = 0;
+	const pointScoring: Array<any> = [
+		{type: "boolean", amount: log.auto.leftStartingZone, points: 2},
+		{type: "number", amount: log.auto.speakerScore, points: 5},
+		{type: "number", amount: log.auto.ampScore, points: 2},
+		{type: "number", amount: log.teleop.ampScore, points: 1},
+		{type: "number", amount: log.teleop.speakerScore, points: 2},
+		{type: "number", amount: log.teleop.amplifiedSpeakerScore, points: 5},
+		{type: "boolean", amount: log.teleop.parkOnStage, points: 1},
+		{type: "boolean", amount: log.teleop.hangOnChain, points: 3},
+		{type: "boolean", amount: log.teleop.scoredTrap, points: 5},
+	]
+
+	pointScoring.map((val) => {
+
+		switch(val.type) {
+			case "boolean":
+				val.amount == true ? score += val.points : null
+				break;
+			case "number":
+				score += (val.amount * val.points)
+				break;
+		}
+			
+	})
+
+	return score
+}
+
+
 
 const Logdash: FC<LogdashProps> = ({}) => {
 	const [localData, setLocalData] = useLocalStorage<Array<FormItems>>('local-data', []); // stores local match information from scout
 	const [localDispatchState, localDispatch] = useReducer(unsavedReducer, localData);
+	const [displayedLogs, setDisplayedLogs] = useState<Array<DisplayedLogsType>>([])
 
 	const [filteredData, setFilteredData] = useState<Array<FormItems>>(localData);
 
 	const [isRendered, setIsRendered] = useState(false); // fixes hydration errors
+
+	const findLogFromId = (id: string): FormItems => {
+		
+		var locatedLog = initialValues
+		localData.map((log) => {
+			if (log.id == id) {
+				locatedLog = log
+			}
+		})
+		return locatedLog
+	}
+
+	const generateDisplayedLogs = () => {
+		
+		var toSet: Array<DisplayedLogsType> = []
+		localData.map((log: FormItems, i: number) => {
+			toSet = [
+				...toSet,
+				{
+					score: calculateScore(log),
+					rankingPoints: 0,
+					dateSubmitted: log.dateSubmitted,
+					id: log.id
+				}
+			]
+		})
+		setDisplayedLogs(toSet)
+		console.log(toSet)
+	}
+
 	useEffect(() => {
 		console.log('Rendered!');
 		setIsRendered(true);
 	}, []);
+
+	useEffect(() => {
+		generateDisplayedLogs()
+	}, [localData])
 
 
 	
@@ -89,24 +155,27 @@ const Logdash: FC<LogdashProps> = ({}) => {
 	};
 
 	const Normal: any = () => {
-		setFilteredData(
-			filteredData.sort((a, b) => {
+
+		setDisplayedLogs(
+			displayedLogs.sort((a, b) => {
 				if (new Date(a.dateSubmitted).getTime() > new Date(b.dateSubmitted).getTime()) return -1;
 				else if (new Date(a.dateSubmitted).getTime() < new Date(b.dateSubmitted).getTime()) return 1;
 				return 0;
 			})
 		);
-		return filteredData.map((val: FormItems, i: number) => {
+		return (displayedLogs.map((log: DisplayedLogsType, i: number) => {
+			const test: FormItems = findLogFromId(log.id)
+
 			const toDisplay: Array<any> = [
 				{
 					title: 'Auto Summary',
 					display: [
 						{
-							'Left Starting Zone': ['number', val.auto.leftStartingZone, 2],
+							'Left Starting Zone': ['number', test.auto.leftStartingZone, 2],
 						},
 						{
-							"Speaker Note's Scored": ['number', val.auto.speakerScore, 5],
-							"Amp Note's Scored": ['number', val.auto.ampScore, 2],
+							"Speaker Note's Scored": ['number', test.auto.speakerScore, 5],
+							"Amp Note's Scored": ['number', test.auto.ampScore, 2],
 						},
 					],
 				},
@@ -114,25 +183,31 @@ const Logdash: FC<LogdashProps> = ({}) => {
 					title: 'Teleop Summary',
 					display: [
 						{
-							"Amp Note's Scored": ['number', val.teleop.ampScore, 1],
-							'Amp Activations': ['number', val.teleop.ampActivatedAmount, 0],
+							"Amp Note's Scored": ['number', test.teleop.ampScore, 1],
+							'Amp Activations': ['number', test.teleop.ampActivatedAmount, 0],
 						},
 						{
-							'Speaker Score': ['number', val.teleop.speakerScore, 2],
-							'Amplified Speaker Score': ['number', val.teleop.amplifiedSpeakerScore, 5],
+							'Speaker Score': ['number', test.teleop.speakerScore, 2],
+							'Amplified Speaker Score': ['number', test.teleop.amplifiedSpeakerScore, 5],
 						},
 						{
-							Hung: ['boolean', val.teleop.hangOnChain, 'Did Not Hang'],
+							Hung: ['boolean', test.teleop.hangOnChain, 'Did Not Hang'],
 						},
 					],
 				},
 			];
-			return <LogView toDisplay={toDisplay} averageScore={averageScore} setAverageScore={setAverageScore} key={i} data={val} allData={localData} />;
-		});
+
+			return <LogView localDispatch={localDispatch} toDisplay={toDisplay} averageScore={averageScore} setAverageScore={setAverageScore} key={i} data={findLogFromId(log.id)} allData={localData} />
+			// return (
+			// 	<LogView localDispatch={localDispatch} toDisplay={toDisplay} averageScore={averageScore} setAverageScore={setAverageScore} key={i} data={findLogFromId(log.id)} allData={localData} />;
+			// )
+		}))
 	};
 
 	const [averageScore, setAverageScore] = useState(0);
 	const [searchState, setSearchState] = useState<string>();
+
+
 	
 
 	const filterSwitch = (prop: number) => {
@@ -143,7 +218,6 @@ const Logdash: FC<LogdashProps> = ({}) => {
 			case 1:
 				return (
 					<>
-						<Button onClick={() => {}}>Pull Teams</Button>
 						{listTeams().map((team: number, i: number) => {
 							return (
 								<div key={i} className="bg-t-100 flex flex-col gap-2 p-2 rounded">
@@ -183,7 +257,7 @@ const Logdash: FC<LogdashProps> = ({}) => {
 												],
 											},
 										];
-										return <LogView toDisplay={toDisplay} averageScore={averageScore} setAverageScore={setAverageScore} key={i} data={log} allData={localData} className="bg-t-200" />;
+										return <LogView localDispatch={localDispatch} toDisplay={toDisplay} averageScore={averageScore} setAverageScore={setAverageScore} key={i} data={log} allData={localData} className="bg-t-200" />;
 									})}
 								</div>
 							);
@@ -232,7 +306,7 @@ const Logdash: FC<LogdashProps> = ({}) => {
 											],
 										},
 									];
-								return <LogView toDisplay={toDisplay} averageScore={averageScore} setAverageScore={setAverageScore} key={i} data={log} allData={localData} className="bg-t-200" />;
+								return <LogView localDispatch={localDispatch} toDisplay={toDisplay} averageScore={averageScore} setAverageScore={setAverageScore} key={i} data={log} allData={localData} className="bg-t-200" />;
 							})}
 						</div>
 					);
@@ -249,7 +323,7 @@ const Logdash: FC<LogdashProps> = ({}) => {
 		<>
 			<Form dispatch={localDispatch} modalState={formState} closeModal={setClose} />
 			<Modal visible={settingsState} clickOut={true} closeModal={() => setSettingState(!settingsState)}>
-				
+				<Button onClick={() => setLocalData([])}>delete local data</Button>
 			</Modal>
 			<div className=" rounded-md bg-g-100 border-2 border-t-100 max-w-5xl min-w-fit w-full">
 				<div className="bg-r-200 border-b-2 border-t-100 rounded-t p-2 flex justify-between flex-col sm:flex-row gap-2">

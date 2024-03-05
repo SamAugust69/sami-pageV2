@@ -84,35 +84,39 @@ const Teleop = ({ updateForm, teleop }: stepItems) => {
 			}
 		},
 
+		{
+			type: "toggle",
+			onClick: () => updateForm({ teleop: { ...teleop, parkOnStage: !teleop.parkOnStage}}),
+			toggled: teleop.parkOnStage ,
+			title: "Parked on Stage",
+			description: "Did the robot park on the line(not on chain)?",
+		},
+		{
+			type: "message",
+			title: "-- OR --"
+		},
 
 		{
 			type: 'toggle',
 			onClick: () => updateForm({ teleop: { ...teleop, hangOnChain: !teleop.hangOnChain } }),
 			toggled: teleop.hangOnChain,
-			title: 'Hung On Chain?',
+			title: 'Hung On Chain',
 			description: 'Did they hang?',
 			children: [
 				{
 					type: 'toggle',
 					onClick: (e: any) => {e.stopPropagation(); updateForm({ teleop: { ...teleop, hangInHarmony: !teleop.hangInHarmony }})},
 					toggled: teleop.hangInHarmony,
-					title: 'Harmonize?',
-					description: 'Did atleast two of them hang?',
+					title: 'Harmonize',
+					description: 'Did atleast two robots hang on the same chain?',
 				},
 				{
-					type: "number",
-					onChange: (e: any) => {e.stopPropagation(); updateForm({ teleop: { ...teleop, trapScore: e.target.value}})},
-					title: "Trap Score",
-					description: "How many times did they score trap?",
-					placeholder: teleop.trapScore.toString(),
-					incrementButtons: true,
-					increment: (setThing: Function) => {
-						updateForm({ teleop: { ...teleop, trapScore: (teleop.trapScore + 1)}}).then(setThing(teleop.trapScore + 1))
-					},
-					decrease: (setThing: Function) => {
-						updateForm({ teleop: { ...teleop, trapScore: (teleop.trapScore - 1)}}).then(setThing(teleop.trapScore - 1))
-					}
-				}
+					type: 'toggle',
+					onClick: (e: any) => {e.stopPropagation(); updateForm({ teleop: { ...teleop, scoredTrap: !teleop.scoredTrap }})},
+					toggled: teleop.scoredTrap,
+					title: 'Scored Trap',
+					description: 'Did they shoot a note into the trap successfully?',
+				},
 			],
 		},
 	];

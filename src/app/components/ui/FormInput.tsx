@@ -81,7 +81,6 @@ const NumberInput: FC<InputProps> = ({
 }) => {
 
 	const [thing, setThing] = useState<number>(parseInt(placeholder!) ?? 0);
-	{console.log(thing > 0)}
 	return (
 		<div className={cn(`${visible === false ? 'hidden' : 'block'} relative pb-0.5 flex`, className)}>
 			{incrementButtons ? <Button onClick={() => thing > 0 ? decrease?.(setThing) : 0} className='px-8 h-full rounded-l-none'>-</Button> : null}
@@ -174,16 +173,18 @@ const CarouselSelector: FC<CarouselProps> = ({ className }) => {
 };
 
 // lets make a selector, left and right thingy.
-const formInputSwitch = (type: string, children: any, props: any) => {
+const formInputSwitch = (type: string, children: any, title: any, props: any) => {
 	switch (type.toLowerCase()) {
 		case 'text':
-			return <TextInput {...props}>{children}</TextInput>;
+			return <TextInput title={title} {...props}>{children}</TextInput>;
 		case 'toggle':
-			return <Toggle {...props}>{children}</Toggle>;
+			return <Toggle title={title} {...props}>{children}</Toggle>;
 		case 'number':
-			return <NumberInput {...props}>{children}</NumberInput>;
+			return <NumberInput title={title} {...props}>{children}</NumberInput>;
 		case 'carousel':
 			return <CarouselSelector {...props}></CarouselSelector>;
+		case "message":
+			return <Paragraph className='self-center m-0 text-t-100' size={"xs"}>{title}</Paragraph>
 		default:
 			return <TextInput {...props}>{children}</TextInput>;
 	}
@@ -194,8 +195,8 @@ interface FormInputProps extends HTMLAttributes<HTMLAllCollection> {
 	type: string;
 }
 
-const FormInput: FC<FormInputProps> = ({ children, type, ...props }) => {
-	return formInputSwitch(type, children, props);
+const FormInput: FC<FormInputProps> = ({ children, type, title, ...props }) => {
+	return formInputSwitch(type, children, title, props);
 };
 
 export default FormInput;

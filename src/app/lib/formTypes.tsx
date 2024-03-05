@@ -25,10 +25,10 @@ export type FormItems  = {
 		speakerScore: number;
 		amplifiedSpeakerScore: number;
 
+		parkOnStage: boolean;
 		hangOnChain: boolean;
 		hangInHarmony: boolean; // is big bulky, or bad at coordination
 		scoredTrap: boolean;
-		trapScore: number;
 
 		thrownNoteScore: boolean;
 		thrownNoteAmount: number;
@@ -57,15 +57,22 @@ export const initialValues: FormItems = {
 		speakerScore: 0,
 		amplifiedSpeakerScore: 0,
 
+		parkOnStage: false,
 		hangOnChain: false,
 		hangInHarmony: false,
 		scoredTrap: false,
-		trapScore: 0,
 
 		thrownNoteScore: false,
 		thrownNoteAmount: 0,
 	},
 };
+
+export type DisplayedLogsType = {
+	score: number;
+	rankingPoints: number;
+	dateSubmitted: Date;
+	id: string;
+}
 
 export type FormInputType = {
 	type: string;

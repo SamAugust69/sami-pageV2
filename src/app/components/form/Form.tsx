@@ -4,7 +4,7 @@ import Modal from '@/ui/Modal';
 import { Button } from '../ui/Button';
 import { FormItems } from '@/lib/formTypes';
 import { initialValues } from '@/lib/formTypes';
-import { v4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 import Auto from '@/components/form/Auto';
 import useMultiForm from '@/lib/useMultiForm';
@@ -22,17 +22,18 @@ interface FormTestProps {
 }
 
 const Form: FC<FormTestProps> = ({ modalState, closeModal, dispatch }) => {
-	const [formData, setFormData] = useState(initialValues);
+	const [formData, setFormData] = useState(structuredClone(initialValues));
+	const [submitted, setSubmitted] = useState(false)
 
 	const updateForm = async (fieldsToUpdate: Partial<FormItems>) => {
-		new Promise((resolve, reject) => {
-			setFormData({ ...formData, ...fieldsToUpdate });
-			console.log({...fieldsToUpdate})
-			Promise.resolve({...fieldsToUpdate})
+		new Promise((resolve) => {
+
+			const updatedForm = { ...formData, ...fieldsToUpdate}
+			console.log(updatedForm)
+			setFormData(updatedForm);	
+			resolve({ ...formData, ...fieldsToUpdate})	
 		})
 	};
-
-	
 
 	const handleKey = (event: any) => {
 		if (event.key == 'ArrowDown' || event.key == 'ArrowRight') forwards();
@@ -50,22 +51,17 @@ const Form: FC<FormTestProps> = ({ modalState, closeModal, dispatch }) => {
 		//<Finishing key={3} {...formData} updateForm={updateForm} />,
 	]);
 
-	useEffect(() => {
-		updateForm({ dateSubmitted: new Date() });
-	}, []);
-
 	const handleSubmit = (e: any) => {
 		e.preventDefault();
 		goToStep(0);
 
 		console.log('submitted log', formData);
-
-		updateForm({ id: v4(), dateSubmitted: new Date() }); // 
-		dispatch({ type: 'added', payload: formData }); // add to localData
-
-		setFormData(initialValues);
+		setSubmitted(true)
+		updateForm({ id: uuidv4() })
+		
 
 		closeModal();
+		setFormData(structuredClone(initialValues));
 	};
 
 	return (
