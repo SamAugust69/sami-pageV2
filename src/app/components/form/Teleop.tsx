@@ -97,7 +97,7 @@ const Teleop = ({ updateForm, teleop }: stepItems) => {
 
 		{
 			type: 'toggle',
-			onClick: () => updateForm({ teleop: { ...teleop, parkOnStage: !teleop.parkOnStage } }),
+			onClick: () => updateForm({ teleop: { ...teleop, parkOnStage: !teleop.parkOnStage, hangOnChain: false } }),
 			toggled: teleop.parkOnStage,
 			title: 'Parked on Stage',
 			description: 'Did the robot park on the line(not on chain)?',
@@ -109,7 +109,7 @@ const Teleop = ({ updateForm, teleop }: stepItems) => {
 
 		{
 			type: 'toggle',
-			onClick: () => updateForm({ teleop: { ...teleop, hangOnChain: !teleop.hangOnChain } }),
+			onClick: () => updateForm({ teleop: { ...teleop, hangOnChain: !teleop.hangOnChain, parkOnStage: false } }),
 			toggled: teleop.hangOnChain,
 			title: 'Hung On Chain',
 			description: 'Did they hang?',

@@ -83,7 +83,7 @@ const NumberInput: FC<InputProps> = ({
 	const [thing, setThing] = useState<number>(parseInt(placeholder!) ?? 0);
 	return (
 		<div className={cn(`${visible === false ? 'hidden' : 'block'} relative pb-0.5 flex`, className)}>
-			{incrementButtons ? <Button onClick={() => thing > 0 ? decrease?.(setThing) : 0} className='px-8 h-full rounded-l-none'>-</Button> : null}
+			{incrementButtons ? <Button onClick={() => thing > 0 ? decrease?.(setThing) : 0} className='px-8 h-full rounded-l'>-</Button> : null}
 			<input
 				required
 				disabled={disabled}
@@ -95,7 +95,7 @@ const NumberInput: FC<InputProps> = ({
 			<span className={`text-t-100 disabled:pointer-events-none outline-none text-sm absolute top-0 ${incrementButtons ? "left-20" : "left-2"} peer-focus:text-xs peer-focus:bg-g-200 peer-focus:-top-2 peer-valid:text-xs peer-valid:bg-g-200 peer-valid:-top-2 transition-all peer-placeholder-shown:text-xs  peer-placeholder-shown:-top-2 peer-placeholder-shown:bg-g-200 px-1`}>
 				{title}
 			</span>
-			{incrementButtons ? <Button onClick={() => increment?.(setThing)} className='px-8 h-full rounded-r-none'>+</Button> : null}
+			{incrementButtons ? <Button onClick={() => increment?.(setThing)} className='px-8 h-full rounded-r'>+</Button> : null}
 
 		</div>
 	);

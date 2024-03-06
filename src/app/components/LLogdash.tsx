@@ -9,8 +9,9 @@ import Paragraph from './ui/Paragraph';
 import Form from './form/Form';
 import useForm from '@/lib/useForm';
 import LogView from '@/components/log/LogView';
-import getProp from '@/lib/getProp';
 import Modal from './ui/Modal';
+import {QRCodeSVG} from 'qrcode.react';
+
 
 interface LogdashProps {}
 
@@ -195,7 +196,6 @@ const Logdash: FC<LogdashProps> = ({}) => {
 	const [searchState, setSearchState] = useState<string>();
 
 	const RecentFiltered: any = () => {
-		console.log(calcAverageScores());
 		setDisplayedLogs(
 			displayedLogs.sort((a, b) => {
 				if (new Date(a.dateSubmitted).getTime() > new Date(b.dateSubmitted).getTime()) return -1;
@@ -203,6 +203,7 @@ const Logdash: FC<LogdashProps> = ({}) => {
 				return 0;
 			})
 		);
+
 		return displayedLogs.map((log: DisplayedLogsType, i: number) => {
 			const test: FormItems = findLogFromId(log.id);
 
@@ -320,83 +321,10 @@ const Logdash: FC<LogdashProps> = ({}) => {
 
 	const TeamFiltered: any = () => {
 		return (
-			<>
-				{displayedLogs.map((logInfo: DisplayedLogsType, i: number) => {
-					var curLog = findLogFromId(logInfo.id)
-					return (
-						<div key={i} className="bg-t-100 flex flex-col gap-2 p-2 rounded">
-							<div className="p-2">
-								<Paragraph size="xs" className="font-medium text-b-100 dark:text-[#3A2C27] text-left">
-									Team <span className="text-r-100 px-1">{curLog.team}</span>
-								</Paragraph>
-							</div>
-							{listLogsWithTeam(localData, curLog.team).map((log: FormItems, i: number) => {
-								const toDisplay: Array<any> = [
-									{
-										title: 'Auto Summary',
-										display: [
-											{
-												'Left Starting Zone': ['number', log.auto.leftStartingZone, 2],
-											},
-											{
-												"Speaker Note's Scored": ['number', log.auto.speakerScore, 5],
-												"Amp Note's Scored": ['number', log.auto.ampScore, 2],
-											},
-										],
-									},
-									{
-										title: 'Teleop Summary',
-										display: [
-											{
-												"Amp Note's Scored": ['number', log.teleop.ampScore, 1],
-												'Amp Activations': ['number', log.teleop.ampActivatedAmount, 0],
-											},
-											{
-												'Speaker Score': ['number', log.teleop.speakerScore, 2],
-												'Amplified Speaker Score': ['number', log.teleop.amplifiedSpeakerScore, 5],
-											},
-											{
-												Hung: ['boolean', log.teleop.hangOnChain, 'Did Not Hang', 3],
-												Harmonize: ['boolean', log.teleop.hangInHarmony, 'No Harmony', 2],
-												'Scored Trap': ['boolean', log.teleop.scoredTrap, 'No Trap', 5],
-											},
-										],
-									},
-								];
-								return (
-									<>
-										<LogView
-											localDispatch={localDispatch}
-											toDisplay={toDisplay}
-											autoScore={logInfo.autoScore}
-											teleopScore={logInfo.teleopScore}
-											key={i}
-											averageScore={averageScore}
-											data={log}
-											allData={localData}
-											className="bg-t-200"
-										/>{' '}
-									</>
-								);
-							})}
-						</div>
-					);
-				})}
-			</>
-		)
-	}
-
-	const MatchFiltered: any = () => {
-		return displayedLogs.map((logInfo: DisplayedLogsType, i: number) => {
-			var curLog = findLogFromId(logInfo.id)
-			return (
-				<div key={i} className="bg-t-100 flex flex-col gap-2 p-2 rounded">
-					<div className="p-2">
-						<Paragraph size="xs" className="font-medium text-b-100 dark:text-[#3A2C27] text-left">
-							Match <span className="text-r-100 px-1">{curLog.match}</span>
-						</Paragraph>
-					</div>
-					{listLogsWithMatch(curLog.match).map((log: FormItems, i: number) => {
+			Array.from(listTeams(), (team: number) => {
+				return <div className='flex flex-col gap-2 bg-t-100 p-2 rounded'>
+					<Paragraph size={"sm"} className='text-b-100 font-medium px-2'>Team <span className='text-r-100'>{team}</span></Paragraph>
+					{listLogsWithTeam(localData, team).map((log: FormItems, i: number) => {
 						const toDisplay: Array<any> = [
 							{
 								title: 'Auto Summary',
@@ -429,14 +357,15 @@ const Logdash: FC<LogdashProps> = ({}) => {
 								],
 							},
 						];
+						const {autoScore, teleopScore} = calculateScore(log)
 						return (
 							<LogView
 								localDispatch={localDispatch}
 								toDisplay={toDisplay}
 								key={i}
 								averageScore={averageScore}
-								autoScore={logInfo.autoScore}
-								teleopScore={logInfo.teleopScore}
+								autoScore={autoScore}
+								teleopScore={teleopScore}
 								data={log}
 								allData={localData}
 								className="bg-t-200"
@@ -444,8 +373,67 @@ const Logdash: FC<LogdashProps> = ({}) => {
 						);
 					})}
 				</div>
-			);
-		});
+			})
+		)
+		
+	}
+
+	const MatchFiltered: any = () => {
+		return (
+			Array.from(listMatches(), (match: number) => {
+				return <div className='flex flex-col gap-2 bg-t-100 p-2 rounded'>
+					<Paragraph size={"sm"} className='text-b-100 font-medium px-2'>Match <span className='text-r-100'>{match}</span></Paragraph>
+					{listLogsWithMatch(match).map((log: FormItems, i: number) => {
+						const toDisplay: Array<any> = [
+							{
+								title: 'Auto Summary',
+								display: [
+									{
+										'Left Starting Zone': ['number', log.auto.leftStartingZone, 2],
+									},
+									{
+										"Speaker Note's Scored": ['number', log.auto.speakerScore, 5],
+										"Amp Note's Scored": ['number', log.auto.ampScore, 2],
+									},
+								],
+							},
+							{
+								title: 'Teleop Summary',
+								display: [
+									{
+										"Amp Note's Scored": ['number', log.teleop.ampScore, 1],
+										'Amp Activations': ['number', log.teleop.ampActivatedAmount, 0],
+									},
+									{
+										'Speaker Score': ['number', log.teleop.speakerScore, 2],
+										'Amplified Speaker Score': ['number', log.teleop.amplifiedSpeakerScore, 5],
+									},
+									{
+										Hung: ['boolean', log.teleop.hangOnChain, 'Did Not Hang', 3],
+										Harmonize: ['boolean', log.teleop.hangInHarmony, 'No Harmony', 2],
+										'Scored Trap': ['boolean', log.teleop.scoredTrap, 'No Trap', 5],
+									},
+								],
+							},
+						];
+						const {autoScore, teleopScore} = calculateScore(log)
+						return (
+							<LogView
+								localDispatch={localDispatch}
+								toDisplay={toDisplay}
+								key={i}
+								averageScore={averageScore}
+								autoScore={autoScore}
+								teleopScore={teleopScore}
+								data={log}
+								allData={localData}
+								className="bg-t-200"
+							/>
+						);
+					})}
+				</div>
+			})
+		)
 	}
 
 
@@ -464,22 +452,22 @@ const Logdash: FC<LogdashProps> = ({}) => {
 		}
 	};
 
-	const [settingsState, setSettingState] = useState(false);
-	const [dialog, setDialog] = useState();
+	const [qrOpen, setQROpen] = useState(false);
 
 	return (
 		<>
 			<Form dispatch={localDispatch} modalState={formState} closeModal={setClose} />
-			<Modal visible={settingsState} clickOut={true} closeModal={() => setSettingState(!settingsState)}>
-				<Button onClick={() => setLocalData([])}>delete local data</Button>
+			<Modal visible={qrOpen} clickOut={true} closeModal={() => setQROpen(!qrOpen)}>
+				{qrOpen ? <QRCodeSVG className={"w-96 h-96"}value={JSON.stringify(localData)} /> : null}
 			</Modal>
+
 			<div className=" rounded-md bg-g-100 border-2 border-t-100 max-w-5xl min-w-fit w-full">
 				<div className="bg-r-200 border-b-2 border-t-100 rounded-t p-2 flex justify-between flex-col sm:flex-row gap-2">
 					<div className="flex gap-2 justify-center">
 						<Button onClick={() => setOpen()}>
 							<Plus className="w-4 h-4 mr-1" /> New Log
 						</Button>
-						<Button onClick={() => setOpen()} className='bg-r-100'>
+						<Button onClick={() => setQROpen(!qrOpen)} className='bg-r-100'>
 							<Plus className="w-4 h-4 mr-1" /> Import Logs
 						</Button>
 						{/* <div className="bg-r-100 p-2 rounded flex gap-2 items-center">
@@ -506,7 +494,6 @@ const Logdash: FC<LogdashProps> = ({}) => {
 								</Button>
 							);
 						})}
-						{searchState == 'settings' && <Button onClick={() => setSettingState(!settingsState)}>Settings</Button>}
 					</div>
 				</div>
 				<div className=" rounded p-2 flex flex-col gap-2">{isRendered ? <>{filterSwitch(currentFilter)}</> : null}</div>

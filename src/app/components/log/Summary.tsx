@@ -110,15 +110,15 @@ const Summary: FC<SummaryProps> = ({ data, autoScore, averageScore, teleopScore,
 							<div className="bg-t-200 rounded h-2 flex justify-between items-center relative" ref={averageScoreWidth}>
 								<div style={{width: `${((teleopScore + autoScore) / averageScore.averageTotal) * width}px `}} className={`h-full bg-t-600 rounded-l flex items-center rounded`}/>
 							</div>
-							<Paragraph className='text-b-100 text-center mt-1 mb-2' size={"xs"}>{Math.floor(((teleopScore + autoScore) / (averageScore.averageTotal)) * 100) }% of average overall</Paragraph>
+							<Paragraph className='text-b-100 text-center mt-1 mb-2' size={"xs"}>{Math.floor(((teleopScore + autoScore) / (averageScore.averageTotal)) * 100) }% compared to average</Paragraph>
 							<div className="bg-t-200 rounded h-2 flex justify-between items-center relative" >
 								<div style={{width: `${Math.floor( ((autoScore) / (averageScore.averageAuto)) * width )}px `}} className={`h-full bg-t-600 rounded-l flex items-center rounded`}/>
 							</div>
-							<Paragraph className='text-b-100 text-center mt-1 mb-2' size={"xs"}>{Math.floor((autoScore / (averageScore.averageAuto)) * 100) }% of average in auto</Paragraph>
+							<Paragraph className='text-b-100 text-center mt-1 mb-2' size={"xs"}>{Math.floor((autoScore / (averageScore.averageAuto)) * 100) }% compared to average</Paragraph>
 							<div className="bg-t-200 rounded h-2 flex justify-between items-center relative" >
 								<div style={{width: `${Math.floor( ((teleopScore) / (averageScore.averageTeleop)) * width )}px `}} className={`h-full bg-t-600 rounded-l flex items-center rounded`}/>
 							</div>
-							<Paragraph className='text-b-100 text-center mt-1' size={"xs"}>{Math.floor((teleopScore / (averageScore.averageTeleop)) * 100) }% of average in teleop</Paragraph>
+							<Paragraph className='text-b-100 text-center mt-1' size={"xs"}>{Math.floor((teleopScore / (averageScore.averageTeleop)) * 100) }% compared to average</Paragraph>
 						</div>
 					</div>
 					
