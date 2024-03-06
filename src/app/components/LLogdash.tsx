@@ -4,7 +4,7 @@ import { FC, useEffect, useReducer, useState } from 'react';
 import { Button } from '@/ui/Button';
 import useLocalStorage from '@rehooks/local-storage';
 import { REDUCER_ACTION_TYPE, unsavedReducer } from '@/lib/unsavedReducer';
-import { DisplayedLogsType, FormItems, initialValues } from '@/lib/formTypes';
+import { AveragesType, DisplayedLogsType, FormItems, initialValues } from '@/lib/formTypes';
 import Paragraph from './ui/Paragraph';
 import Form from './form/Form';
 import useForm from '@/lib/useForm';
@@ -89,6 +89,24 @@ const Logdash: FC<LogdashProps> = ({}) => {
 		});
 		return locatedLog;
 	};
+	
+	const calcAverageScores = (): AveragesType => {
+		var totalScore: number = 0
+		var totalAutoScore: number = 0
+		var totalTeleopScore: number = 0
+
+		displayedLogs.map((logInfo: DisplayedLogsType) => {
+			totalScore += logInfo.score
+			totalAutoScore += logInfo.autoScore
+			totalTeleopScore += logInfo.teleopScore
+		})
+
+		const averageTotal = (totalScore / displayedLogs.length)
+		const averageAuto = (totalAutoScore / displayedLogs.length)
+		const averageTeleop = (totalTeleopScore / displayedLogs.length)
+
+		return {averageAuto, averageTeleop, averageTotal}
+	}
 
 	const generateDisplayedLogs = () => {
 		var toSet: Array<DisplayedLogsType> = [];
@@ -100,6 +118,8 @@ const Logdash: FC<LogdashProps> = ({}) => {
 					score: total,
 					autoScore: autoScore,
 					teleopScore: teleopScore,
+					team: log.team,
+					match: log.match,
 					rankingPoints: 0,
 					dateSubmitted: log.dateSubmitted,
 					id: log.id,
@@ -141,7 +161,7 @@ const Logdash: FC<LogdashProps> = ({}) => {
 	const { formState, toggleOpen, setOpen, setClose } = useForm();
 
 	const [currentFilter, setCurrentFilter] = useState(0);
-	const filter = ['Recent', 'Team', 'Match'];
+	const filter = ['Recent', 'Points', 'Team', 'Match'];
 
 	// so, i want sort by each team. I should loop over the logs. Add to array of team if part of team, else, create
 	const listTeams = () => {
@@ -166,7 +186,16 @@ const Logdash: FC<LogdashProps> = ({}) => {
 		return final;
 	};
 
-	const Normal: any = () => {
+	const [averageScore, setAverageScore] = useState(calcAverageScores())
+
+	useEffect(() => {
+		setAverageScore(calcAverageScores())
+	}, [displayedLogs])
+
+	const [searchState, setSearchState] = useState<string>();
+
+	const RecentFiltered: any = () => {
+		console.log(calcAverageScores());
 		setDisplayedLogs(
 			displayedLogs.sort((a, b) => {
 				if (new Date(a.dateSubmitted).getTime() > new Date(b.dateSubmitted).getTime()) return -1;
@@ -211,17 +240,16 @@ const Logdash: FC<LogdashProps> = ({}) => {
 			];
 
 			return (
-				<>
 					<LogView
 						localDispatch={localDispatch}
 						toDisplay={toDisplay}
 						autoScore={log.autoScore}
 						teleopScore={log.teleopScore}
 						key={i}
+						averageScore={averageScore}
 						data={findLogFromId(log.id)}
 						allData={localData}
 					/>
-				</>
 			);
 			// return (
 			// 	<LogView localDispatch={localDispatch} toDisplay={toDisplay} averageScore={averageScore} setAverageScore={setAverageScore} key={i} data={findLogFromId(log.id)} allData={localData} />;
@@ -229,86 +257,80 @@ const Logdash: FC<LogdashProps> = ({}) => {
 		});
 	};
 
-	const [averageScore, setAverageScore] = useState(0);
-	const [searchState, setSearchState] = useState<string>();
+	const PointsFiltered: any = () => {
 
-	const filterSwitch = (prop: number) => {
-		switch (prop) {
-			case 0:
-				return <Normal />;
-				break;
-			case 1:
-				return (
-					<>
-						{listTeams().map((team: number, i: number) => {
-							return (
-								<div key={i} className="bg-t-100 flex flex-col gap-2 p-2 rounded">
-									<div className="p-2">
-										<Paragraph size="xs" className="font-medium text-b-100 dark:text-[#3A2C27] text-left">
-											Team <span className="text-r-100 px-1">{team}</span>
-										</Paragraph>
-									</div>
-									{listLogsWithTeam(localData, team).map((log: FormItems, i: number) => {
-										const toDisplay: Array<any> = [
-											{
-												title: 'Auto Summary',
-												display: [
-													{
-														'Left Starting Zone': ['number', log.auto.leftStartingZone, 2],
-													},
-													{
-														"Speaker Note's Scored": ['number', log.auto.speakerScore, 5],
-														"Amp Note's Scored": ['number', log.auto.ampScore, 2],
-													},
-												],
-											},
-											{
-												title: 'Teleop Summary',
-												display: [
-													{
-														"Amp Note's Scored": ['number', log.teleop.ampScore, 1],
-														'Amp Activations': ['number', log.teleop.ampActivatedAmount, 0],
-													},
-													{
-														'Speaker Score': ['number', log.teleop.speakerScore, 2],
-														'Amplified Speaker Score': ['number', log.teleop.amplifiedSpeakerScore, 5],
-													},
-													{
-														Hung: ['boolean', log.teleop.hangOnChain, 'Did Not Hang'],
-													},
-												],
-											},
-										];
-										return (
-											<>
-												<LogView
-													localDispatch={localDispatch}
-													toDisplay={toDisplay}
-													key={i}
-													data={log}
-													allData={localData}
-													className="bg-t-200"
-												/>{' '}
-											</>
-										);
-									})}
-								</div>
-							);
-						})}
-					</>
-				);
-				break;
-			case 2:
-				return listMatches().map((match: number, i: number) => {
+		setDisplayedLogs((
+			displayedLogs.sort((a, b) => {
+				if (a.score > b.score) return -1;
+				else if (a.score < b.score) return 1;
+				return 0;
+			})
+		))
+		
+		return displayedLogs.map((log: DisplayedLogsType, i: number) => {
+			const test: FormItems = findLogFromId(log.id);
+
+			const toDisplay: Array<any> = [
+				{
+					title: 'Auto Summary',
+					display: [
+						{
+							'Left Starting Zone': ['number', test.auto.leftStartingZone, 2],
+						},
+						{
+							"Speaker Note's Scored": ['number', test.auto.speakerScore, 5],
+							"Amp Note's Scored": ['number', test.auto.ampScore, 2],
+						},
+					],
+				},
+				{
+					title: 'Teleop Summary',
+					display: [
+						{
+							"Amp Note's Scored": ['number', test.teleop.ampScore, 1],
+							'Amp Activations': ['number', test.teleop.ampActivatedAmount, 0],
+						},
+						{
+							'Speaker Score': ['number', test.teleop.speakerScore, 2],
+							'Amplified Speaker Score': ['number', test.teleop.amplifiedSpeakerScore, 5],
+						},
+						{
+							Hung: ['boolean', test.teleop.hangOnChain, 'Did Not Hang', 3],
+							Harmonize: ['boolean', test.teleop.hangInHarmony, 'No Harmony', 2],
+							'Scored Trap': ['boolean', test.teleop.scoredTrap, 'No Trap', 5],
+						},
+					],
+				},
+			];
+
+			return (
+					<LogView
+						localDispatch={localDispatch}
+						toDisplay={toDisplay}
+						autoScore={log.autoScore}
+						teleopScore={log.teleopScore}
+						key={i}
+						averageScore={averageScore}
+						data={findLogFromId(log.id)}
+						allData={localData}
+					/>
+			);
+		})
+	}
+
+	const TeamFiltered: any = () => {
+		return (
+			<>
+				{displayedLogs.map((logInfo: DisplayedLogsType, i: number) => {
+					var curLog = findLogFromId(logInfo.id)
 					return (
 						<div key={i} className="bg-t-100 flex flex-col gap-2 p-2 rounded">
 							<div className="p-2">
 								<Paragraph size="xs" className="font-medium text-b-100 dark:text-[#3A2C27] text-left">
-									Match <span className="text-r-100 px-1">{match}</span>
+									Team <span className="text-r-100 px-1">{curLog.team}</span>
 								</Paragraph>
-								{averageScore}
 							</div>
-							{listLogsWithMatch(match).map((log: FormItems, i: number) => {
+							{listLogsWithTeam(localData, curLog.team).map((log: FormItems, i: number) => {
 								const toDisplay: Array<any> = [
 									{
 										title: 'Auto Summary',
@@ -334,25 +356,109 @@ const Logdash: FC<LogdashProps> = ({}) => {
 												'Amplified Speaker Score': ['number', log.teleop.amplifiedSpeakerScore, 5],
 											},
 											{
-												Hung: ['boolean', log.teleop.hangOnChain, 'Did Not Hang'],
+												Hung: ['boolean', log.teleop.hangOnChain, 'Did Not Hang', 3],
+												Harmonize: ['boolean', log.teleop.hangInHarmony, 'No Harmony', 2],
+												'Scored Trap': ['boolean', log.teleop.scoredTrap, 'No Trap', 5],
 											},
 										],
 									},
 								];
 								return (
-									<LogView
-										localDispatch={localDispatch}
-										toDisplay={toDisplay}
-										key={i}
-										data={log}
-										allData={localData}
-										className="bg-t-200"
-									/>
+									<>
+										<LogView
+											localDispatch={localDispatch}
+											toDisplay={toDisplay}
+											autoScore={logInfo.autoScore}
+											teleopScore={logInfo.teleopScore}
+											key={i}
+											averageScore={averageScore}
+											data={log}
+											allData={localData}
+											className="bg-t-200"
+										/>{' '}
+									</>
 								);
 							})}
 						</div>
 					);
-				});
+				})}
+			</>
+		)
+	}
+
+	const MatchFiltered: any = () => {
+		return displayedLogs.map((logInfo: DisplayedLogsType, i: number) => {
+			var curLog = findLogFromId(logInfo.id)
+			return (
+				<div key={i} className="bg-t-100 flex flex-col gap-2 p-2 rounded">
+					<div className="p-2">
+						<Paragraph size="xs" className="font-medium text-b-100 dark:text-[#3A2C27] text-left">
+							Match <span className="text-r-100 px-1">{curLog.match}</span>
+						</Paragraph>
+					</div>
+					{listLogsWithMatch(curLog.match).map((log: FormItems, i: number) => {
+						const toDisplay: Array<any> = [
+							{
+								title: 'Auto Summary',
+								display: [
+									{
+										'Left Starting Zone': ['number', log.auto.leftStartingZone, 2],
+									},
+									{
+										"Speaker Note's Scored": ['number', log.auto.speakerScore, 5],
+										"Amp Note's Scored": ['number', log.auto.ampScore, 2],
+									},
+								],
+							},
+							{
+								title: 'Teleop Summary',
+								display: [
+									{
+										"Amp Note's Scored": ['number', log.teleop.ampScore, 1],
+										'Amp Activations': ['number', log.teleop.ampActivatedAmount, 0],
+									},
+									{
+										'Speaker Score': ['number', log.teleop.speakerScore, 2],
+										'Amplified Speaker Score': ['number', log.teleop.amplifiedSpeakerScore, 5],
+									},
+									{
+										Hung: ['boolean', log.teleop.hangOnChain, 'Did Not Hang', 3],
+										Harmonize: ['boolean', log.teleop.hangInHarmony, 'No Harmony', 2],
+										'Scored Trap': ['boolean', log.teleop.scoredTrap, 'No Trap', 5],
+									},
+								],
+							},
+						];
+						return (
+							<LogView
+								localDispatch={localDispatch}
+								toDisplay={toDisplay}
+								key={i}
+								averageScore={averageScore}
+								autoScore={logInfo.autoScore}
+								teleopScore={logInfo.teleopScore}
+								data={log}
+								allData={localData}
+								className="bg-t-200"
+							/>
+						);
+					})}
+				</div>
+			);
+		});
+	}
+
+
+	const filterSwitch = (prop: number) => {
+		switch (prop) {
+			case 0:
+				return <RecentFiltered />;
+			case 1:
+				return <PointsFiltered />
+			case 2:
+				return <TeamFiltered />
+			case 3:
+				return <MatchFiltered />
 			default:
 				return <div></div>;
 		}
@@ -373,7 +479,10 @@ const Logdash: FC<LogdashProps> = ({}) => {
 						<Button onClick={() => setOpen()}>
 							<Plus className="w-4 h-4 mr-1" /> New Log
 						</Button>
-						<div className="bg-r-100 p-2 rounded flex gap-2 items-center">
+						<Button onClick={() => setOpen()} className='bg-r-100'>
+							<Plus className="w-4 h-4 mr-1" /> Import Logs
+						</Button>
+						{/* <div className="bg-r-100 p-2 rounded flex gap-2 items-center">
 							<SearchIcon className="text-[#C9B08E] w-4 h-4" />
 							<input
 								type="text"
@@ -381,7 +490,7 @@ const Logdash: FC<LogdashProps> = ({}) => {
 								placeholder="Search"
 								onChange={(e: any) => setSearchState(e.target.value)}
 							/>
-						</div>
+						</div> */}
 					</div>
 
 					<div className="justify-center flex">

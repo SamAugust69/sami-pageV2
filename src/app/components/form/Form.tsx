@@ -72,7 +72,7 @@ const Form: FC<FormTestProps> = ({ modalState, closeModal, dispatch }) => {
 			<Modal
 				visible={modalState}
 				closeModal={closeModal}
-				clickOut={false}
+				clickOut={true}
 				className="bg-g-100 sm:bg-g-100 flex flex-col sm:flex-row p-0 relative border-0 max-w-4xl sm:h-5/6 h-full w-full sm:w-11/12"
 			>
 				<div className="bg-g-200 border-b-2 border-t-100 w-full rounded-t sm:rounded h-40 sm:h-full absolute z-0 left-0 top-0 visible sm:invisible"></div>

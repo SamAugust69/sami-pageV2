@@ -2,8 +2,9 @@ import { FC, HTMLAttributes, useEffect, useState } from 'react';
 import Paragraph from '../ui/Paragraph';
 import { ChevronDown, Delete } from 'lucide-react';
 import { Button } from '../ui/Button';
-import { FormItems } from '@/lib/formTypes';
+import { AveragesType, FormItems } from '@/lib/formTypes';
 import { MdDeleteForever } from 'react-icons/md';
+import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import Summary from './Summary';
 import { cn } from '@/lib/utils';
 import { REDUCER_ACTION_TYPE } from '@/app/lib/unsavedReducer';
@@ -13,11 +14,12 @@ interface LogViewProps extends HTMLAttributes<HTMLDivElement> {
 	allData: Array<FormItems>;
 	autoScore: number;
 	teleopScore: number;
+	averageScore: AveragesType;
 	toDisplay: any;
 	localDispatch: Function;
 }
 
-const LogView: FC<LogViewProps> = ({ localDispatch, toDisplay, autoScore, teleopScore, data, allData, className }) => {
+const LogView: FC<LogViewProps> = ({ localDispatch, toDisplay, averageScore, autoScore, teleopScore, data, allData, className }) => {
 	const [open, setOpen] = useState(false);
 	const [optionsOpen, setOptionsOpen] = useState(false);
 
@@ -32,22 +34,21 @@ const LogView: FC<LogViewProps> = ({ localDispatch, toDisplay, autoScore, teleop
 						Team <span className="text-r-100 px-1">{data.team}</span>
 					</Paragraph>
 				</div>
-				{data.id}
 				<div className="flex">
-					<div className="flex border-2  border-b-100 rounded bg-t-200">
+					<div className="flex justify-center items-center rounded bg-t-200">
 						{optionsOpen ? (
 							<div className="flex items-center gap-2 justify-center px-2">
-								<Button className="px-3 my-1" size={'sm'} onClick={() => localDispatch({ type: 'removed', payload: data })}>
+								{/* <Button className="px-3 my-1" size={'sm'} onClick={() => localDispatch({ type: 'removed', payload: data })}>
 									Edit
-								</Button>
-								<Button className="px-3 my-1" size={'sm'} onClick={() => localDispatch({ type: 'removed', payload: data })}>
+								</Button> */}
+								<Button className="px-3 bg-r-200" size={'sm'} onClick={() => localDispatch({ type: 'removed', payload: data })}>
 									Delete
 									<MdDeleteForever className="ml-2" />{' '}
 								</Button>
 							</div>
 						) : null}
 						<Button variant={'hidden'} onClick={() => setOptionsOpen(!optionsOpen)}>
-							More Options
+							<HiOutlineDotsHorizontal className='text-b-100'/>
 						</Button>
 					</div>
 					<Button variant="hidden" onClick={() => setOpen(!open)}>
@@ -57,7 +58,7 @@ const LogView: FC<LogViewProps> = ({ localDispatch, toDisplay, autoScore, teleop
 			</div>
 			{open ? (
 				<div className="bg-t-200 rounded p-2 flex flex-wrap gap-2 overflow-scroll">
-					<Summary toDisplay={toDisplay} data={data} allData={allData} autoScore={autoScore} teleopScore={teleopScore} />
+					<Summary toDisplay={toDisplay} averageScore={averageScore} data={data} allData={allData} autoScore={autoScore} teleopScore={teleopScore} />
 				</div>
 			) : null}
 		</div>
