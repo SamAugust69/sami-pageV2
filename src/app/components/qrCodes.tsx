@@ -2,6 +2,7 @@ import { QRCodeSVG } from "qrcode.react";
 import { Button } from "./ui/Button";
 import { FC, useEffect, useState } from "react";
 import { FormItems } from "../lib/formTypes";
+import Paragraph from "./ui/Paragraph";
 
 interface QRCodesProps {
     data: Array<FormItems>
@@ -37,11 +38,16 @@ const QRCodes: FC<QRCodesProps> = ({ data } ) => {
     }, [])
 
 	return (
-        <div className="relative">  
-            <Button className="absolute w-48 h-full bg-transparent focus:ring-0" onClick={() => currentQR > 0 ? setCurrentQR(currentQR - 1) : null}>B</Button>
-            <Button className="absolute w-48 h-full right-0 bg-transparent focus:ring-0" onClick={() => currentQR < qrStuff.length - 1 ? setCurrentQR(currentQR + 1) : null}>F</Button>
-            {rendered ? <QRCodeSVG className={"w-96 h-96"}value={JSON.stringify(qrData)} /> : null}
-        </div>
+        <>
+            <div className="relative">  
+                <Button className="absolute w-48 h-full bg-transparent focus:ring-0" onClick={() => currentQR > 0 ? setCurrentQR(currentQR - 1) : null}></Button>
+                <Button className="absolute w-48 h-full right-0 bg-transparent focus:ring-0" onClick={() => currentQR < qrStuff.length - 1 ? setCurrentQR(currentQR + 1) : null}></Button>
+                {rendered ? <QRCodeSVG className={"w-96 h-96"}value={JSON.stringify(qrData)} /> : null}
+            </div>
+            {rendered ? <Paragraph>{currentQR} of {qrStuff.length - 1}</Paragraph> : null}
+        </>
+
+
 	);
 
 };
