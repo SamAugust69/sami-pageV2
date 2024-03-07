@@ -321,8 +321,8 @@ const Logdash: FC<LogdashProps> = ({}) => {
 
 	const TeamFiltered: any = () => {
 		return (
-			Array.from(listTeams(), (team: number) => {
-				return <div className='flex flex-col gap-2 bg-t-100 p-2 rounded'>
+			Array.from(listTeams(), (team: number, i) => {
+				return <div key={i} className='flex flex-col gap-2 bg-t-100 p-2 rounded'>
 					<Paragraph size={"sm"} className='text-b-100 font-medium px-2'>Team <span className='text-r-100'>{team}</span></Paragraph>
 					{listLogsWithTeam(localData, team).map((log: FormItems, i: number) => {
 						const toDisplay: Array<any> = [
@@ -380,8 +380,8 @@ const Logdash: FC<LogdashProps> = ({}) => {
 
 	const MatchFiltered: any = () => {
 		return (
-			Array.from(listMatches(), (match: number) => {
-				return <div className='flex flex-col gap-2 bg-t-100 p-2 rounded'>
+			Array.from(listMatches(), (match: number, i) => {
+				return <div key={i} className='flex flex-col gap-2 bg-t-100 p-2 rounded'>
 					<Paragraph size={"sm"} className='text-b-100 font-medium px-2'>Match <span className='text-r-100'>{match}</span></Paragraph>
 					{listLogsWithMatch(match).map((log: FormItems, i: number) => {
 						const toDisplay: Array<any> = [
