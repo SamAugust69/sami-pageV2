@@ -11,6 +11,7 @@ import useForm from '@/lib/useForm';
 import LogView from '@/components/log/LogView';
 import Modal from './ui/Modal';
 import {QRCodeSVG} from 'qrcode.react';
+import QRCodes from './qrCodes';
 
 
 interface LogdashProps {}
@@ -453,12 +454,13 @@ const Logdash: FC<LogdashProps> = ({}) => {
 	};
 
 	const [qrOpen, setQROpen] = useState(false);
+	console.log(JSON.stringify(localData).length)
 
 	return (
 		<>
 			<Form dispatch={localDispatch} modalState={formState} closeModal={setClose} />
 			<Modal visible={qrOpen} clickOut={true} closeModal={() => setQROpen(!qrOpen)}>
-				{qrOpen ? <QRCodeSVG className={"w-96 h-96"}value={JSON.stringify(localData)} /> : null}
+				<QRCodes data={localData}/>
 			</Modal>
 
 			<div className=" rounded-md bg-g-100 border-2 border-t-100 max-w-5xl min-w-fit w-full">
