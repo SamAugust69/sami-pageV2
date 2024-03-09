@@ -59,7 +59,11 @@ const QRCodes: FC<QRCodesProps> = ({ data, dispatch } ) => {
             </div>
             {rendered ? <Paragraph className="text-center text-b-100">{currentQR + 1} of {qrStuff.length}</Paragraph> : null}
             <textarea className="w-full rounded bg-slate-300 h-32" ref={textArea}/>
+            <div className="flex items-between">
+
+            <Button className="" onClick={() => navigator.clipboard.writeText(JSON.stringify(data))}>Copy ALL Data</Button>
             <Button className="" onClick={() => handleSubmit(textArea.current.value)}>Import Log</Button>
+            </div>
         </div>
 
 
