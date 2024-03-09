@@ -10,7 +10,7 @@ interface QRCodesProps {
 }
 
 const QRCodes: FC<QRCodesProps> = ({ data, dispatch } ) => {
-    const ARRAY_SIZE = 3
+    const ARRAY_SIZE = 5
 
     const generateQRCodes = (data: Array<FormItems>) => {
 		var array = []
