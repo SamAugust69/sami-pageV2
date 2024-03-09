@@ -11,7 +11,7 @@ type stepItems = FormItems & {
 // 	type: 'toggle',
 // 	toggled: ,
 // 	onClick: () => setTest(!test),
-// 	placeholder: 'text',
+// 	value: 'text',
 // },
 // (parameter) teleop: {
 //     scoredAmp: boolean; X
@@ -32,7 +32,7 @@ const Teleop = ({ updateForm, teleop }: stepItems) => {
 		{
 			type: 'number',
 			title: 'Speaker Notes Scored',
-			placeholder: teleop.speakerScore.toString(),
+			value: teleop.speakerScore.toString(),
 			onChange: (e: any) => updateForm({ teleop: { ...teleop, speakerScore: parseInt(e.target.value) } }),
 			incrementButtons: true,
 			increment: (setThing: Function) => {
@@ -49,7 +49,7 @@ const Teleop = ({ updateForm, teleop }: stepItems) => {
 		{
 			type: 'number',
 			title: 'Speaker (Amplified) Notes Scored',
-			placeholder: teleop.amplifiedSpeakerScore.toString(),
+			value: teleop.amplifiedSpeakerScore.toString(),
 			onChange: (e: any) => updateForm({ teleop: { ...teleop, amplifiedSpeakerScore: parseInt(e.target.value) } }),
 			incrementButtons: true,
 			increment: (setThing: Function) => {
@@ -67,7 +67,7 @@ const Teleop = ({ updateForm, teleop }: stepItems) => {
 		{
 			type: 'number',
 			title: 'Amp Notes Scored',
-			placeholder: teleop.ampScore.toString(),
+			value: teleop.ampScore.toString(),
 			onChange: (e: any) => updateForm({ teleop: { ...teleop, ampScore: parseInt(e.target.value) } }),
 			incrementButtons: true,
 			increment: (setThing: Function) => {
@@ -80,7 +80,7 @@ const Teleop = ({ updateForm, teleop }: stepItems) => {
 		{
 			type: 'number',
 			title: 'Amplification Amount',
-			placeholder: teleop.ampActivatedAmount.toString(),
+			value: teleop.ampActivatedAmount.toString(),
 			onChange: (e: any) => updateForm({ teleop: { ...teleop, ampActivatedAmount: parseInt(e.target.value) } }),
 			incrementButtons: true,
 			increment: (setThing: Function) => {

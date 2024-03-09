@@ -83,6 +83,7 @@ export type FormInputType = {
 	type: string;
 	title?: string;
 	toggled?: boolean;
+	value?: string | number;
 	description?: string;
 	onClick?: (e: any) => void;
 	checkbox?: boolean;

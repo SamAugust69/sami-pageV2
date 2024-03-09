@@ -11,7 +11,7 @@ type stepItems = FormItems & {
 // 	type: 'toggle',
 // 	toggled: ,
 // 	onClick: () => setTest(!test),
-// 	placeholder: 'text',
+// 	value: 'text',
 // },
 
 const Auto = ({ updateForm, auto }: stepItems) => {
@@ -43,7 +43,7 @@ const Auto = ({ updateForm, auto }: stepItems) => {
 						});
 					},
 					title: 'Speaker Notes Scored',
-					placeholder: auto.ampScore.toString(),
+					value: auto.speakerScore.toString(),
 					incrementButtons: true,
 					increment: (setThing: Function) => {
 						updateForm({ auto: { ...auto, speakerScore: (auto.speakerScore + 1)}}).then(setThing(auto.speakerScore + 1))
@@ -60,7 +60,7 @@ const Auto = ({ updateForm, auto }: stepItems) => {
 							auto: { ...auto, ampScore: Number.isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value) },
 						}),
 					title: 'Amp notes Scored',
-					placeholder: auto.ampScore.toString(),
+					value: auto.ampScore.toString(),
 					incrementButtons: true,
 					increment: (setThing: Function) => {
 						updateForm({ auto: { ...auto, ampScore: (auto.ampScore + 1)}}).then(setThing(auto.ampScore + 1))

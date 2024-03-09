@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import { HTMLAttributes, Ref, forwardRef, useState } from 'react';
+import { HTMLAttributes, Ref, forwardRef, useEffect, useRef, useState } from 'react';
 import { Check } from 'lucide-react';
 import { VariantProps, cva } from 'class-variance-authority';
 import { FC } from 'react';
@@ -35,6 +35,7 @@ interface InputProps extends HTMLAttributes<HTMLInputElement>, VariantProps<type
 	decrease?: (setThing: Function) => number;
 	visible?: boolean;
 	title?: string;
+	value?: string | number;
 }
 
 const TextInput: FC<InputProps> = ({
@@ -77,10 +78,18 @@ const NumberInput: FC<InputProps> = ({
 	decrease,
 	type,
 	placeholder,
+	value,
 	...props
 }) => {
 
 	const [thing, setThing] = useState<number>(parseInt(placeholder!) ?? 0);
+
+	useEffect(() => {
+		textbox.current.value = value
+	}, [value])
+
+	const textbox = useRef<any>(<div></div>)
+
 	return (
 		<div className={cn(`${visible === false ? 'hidden' : 'block'} relative pb-0.5 flex`, className)}>
 			{incrementButtons ? <Button onClick={() => thing > 0 ? decrease?.(setThing) : 0} className='px-8 h-full rounded-l'>-</Button> : null}
@@ -91,6 +100,7 @@ const NumberInput: FC<InputProps> = ({
 				className={cn(InputVariants({ size, variant }), `${incrementButtons ? "rounded-none" : ""}`)}
 				placeholder={thing.toString()}
 				{...props}
+				ref={textbox}
 			/>
 			<span className={`text-t-100 disabled:pointer-events-none outline-none text-sm absolute top-0 ${incrementButtons ? "left-20" : "left-2"} peer-focus:text-xs peer-focus:bg-g-200 peer-focus:-top-2 peer-valid:text-xs peer-valid:bg-g-200 peer-valid:-top-2 transition-all peer-placeholder-shown:text-xs  peer-placeholder-shown:-top-2 peer-placeholder-shown:bg-g-200 px-1`}>
 				{title}
