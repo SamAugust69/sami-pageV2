@@ -460,7 +460,7 @@ const Logdash: FC<LogdashProps> = ({}) => {
 		<>
 			<Form dispatch={localDispatch} modalState={formState} closeModal={setClose} />
 			<Modal visible={qrOpen} clickOut={true} closeModal={() => setQROpen(!qrOpen)}>
-				<QRCodes data={localData}/>
+				<QRCodes data={localData} dispatch={localDispatch}/>
 			</Modal>
 
 			<div className=" rounded-md bg-g-100 border-2 border-t-100 max-w-5xl min-w-fit w-full">

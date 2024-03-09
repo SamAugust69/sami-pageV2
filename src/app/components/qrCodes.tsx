@@ -1,15 +1,16 @@
 import { QRCodeSVG } from "qrcode.react";
 import { Button } from "./ui/Button";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { FormItems } from "../lib/formTypes";
 import Paragraph from "./ui/Paragraph";
 
 interface QRCodesProps {
     data: Array<FormItems>
+    dispatch: Function
 }
 
-const QRCodes: FC<QRCodesProps> = ({ data } ) => {
-    const ARRAY_SIZE = 5
+const QRCodes: FC<QRCodesProps> = ({ data, dispatch } ) => {
+    const ARRAY_SIZE = 3
 
     const generateQRCodes = (data: Array<FormItems>) => {
 		var array = []
@@ -30,22 +31,32 @@ const QRCodes: FC<QRCodesProps> = ({ data } ) => {
 
     useEffect(() => {
         setQRData(generateQRCodes(data)[currentQR])
-    }, [currentQR])
+    }, [currentQR, data])
 
 
     useEffect(() => {
         setRendered(!rendered)
     }, [])
 
+    const textArea = useRef<any>(<div></div>)
+
+    const handleSubmit = (payload: string) => {
+        console.log(payload)
+        dispatch({ type: "added", payload: [JSON.parse(payload)]})
+
+    }
+    
 	return (
-        <>
-            <div className="relative">  
+        <div className="flex flex-col items-center w-96">
+            <div className="relative bg-slate-100">  
                 <Button className="absolute w-48 h-full bg-transparent focus:ring-0" onClick={() => currentQR > 0 ? setCurrentQR(currentQR - 1) : null}></Button>
                 <Button className="absolute w-48 h-full right-0 bg-transparent focus:ring-0" onClick={() => currentQR < qrStuff.length - 1 ? setCurrentQR(currentQR + 1) : null}></Button>
-                {rendered ? <QRCodeSVG className={"w-96 h-96"}value={JSON.stringify(qrData)} /> : null}
+                {rendered && qrData != undefined ? <QRCodeSVG className={"w-96 h-96"}value={JSON.stringify(qrData)} /> : <Paragraph className="text-b-100 text-center p-2 rounded w-96 h-96">{"Nothing to display :<"}</Paragraph>}
             </div>
-            {rendered ? <Paragraph>{currentQR} of {qrStuff.length - 1}</Paragraph> : null}
-        </>
+            {rendered ? <Paragraph className="text-center text-b-100">{currentQR + 1} of {qrStuff.length}</Paragraph> : null}
+            <textarea className="w-full rounded bg-slate-300 h-32" ref={textArea}/>
+            <Button className="" onClick={() => handleSubmit(textArea.current.value)}>Import Log</Button>
+        </div>
 
 
 	);
