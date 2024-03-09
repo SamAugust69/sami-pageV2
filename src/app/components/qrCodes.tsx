@@ -42,7 +42,11 @@ const QRCodes: FC<QRCodesProps> = ({ data, dispatch } ) => {
 
     const handleSubmit = (payload: string) => {
         console.log(payload)
-        dispatch({ type: "added", payload: [JSON.parse(payload)]})
+        JSON.parse(payload).map((val: FormItems) => {
+            dispatch({ type: "added", payload: val})
+        })
+        textArea.current.value = ""
+        
 
     }
     
