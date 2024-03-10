@@ -36,7 +36,7 @@ const unsavedReducer = (state: typeof initState, action: ReducerAction): typeof 
 			});
 		case "set":
 		case REDUCER_ACTION_TYPE.SET_LOG || "set":
-			return [action.payload]
+			return action.payload
 
 		default:
 			console.log(action.type)

@@ -26,6 +26,7 @@ const QRCodes: FC<QRCodesProps> = ({ data, dispatch } ) => {
 	const [currentQR, setCurrentQR] = useState(0)
     const [qrData, setQRData] = useState<Array<FormItems>>()
     const [rendered, setRendered] = useState(false)
+    const [deleteOpen, setDeleteOpen] = useState(false)
 
     const qrStuff = generateQRCodes(data)
 
@@ -61,9 +62,11 @@ const QRCodes: FC<QRCodesProps> = ({ data, dispatch } ) => {
             <textarea className="w-full rounded bg-slate-300 h-32" ref={textArea}/>
             <div className="flex items-between">
 
-            <Button className="" onClick={() => navigator.clipboard.writeText(JSON.stringify(data))}>Copy ALL Data</Button>
-            <Button className="" onClick={() => handleSubmit(textArea.current.value)}>Import Log</Button>
+                <Button className="" onClick={() => navigator.clipboard.writeText(JSON.stringify(data))}>Copy ALL Data</Button>
+                <Button className="" onClick={() => handleSubmit(textArea.current.value)}>Import Log</Button>
+                <Button onClick={() => setDeleteOpen(!deleteOpen)}>Delte All</Button>
             </div>
+            {deleteOpen && <Button onClick={() => {dispatch({type: "set", payload: []}); setDeleteOpen(false)} }>Ja sure?</Button>}
         </div>
 
 
