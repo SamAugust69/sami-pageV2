@@ -24,6 +24,7 @@ const listLogsWithTeam = (data: Array<FormItems>, team: number) => {
 	return final;
 };
 
+
 export const getTeamAverageScore = (data: Array<FormItems>, team: number) => {
 	return listLogsWithTeam(data, team);
 };
@@ -158,6 +159,7 @@ const Logdash: FC<LogdashProps> = ({}) => {
 	useEffect(() => {
 		setLocalData(localDispatchState);
 		setFilteredData(localDispatchState);
+		
 	}, [localDispatchState]);
 
 	const { formState, toggleOpen, setOpen, setClose } = useForm();
