@@ -18,11 +18,13 @@ import Notes from './Notes';
 interface FormTestProps {
 	modalState: boolean;
 	dispatch: any;
-	closeModal: () => void;
+	closeModal: Function;
+	formValues: FormItems
+	onSubmit?: Function
 }
-
-const Form: FC<FormTestProps> = ({ modalState, closeModal, dispatch }) => {
-	const [formData, setFormData] = useState(structuredClone(initialValues));
+ 
+const Form: FC<FormTestProps> = ({ onSubmit, modalState, closeModal, dispatch, formValues }) => {
+	const [formData, setFormData] = useState(formValues);
 	const [submitted, setSubmitted] = useState(false);
 
 	const updateForm = async (fieldsToUpdate: Partial<FormItems>) => {
@@ -35,8 +37,16 @@ const Form: FC<FormTestProps> = ({ modalState, closeModal, dispatch }) => {
 	};
 
 	useEffect(() => {
-		updateForm({ id: uuidv4() });
-		setSubmitted(false);
+		console.log("changed data.. h?")
+		setFormData(formValues)
+	}, [formValues])
+
+	useEffect(() => {
+		if (submitted == true) {
+			console.log("Submitted")
+			updateForm({ id: uuidv4() });
+			setSubmitted(false);
+		}
 	}, [submitted]);
 
 	const handleKey = (event: any) => {
@@ -60,19 +70,19 @@ const Form: FC<FormTestProps> = ({ modalState, closeModal, dispatch }) => {
 		goToStep(0);
 
 		console.log('submitted log', formData);
-		dispatch({ type: 'added', payload: formData });
+		dispatch({ type: 'added', payload: structuredClone(formData) });
 		setSubmitted(true);
 
 		closeModal();
 		setFormData(structuredClone(initialValues));
+		onSubmit != null ? onSubmit() : null
 	};
 
 	return (
 		<>
 			<Modal
-				visible={modalState}
-				closeModal={closeModal}
-				clickOut={true}
+				open={modalState}
+				setOpen={closeModal}
 				className="bg-g-100 sm:bg-g-100 flex flex-col sm:flex-row p-0 relative border-0 max-w-4xl sm:h-5/6 h-full w-full sm:w-11/12"
 			>
 				<div className="bg-g-200 border-b-2 border-t-100 w-full rounded-t sm:rounded h-40 sm:h-full absolute z-0 left-0 top-0 visible sm:invisible"></div>

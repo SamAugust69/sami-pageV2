@@ -203,6 +203,7 @@ const formInputSwitch = (type: string, children: any, title: any, props: any) =>
 interface FormInputProps extends HTMLAttributes<HTMLAllCollection> {
 	disabled?: boolean;
 	type: string;
+	value: string | number
 }
 
 const FormInput: FC<FormInputProps> = ({ children, type, title, ...props }) => {

@@ -12,6 +12,9 @@ import LogView from '@/components/log/LogView';
 import Modal from './ui/Modal';
 import {QRCodeSVG} from 'qrcode.react';
 import QRCodes from './qrCodes';
+import { v4 as uuidv4, v4 } from 'uuid';
+import schedule from "./schedual.json" 
+import FormInput from './ui/FormInput';
 
 
 interface LogdashProps {}
@@ -455,17 +458,42 @@ const Logdash: FC<LogdashProps> = ({}) => {
 		}
 	};
 
+	const [formData, setFormData] = useState<FormItems>(initialValues)
+
+	const newFormProps = {
+		modalState: formState,
+		closeModal: () => setClose(),
+		dispatch: localDispatch,
+		formValues: formData,
+		onSubmit: () => setCurMatch(curMatch + 1)
+	}
+
 	const [qrOpen, setQROpen] = useState(false);
 	console.log(JSON.stringify(localData).length)
+	
+	const [curMatch, setCurMatch] = useLocalStorage("curMatch", 1)
+	const [tabletNumber, setTabletNumber] = useLocalStorage("tabletNumber", 0)
+
+	//const [newLogData, setNewLogData] = useState<FormItems>(initialValues)
+
+	const openLog = (match: number, team: number) => {
+		setFormData({
+			...formData,
+			match: match,
+			team: team,
+			id: v4()
+		})
+		setOpen()
+	};
 
 	return (
-		<>
-			<Form dispatch={localDispatch} modalState={formState} closeModal={setClose} />
-			<Modal visible={qrOpen} clickOut={true} closeModal={() => setQROpen(!qrOpen)}>
+		<div className='flex flex-col gap-2'>
+			<Form {...newFormProps} />
+			<Modal open={qrOpen} setOpen={() => setQROpen(!qrOpen)}>
 				<QRCodes data={localData} dispatch={localDispatch}/>
 			</Modal>
 
-			<div className=" rounded-md bg-g-100 border-2 border-t-100 max-w-5xl min-w-fit w-full">
+			<div className=" rounded-md bg-g-100 border-2 border-t-100 max-w-5xl min-w-fit w-full h-full">
 				<div className="bg-r-200 border-b-2 border-t-100 rounded-t p-2 flex justify-between flex-col sm:flex-row gap-2">
 					<div className="flex gap-2 justify-center">
 						<Button onClick={() => setOpen()}>
@@ -502,7 +530,36 @@ const Logdash: FC<LogdashProps> = ({}) => {
 				</div>
 				<div className=" rounded p-2 flex flex-col gap-2">{isRendered ? <>{filterSwitch(currentFilter)}</> : null}</div>
 			</div>
-		</>
+			{isRendered ? <div>
+		
+				<div className='bg-g-100 border-2 border-t-100 rounded flex flex-col h-32 overflow-scroll snap-y'>
+					
+				<Paragraph size={"xs"} className='bg-g-200 w-full self-center text-center text-t-100'>Beta</Paragraph>
+					{schedule.Schedule.slice(curMatch - 1 > 0 ? curMatch - 1 : 0, curMatch + 2 < schedule.Schedule.length ? curMatch + 2 : schedule.Schedule.length).map((val) => {
+						return (
+							<div onClick={() => {curMatch == val.matchNumber ? openLog(val.matchNumber, val.teams[tabletNumber].teamNumber) : null}} className={`group group-hover bg-g-200 m-2 rounded flex snap-center ${curMatch == val.matchNumber ? " hover:cursor-pointer" : ""} transition-all`}>
+								<div className={` ${curMatch == val.matchNumber ? "bg-t-400" : "bg-b-100"} py-2 h-full px-4 rounded-l flex items-center justify-center `}>
+									{curMatch == val.matchNumber ? <Paragraph size={"xs"} className='group invisible w-0 group-hover:visible group-hover:w-full'>Create Log</Paragraph> : null}
+									<Paragraph size={"sm"}>{val.matchNumber}</Paragraph>
+								</div>
+								<div className='px-2 flex items-center justify-between w-full'>
+									<Paragraph size={"sm"}>{val.description}</Paragraph>
+									<div>
+										<Paragraph size={"sm"}>{val.teams[tabletNumber].teamNumber}</Paragraph>
+									</div>
+								</div>
+
+							</div>
+
+
+						)
+		
+					})}
+					<FormInput type='number' className={"m-2"} title={"Tablet Number"} onChange={(e: any) => Number.isNaN(parseInt(e.target.value)) == false ?? parseInt(e.target.value) < 5 ?? (parseInt(e.target.value) >= 0) ? setTabletNumber(parseInt(e.target.value)) : setTabletNumber(0)} value={tabletNumber.toString()}>hello</FormInput>
+				</div>
+			</div> : null}
+		</div>
+
 	);
 };
 
