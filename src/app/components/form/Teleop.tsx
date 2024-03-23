@@ -77,23 +77,6 @@ const Teleop = ({ updateForm, teleop }: stepItems) => {
 				updateForm({ teleop: { ...teleop, ampScore: teleop.ampScore - 1 } }).then(setThing(teleop.ampScore - 1));
 			},
 		},
-		{
-			type: 'number',
-			title: 'Amplification Amount',
-			value: teleop.ampActivatedAmount.toString(),
-			onChange: (e: any) => updateForm({ teleop: { ...teleop, ampActivatedAmount: parseInt(e.target.value) } }),
-			incrementButtons: true,
-			increment: (setThing: Function) => {
-				updateForm({ teleop: { ...teleop, ampActivatedAmount: teleop.ampActivatedAmount + 1 } }).then(
-					setThing(teleop.ampActivatedAmount + 1)
-				);
-			},
-			decrease: (setThing: Function) => {
-				updateForm({ teleop: { ...teleop, ampActivatedAmount: teleop.ampActivatedAmount - 1 } }).then(
-					setThing(teleop.ampActivatedAmount - 1)
-				);
-			},
-		},
 
 		{
 			type: 'toggle',

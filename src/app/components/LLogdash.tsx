@@ -534,7 +534,7 @@ const Logdash: FC<LogdashProps> = ({}) => {
 		
 				<div className='bg-g-100 border-2 border-t-100 rounded flex flex-col h-32 overflow-scroll snap-y'>
 					
-				<Paragraph size={"xs"} className='bg-g-200 w-full self-center text-center text-t-100'>Beta</Paragraph>
+				<Paragraph size={"xs"} className='bg-g-200 w-full self-center text-center text-t-100'>Beta Feature -- Default Styling</Paragraph>
 					{schedule.Schedule.slice(curMatch - 1 > 0 ? curMatch - 1 : 0, curMatch + 2 < schedule.Schedule.length ? curMatch + 2 : schedule.Schedule.length).map((val, i) => {
 						return (
 							<div key={i} onClick={() => {curMatch == val.matchNumber ? openLog(val.matchNumber, val.teams[tabletNumber].teamNumber) : null}} className={`group group-hover bg-g-200 m-2 rounded flex snap-center ${curMatch == val.matchNumber ? " hover:cursor-pointer" : ""} transition-all`}>
@@ -545,7 +545,7 @@ const Logdash: FC<LogdashProps> = ({}) => {
 								<div className='px-2 flex items-center justify-between w-full'>
 									<Paragraph size={"sm"}>{val.description}</Paragraph>
 									<div>
-										<Paragraph size={"sm"}>{val.teams[tabletNumber].teamNumber}</Paragraph>
+										<Paragraph size={"sm"} className={`${tabletNumber > 2 ? "text-r-100" : "text-blue-300"}`}>{val.teams[tabletNumber].teamNumber}</Paragraph>
 									</div>
 								</div>
 
