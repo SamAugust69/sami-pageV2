@@ -487,7 +487,7 @@ const Logdash: FC<LogdashProps> = ({}) => {
 	};
 
 	return (
-		<div className='flex flex-col gap-2 w-full'>
+		<div className='flex flex-col gap-2 w-full items-center'>
 			<Form {...newFormProps} />
 			<Modal open={qrOpen} setOpen={() => setQROpen(!qrOpen)}>
 				<QRCodes data={localData} dispatch={localDispatch}/>
@@ -530,7 +530,8 @@ const Logdash: FC<LogdashProps> = ({}) => {
 				</div>
 				<div className=" rounded p-2 flex flex-col gap-2">{isRendered ? <>{filterSwitch(currentFilter)}</> : null}</div>
 			</div>
-			{isRendered ? <div>
+			{isRendered ? 
+			<div className='max-w-5xl min-w-fit w-full'>
 		
 				<div className='bg-g-100 border-2 border-t-100 rounded flex flex-col h-32 overflow-scroll snap-y'>
 					

@@ -28,8 +28,19 @@ type stepItems = FormItems & {
 //     thrownNoteAmount: number;
 // }
 
-const Notes = ({ updateForm, notes }: stepItems) => {
-
+const Notes = ({ updateForm, bot_preformed, notes }: stepItems) => {
+	const formInputs: Array<FormInputType> = [
+		{
+			type: 'toggle',
+			onClick: (e: any) => {
+				e.stopPropagation();
+				updateForm({ bot_preformed: bot_preformed != "bad" ? "bad" : "well"});
+			},
+			toggled: bot_preformed == "bad",
+			title: 'Broke? (toby button)',
+			description: 'Were they DISABLED for the majority of the match?',
+		},
+	];
 	
 	useEffect(() => {
 		textbox.current.value = notes
@@ -43,6 +54,13 @@ const Notes = ({ updateForm, notes }: stepItems) => {
 				Notes About Robot (Optional)
 			</Heading>
 			<div className="py-2 flex flex-col gap-2">
+				{formInputs.map((input: any, i) => {
+					return (
+						<FormInput key={i} {...input}>
+							{input.children}
+						</FormInput>
+					);
+				})}
                 <textarea ref={textbox} onChange={(e: any) => updateForm({notes: e.target.value})} className='p-2 bg-transparent border-2 border-t-100 focus:ring-0 rounded text-t-100' />
 			</div>
 		</div>
