@@ -487,7 +487,7 @@ const Logdash: FC<LogdashProps> = ({}) => {
 	};
 
 	return (
-		<div className='flex flex-col gap-2'>
+		<div className='flex flex-col gap-2 w-full'>
 			<Form {...newFormProps} />
 			<Modal open={qrOpen} setOpen={() => setQROpen(!qrOpen)}>
 				<QRCodes data={localData} dispatch={localDispatch}/>
