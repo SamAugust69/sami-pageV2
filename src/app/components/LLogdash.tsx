@@ -555,7 +555,8 @@ const Logdash: FC<LogdashProps> = ({}) => {
 						)
 		
 					})}
-					<FormInput type='number' className={"m-2"} title={"Tablet Number"} onChange={(e: any) => Number.isNaN(parseInt(e.target.value)) == false ?? parseInt(e.target.value) < 5 ?? (parseInt(e.target.value) >= 0) ? setTabletNumber(parseInt(e.target.value)) : setTabletNumber(0)} value={tabletNumber.toString()}>hello</FormInput>
+					<FormInput type='number' className={"m-2"} title={"Tablet Number"} onChange={(e: any) => Number.isNaN(parseInt(e.target.value)) == false ?? parseInt(e.target.value) < 5 ?? (parseInt(e.target.value) >= 0) ? setTabletNumber(parseInt(e.target.value)) : setTabletNumber(0)} value={tabletNumber.toString()}></FormInput>
+					<FormInput type='number' className={"m-2"} title={"Cur Match"} onChange={(e: any) => Number.isNaN(parseInt(e.target.value)) == false ?? parseInt(e.target.value) < 5 ?? (parseInt(e.target.value) >= 0) ? setCurMatch(parseInt(e.target.value)) : setTabletNumber(0)} value={curMatch.toString()}></FormInput>
 				</div>
 			</div> : null}
 		</div>
