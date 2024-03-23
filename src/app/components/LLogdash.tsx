@@ -535,9 +535,9 @@ const Logdash: FC<LogdashProps> = ({}) => {
 				<div className='bg-g-100 border-2 border-t-100 rounded flex flex-col h-32 overflow-scroll snap-y'>
 					
 				<Paragraph size={"xs"} className='bg-g-200 w-full self-center text-center text-t-100'>Beta</Paragraph>
-					{schedule.Schedule.slice(curMatch - 1 > 0 ? curMatch - 1 : 0, curMatch + 2 < schedule.Schedule.length ? curMatch + 2 : schedule.Schedule.length).map((val) => {
+					{schedule.Schedule.slice(curMatch - 1 > 0 ? curMatch - 1 : 0, curMatch + 2 < schedule.Schedule.length ? curMatch + 2 : schedule.Schedule.length).map((val, i) => {
 						return (
-							<div onClick={() => {curMatch == val.matchNumber ? openLog(val.matchNumber, val.teams[tabletNumber].teamNumber) : null}} className={`group group-hover bg-g-200 m-2 rounded flex snap-center ${curMatch == val.matchNumber ? " hover:cursor-pointer" : ""} transition-all`}>
+							<div key={i} onClick={() => {curMatch == val.matchNumber ? openLog(val.matchNumber, val.teams[tabletNumber].teamNumber) : null}} className={`group group-hover bg-g-200 m-2 rounded flex snap-center ${curMatch == val.matchNumber ? " hover:cursor-pointer" : ""} transition-all`}>
 								<div className={` ${curMatch == val.matchNumber ? "bg-t-400" : "bg-b-100"} py-2 h-full px-4 rounded-l flex items-center justify-center `}>
 									{curMatch == val.matchNumber ? <Paragraph size={"xs"} className='group invisible w-0 group-hover:visible group-hover:w-full'>Create Log</Paragraph> : null}
 									<Paragraph size={"sm"}>{val.matchNumber}</Paragraph>
